@@ -294,7 +294,7 @@ body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #ss
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 97</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 98</footer>
 </main>
 <script>
 (function(){
@@ -798,7 +798,7 @@ function shDlg(n,players){return new Promise(function(res){var d=document.create
   d.innerHTML='<div class="dlgb" role="dialog" aria-modal="true" style="max-width:560px;max-height:88vh;overflow:auto"><div class="dlgt">'+Lx("Sdílet klip","Share clip")+' ('+n+')</div><div class="dlgd">'+Lx("Vyber hráčky, které klip uvidí ve své osobní kartě (i z jiné skupiny). Uvidí video, komentář, kresby a jméno hráčky, které akce patří.","Choose the players who will see the clip in their personal card (also from another group). They will see the video, comment, drawings and the name of the player the action belongs to.")+'</div>'+
    (players.length?gs.map(function(g){return '<div style="margin:10px 0 4px;font-weight:800">'+esc(g)+'</div><label class="ck" style="font-weight:700"><input type="checkbox" data-grp="'+esc(g)+'"> '+Lx("Celá skupina","Whole group")+'</label><div class="pklist">'+players.map(function(p,i){return p.grp!==g?"":'<label class="ck"'+(p.email?"":' style="opacity:.5"')+'><input type="checkbox" data-pi="'+i+'" data-g="'+esc(g)+'"'+(p.email?"":" disabled")+'> '+(p.number?"#"+esc(p.number)+" ":"")+esc(p.name||"")+(p.email?"":" ("+Lx("bez přihlášení","no login")+")")+'</label>'}).join("")+'</div>'}).join(""):'<p class="mut">'+Lx("Nenašel jsem žádné hráčky ve tvých skupinách.","No players found in your groups.")+'</p>')+
    '<div class="dlgr"><button class="btn pri" data-y="1" disabled>'+Lx("Odeslat","Send")+' (<span data-n>0</span>)</button><button class="btn" data-y="0">'+Lx("Zrušit","Cancel")+'</button></div></div>';
-  document.body.appendChild(d);
+  (document.fullscreenElement||document.webkitFullscreenElement||document.body).appendChild(d);
   function sel(){return[].map.call(d.querySelectorAll("[data-pi]:checked"),function(c){var p=players[+c.dataset.pi];return{key:p.player_key,grp:p.grp,name:p.name||""}})}
   function upd(){var k=sel().length;d.querySelector("[data-n]").textContent=k;d.querySelector('[data-y="1"]').disabled=!k}
   function kd(e){if(e.key==="Escape")fin(null)}function fin(v){document.removeEventListener("keydown",kd);d.remove();res(v)}
@@ -1644,11 +1644,11 @@ $("mewd").onclick=async function(){if(!(await askYN(Lx("Opravdu odvolat souhlas?
     ses=ses;await logout();lmsg("Souhlas byl odvolán. Data o tobě budou odstraněna při nejbližší synchronizaci trenéra.")}catch(e){$("memade").textContent="Chyba: "+e.message}};
 function askYN(txt,det){return new Promise(function(res){var d=document.createElement("div");d.className="dlg";d.setAttribute("translate","no");
   d.innerHTML='<div class="dlgb" role="alertdialog" aria-modal="true"><div class="dlgt">'+esc(txt)+'</div>'+(det?'<div class="dlgd">'+esc(det)+'</div>':'<div class="dlgd"></div>')+'<div class="dlgr"><button class="btn danger" data-y="1">'+Lx("Ano","Yes")+'</button><button class="btn pri" data-y="0">'+Lx("Zrušit","Cancel")+'</button></div></div>';
-  document.body.appendChild(d);function kd(e){if(e.key==="Escape")fin(false)}function fin(v){document.removeEventListener("keydown",kd);d.remove();res(v)}
+  (document.fullscreenElement||document.webkitFullscreenElement||document.body).appendChild(d);function kd(e){if(e.key==="Escape")fin(false)}function fin(v){document.removeEventListener("keydown",kd);d.remove();res(v)}
   document.addEventListener("keydown",kd);d.addEventListener("click",function(e){var b=e.target.closest("[data-y]");if(b)fin(b.dataset.y==="1");else if(e.target===d)fin(false)});d.querySelector('[data-y="0"]').focus()})}
 function askPick(txt,det,items){return new Promise(function(res){var d=document.createElement("div");d.className="dlg";d.setAttribute("translate","no");
   d.innerHTML='<div class="dlgb" role="dialog" aria-modal="true"><div class="dlgt">'+esc(txt)+'</div><div class="dlgd">'+esc(det)+'</div><label class="ck" style="font-weight:800"><input type="checkbox" data-all="1" checked> '+Lx("Vybrat vše","Select all")+'</label><div class="pklist">'+items.map(function(it,i){return '<label class="ck"><input type="checkbox" data-i="'+i+'" checked> '+esc(it.label)+'</label>'}).join("")+'</div><div class="dlgr"><button class="btn pri" data-y="1">'+Lx("Přidat vybrané","Add selected")+' (<span data-n>'+items.length+'</span>)</button><button class="btn" data-y="0">'+Lx("Zrušit","Cancel")+'</button></div></div>';
-  document.body.appendChild(d);var all=d.querySelector("[data-all]");
+  (document.fullscreenElement||document.webkitFullscreenElement||document.body).appendChild(d);var all=d.querySelector("[data-all]");
   function sel(){return[].map.call(d.querySelectorAll("[data-i]:checked"),function(c){return items[+c.dataset.i].key})}
   function upd(){var n=sel().length;d.querySelector("[data-n]").textContent=n;d.querySelector('[data-y="1"]').disabled=!n;all.checked=n===items.length}
   function kd(e){if(e.key==="Escape")fin(null)}function fin(v){document.removeEventListener("keydown",kd);d.remove();res(v)}
