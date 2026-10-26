@@ -203,6 +203,12 @@ body.rfsb{overflow:hidden}
 .rfs .ytw,.rfs video{flex:1 1 auto;min-height:0;width:100%!important;max-width:1700px!important;margin:0 auto!important;height:auto!important;aspect-ratio:auto!important;border:2px solid #2b4a7a;border-radius:12px!important;box-shadow:none}
 .rfs .ytw iframe{width:100%!important;height:100%!important;aspect-ratio:auto!important;max-width:none!important}
 .rfs video{object-fit:contain}
+.rfs.rfsd{display:block!important;overflow-y:auto!important;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
+.rfs.rfsd>*{margin-bottom:8px!important}
+.rfs.rfsd .ytw,.rfs.rfsd video{display:block;height:min(62vh,calc((100vw - 28px)*9/16))!important;min-height:220px;width:100%!important}
+.rfs.rfsd .ytw iframe{height:100%!important}
+.rfs.rfsd .drtb .btn{padding:6px 10px;font-size:13px;min-height:0}.rfs.rfsd .drtb .chip{padding:5px 9px}
+.rfs.rfsd .ctl{margin-bottom:40px!important}
 .rfs .acts,.rfs .fslot,.rfs .adv,.rfs [id$="fb"],.rfs .noprint+.mut{display:none!important}
 .rfs .cur{display:block;color:#fff;font-weight:700;font-size:15px;text-align:center}
 .rfs .mut{color:#b9c4d6}
@@ -288,7 +294,7 @@ body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #ss
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 96</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 97</footer>
 </main>
 <script>
 (function(){
@@ -813,7 +819,7 @@ function Rep(el,o){
    '<div class="rate" id="'+id+'rt"><span class="mut" style="font-weight:700;font-size:11px;text-transform:uppercase;display:block;margin-bottom:3px">Rychlost</span><span translate="no">'+[0.25,0.5,0.75,1].map(function(r){return '<button type="button" class="chip" data-rate="'+r+'" aria-pressed="'+(r===RATE)+'">'+(r*100)+'%</button>'}).join("")+'</span></div><label class="adv">Posun videa (s)<input type="number" id="'+id+'o" step="0.5" value="0" style="width:80px"></label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'r"> celá výměna</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'L"> smyčka</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'AF"> '+Lx("auto celá obrazovka","auto full screen")+'</label>'+
    '<button class="btn" id="'+id+'p">◀ PŘEDCHOZÍ</button><button class="btn" id="'+id+'n">DALŠÍ ▶</button><button class="btn pri" id="'+id+'all">PŘEHRÁT VŠECHNY</button>'+(o.local?'<input type="file" id="'+id+'f" accept="video/*" hidden><button class="btn" id="'+id+'fb">VIDEO ZE SOUBORU</button>':'')+(o.dr?'<button class="btn" id="'+id+'dw" type="button">✏ '+Lx("OKOMENTOVAT / KRESLIT","COMMENT / DRAW")+'</button>':'')+'<button class="btn" id="'+id+'dt" type="button" hidden></button>'+(o.share?'<button class="btn pri" id="'+id+'sh" type="button">↗ '+Lx("SDÍLET KLIP","SHARE CLIP")+'</button>':'')+'</div>'+
    '<p class="mut" id="'+id+'c" style="margin:0 0 8px"></p><div class="acts" id="'+id+'l"></div>';
-  var g=function(s){return $(id+s)};el.classList.remove("rfs");document.body.classList.remove("rfsb");
+  var g=function(s){return $(id+s)};el.classList.remove("rfs","rfsd");document.body.classList.remove("rfsb");
   try{g("L").checked=localStorage.getItem("nvc-loop")!=="0"}catch(e){g("L").checked=true}try{g("AF").checked=localStorage.getItem("nvc-autofs")!=="0"}catch(e){g("AF").checked=true}g("AF").onchange=function(){try{localStorage.setItem("nvc-autofs",this.checked?"1":"0")}catch(e){}};
    g("L").onchange=function(){try{localStorage.setItem("nvc-loop",this.checked?"1":"0")}catch(e){}};
   function msg(t){g("m").textContent=t||""}
@@ -891,9 +897,9 @@ function Rep(el,o){
   var drafts=new WeakMap();function drSaved(c){return o.drGet?o.drGet(c):(c.dr||[])}function dfOf(c){return drafts.get(c)||[]}function drOf(c){return drSaved(c).concat(dfOf(c))}
   function curAct(){return pos>=0?acts[pos]:null}
   function media(){return mode()==="yt"?g("y"):g("v")}
-  function layout(){var m=media(),r;if(!m||m.hidden){cv.hidden=true;return false}r=m.getBoundingClientRect();var e=el.getBoundingClientRect(),w=r.width,h=r.height;if(w<20||h<20){cv.hidden=true;return false}
+  function layout(){var m=media(),r;if(!m||m.hidden){cv.hidden=true;return false}r=m.getBoundingClientRect();var e=el.getBoundingClientRect(),w=r.width,h=r.height,sx=el.scrollLeft,sy=el.scrollTop;if(w<20||h<20){cv.hidden=true;return false}
     var ar=16/9;if(mode()==="local"){var v=g("v");if(v.videoWidth&&v.videoHeight)ar=v.videoWidth/v.videoHeight}
-    var bw=w,bh=w/ar;if(bh>h){bh=h;bw=h*ar}var x=r.left-e.left+(w-bw)/2,y=r.top-e.top+(h-bh)/2,k=[x,y,bw,bh].map(Math.round).join(",");
+    var bw=w,bh=w/ar;if(bh>h){bh=h;bw=h*ar}var x=r.left-e.left+sx+(w-bw)/2,y=r.top-e.top+sy+(h-bh)/2,k=[x,y,bw,bh].map(Math.round).join(",");
     if(k!==lay.k){lay={x:x,y:y,w:bw,h:bh,k:k};cv.style.left=x+"px";cv.style.top=y+"px";cv.style.width=bw+"px";cv.style.height=bh+"px";var d=window.devicePixelRatio||1;cv.width=Math.round(bw*d);cv.height=Math.round(bh*d);drSig=""}
     cv.hidden=false;return true}
   function paintStk(ctx,s,W,H){var p=s.p;if(!p||!p.length)return;ctx.strokeStyle=ctx.fillStyle=s.c;var lw=Math.max(1.5,s.w*W/700);ctx.lineWidth=lw;ctx.lineCap=ctx.lineJoin="round";
@@ -922,10 +928,10 @@ function Rep(el,o){
     L.innerHTML=(sv.length?'<span class="drlb">'+Lx("Odeslané hráčce:","Sent to the player:")+'</span> '+sv.map(function(d,i){return item(d,i,false)}).join(""):"")+(df.length?'<div><span class="drlb">'+Lx("Neodeslané návrhy (zatím je hráčka nevidí):","Unsent drafts (the player does not see them yet):")+'</span> '+df.map(function(d,i){return item(d,sv.length+i,true)}).join("")+'</div>':"")}
   function seekPause(t){t=Math.max(0,t);try{if(mode()==="yt"){if(ytp){ytp.seekTo(t,true);ytp.pauseVideo()}}else{var v=g("v");v.currentTime=t;v.pause()}}catch(e){}dpaused=true;drSig="";updTb()}
   function resume(){dpaused=false;try{if(mode()==="yt"){if(ytp)ytp.playVideo()}else{var p=g("v").play();if(p&&p.catch)p.catch(function(){})}}catch(e){}t0=Date.now();if(!tm&&stopAt!=null)tm=setInterval(tick,200);updTb()}
-  function enterDraw(seek){var c=curAct();if(!c||c.v==null||!o.dr)return;drawOn=true;drOn=true;work=[];curStk=null;tb.hidden=false;if(!fsOn)enterFs();dmsg("");updDt();
+  function enterDraw(seek){var c=curAct();if(!c||c.v==null||!o.dr)return;drawOn=true;drOn=true;work=[];curStk=null;tb.hidden=false;if(!fsOn)enterFs();el.classList.add("rfsd");dmsg("");updDt();
     if(seek){var n=0;dpaused=true;(function tryS(){if(!drawOn)return;if(mode()==="yt"&&!ytReady){if(n++<60)setTimeout(tryS,300);return}setTimeout(function(){if(drawOn)seekPause(c.v+offs())},900)})()}
     else{pause();dpaused=true}updTb()}
-  function exitDraw(){drawOn=false;dpaused=false;work=[];curStk=null;tb.hidden=true;drSig="";updDt()}
+  function exitDraw(){el.classList.remove("rfsd");drawOn=false;dpaused=false;work=[];curStk=null;tb.hidden=true;drSig="";updDt()}
   function norm(e){var r=cv.getBoundingClientRect();return[Math.max(0,Math.min(1000,Math.round((e.clientX-r.left)/r.width*1000))),Math.max(0,Math.min(1000,Math.round((e.clientY-r.top)/r.height*1000)))]}
   cv.addEventListener("pointerdown",function(e){if(!drawOn||!dpaused)return;if(e.pointerType==="pen")penSeen=true;else if(penSeen&&e.pointerType==="touch")return;e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}var q=norm(e);curStk={k:tool==="pen"?"p":tool,c:col,w:wd,p:tool==="pen"?[q]:[q,q],id:e.pointerId};drSig=""});
   cv.addEventListener("pointermove",function(e){if(!curStk||e.pointerId!==curStk.id)return;e.preventDefault();var q=norm(e);if(curStk.k==="p"){var l=curStk.p[curStk.p.length-1];if(Math.abs(q[0]-l[0])+Math.abs(q[1]-l[1])>=2)curStk.p.push(q)}else curStk.p[1]=q;drSig=""});
