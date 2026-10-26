@@ -111,7 +111,7 @@ svg.ch{width:100%;height:auto;background:#fff;border:1px solid var(--line);borde
 .mrow{border-top:1px solid var(--line);padding:12px 0}
 .mrow h3{margin:0 0 6px;font-size:14px}
 .lb{font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;margin:8px 0 3px}
-.cmt{margin-top:4px;padding:6px 8px;background:#fff7d6;border-left:3px solid var(--yel);border-radius:6px;white-space:pre-wrap}.cmed textarea{min-height:60px;margin-top:6px}.cmb{padding:6px 9px;flex:none}.ccb{padding:6px 9px;flex:none}.cced{margin-top:6px;padding:6px 8px;background:#eef3fa;border-left:3px solid var(--blue);border-radius:6px}
+.cmx{float:right;margin:-2px -4px 0 8px;width:24px;height:24px;border-radius:50%;border:1px solid #d9c27a;background:#fff;color:#7a6320;font-size:12px;line-height:1;cursor:pointer;padding:0}.cmx:hover{background:#fbe7e9;color:#a5222e}.cmt{margin-top:4px;padding:6px 8px;background:#fff7d6;border-left:3px solid var(--yel);border-radius:6px;white-space:pre-wrap}.cmed textarea{min-height:60px;margin-top:6px}.cmb{padding:6px 9px;flex:none}.ccb{padding:6px 9px;flex:none}.cced{margin-top:6px;padding:6px 8px;background:#eef3fa;border-left:3px solid var(--blue);border-radius:6px}
 .ubar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:-4px 0 12px;font-size:12px;color:var(--mut)}.ubar .btn{padding:6px 10px;font-size:12px}
 .gswrap{text-align:center;margin:0 0 12px}.gswrap select{margin-top:10px;padding:8px 12px;font-size:15px;font-weight:700;border:2px solid #c5cedb;border-radius:10px;background:#fff;color:#0d2b52;cursor:pointer}.gsw{padding:11px 30px;font-size:18px;font-weight:800;border:2px solid;border-radius:10px;background:#fff;cursor:pointer;letter-spacing:.4px;margin:0 5px}.gsw.g0{border-color:#16335f;color:#16335f}.gsw.g1{border-color:#0f7b6c;color:#0f7b6c}.gsw.g0[aria-pressed=true]{background:#16335f;color:#fff}.gsw.g1[aria-pressed=true]{background:#0f7b6c;color:#fff}.gsw:not([aria-pressed=true]).g0:hover{background:#e3ecf9}.gsw:not([aria-pressed=true]).g1:hover{background:#e0f2ef}
 .login{max-width:420px;margin:0 auto}.login input[type=text],.login input[type=email]{width:100%;margin:0 0 10px;font-size:16px}
@@ -294,7 +294,7 @@ body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #ss
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 99</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 100</footer>
 </main>
 <script>
 (function(){
@@ -857,7 +857,7 @@ function Rep(el,o){
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
   function applySource(s){srcRef=s;S=(s&&s.v)||[];ang=0;g("o").value=S.length?S[0].off:0;g("y").hidden=!(ytp&&S.length);drawAng()}
-  function setCm(el,k){var x=el.querySelector(".cmt");if(!k){if(x)x.remove();return}if(!x){x=document.createElement("div");x.className="cmt";x.setAttribute("translate","no");el.querySelector(".abody").appendChild(x)}x.textContent="💬 "+k}
+  function setCm(el,k){var x=el.querySelector(".cmt");if(!k){if(x)x.remove();return}if(!x){x=document.createElement("div");x.className="cmt";x.setAttribute("translate","no");el.querySelector(".abody").appendChild(x)}x.textContent="💬 "+k;if(el.querySelector(".cmb")){var bx=document.createElement("button");bx.type="button";bx.className="cmx";bx.title="Smazat poznámku";bx.textContent="✕";x.appendChild(bx)}}
   g("g").addEventListener("click",function(e){var b=e.target.closest("[data-ang]");if(b)switchAng(+b.dataset.ang)});
   g("l").addEventListener("click",function(e){var a=e.target.closest(".act");if(!a)return;var i=+a.dataset.i;
     if(e.target.closest(".mk")){marks[i]=e.target.closest(".mk").checked;updSh();return}
@@ -868,6 +868,7 @@ function Rep(el,o){
       cx.innerHTML='<select class="ccs">'+o.cc.opts(c0)+'</select> <button class="chip" data-a="s">'+Lx("Uložit","Save")+'</button>'+(ov0?' <button class="chip" data-a="u">↩ '+Lx("vrátit","undo")+'</button>':'')+' <button class="chip" data-a="x">'+Lx("Zrušit","Cancel")+'</button>';
       cx.onclick=function(ev){var bb=ev.target.closest("[data-a]");if(!bb)return;ev.stopPropagation();var ac=bb.dataset.a;if(ac==="s")o.cc.set(c0,cx.querySelector(".ccs").value);else if(ac==="u")o.cc.set(c0,"");cx.remove();var sp=a.querySelector(".acode");if(sp)sp.innerHTML=codeHtml(c0)};
       a.querySelector(".abody").appendChild(cx);return}
+    if(e.target.closest(".cmx")&&o.cm){o.cm.set(acts[i],"");setCm(a,"");var ed0=a.querySelector(".cmed");if(ed0)ed0.remove();return}
     if(e.target.closest(".cmb")&&o.cm){var ed=a.querySelector(".cmed");if(ed){ed.remove();return}ed=document.createElement("div");ed.className="cmed";
       var ta=document.createElement("textarea");ta.placeholder="Komentář – uvidí ho jen tato hráčka";ta.value=o.cm.get(acts[i]);ta.oninput=function(){o.cm.set(acts[i],ta.value);setCm(a,ta.value)};
       ed.appendChild(ta);a.querySelector(".abody").appendChild(ed);ta.focus();return}
@@ -974,7 +975,7 @@ function Rep(el,o){
   function codeHtml(c){var ov=o.cc?o.cc.get(c):"";if(ov)return' · <s>'+esc(c.c)+'</s> <b>'+(ov.charAt(0)==="@"?Lx("zóna ","zone ")+ov.slice(1):esc(ov))+'</b> ✓';return c.c?' · '+esc(c.c):''}
   me.setActs=function(list,lab){acts=list;pos=-1;reel=false;stopAt=null;
     g("c").textContent=list.length+" akcí";
-    marks={};updSh();g("l").innerHTML=list.map(function(c,i){var l=(EVL[c.s]||{})[c.e]||"",k=o.cm?o.cm.get(c):(c.k||"");return '<div class="act" data-i="'+i+'">'+(o.share&&c.v!=null?'<input type="checkbox" class="mk" title="'+Lx("Označit klip ke sdílení","Mark clip for sharing")+'">':'')+'<span class="ev '+evCls(c)+'">'+esc(c.e)+'</span><span class="abody" style="flex:1">'+lab(c)+(l?' · '+l:'')+'<span class="acode">'+codeHtml(c)+'</span><br><span class="mut">Set '+c.set+' · stav '+esc(c.sc)+(c.v!=null?' · video '+fmt(c.v):'')+'</span>'+(k?'<div class="cmt" translate="no">💬 '+esc(k)+'</div>':'')+(drOf(c).length?'<span class="drn">✏ '+drOf(c).length+'</span>':'')+'</span>'+(o.cm?'<button class="btn cmb">💬</button>':'')+(o.dr?'<button class="btn drb" type="button" title="Okomentovat kresbou">✏</button>':'')+(o.cc&&c.s==="A"?'<button class="btn ccb" type="button" title="'+Lx("Opravit kód skautování (jen v aplikaci)","Fix the scouting code (in the app only)")+'">🔧</button>':'')+(o.share&&c.v!=null?'<button class="btn shb" type="button" title="'+Lx("Sdílet klip hráčce","Share clip with a player")+'">↗</button>':'')+'</div>'}).join("")};
+    marks={};updSh();g("l").innerHTML=list.map(function(c,i){var l=(EVL[c.s]||{})[c.e]||"",k=o.cm?o.cm.get(c):(c.k||"");return '<div class="act" data-i="'+i+'">'+(o.share&&c.v!=null?'<input type="checkbox" class="mk" title="'+Lx("Označit klip ke sdílení","Mark clip for sharing")+'">':'')+'<span class="ev '+evCls(c)+'">'+esc(c.e)+'</span><span class="abody" style="flex:1">'+lab(c)+(l?' · '+l:'')+'<span class="acode">'+codeHtml(c)+'</span><br><span class="mut">Set '+c.set+' · stav '+esc(c.sc)+(c.v!=null?' · video '+fmt(c.v):'')+'</span>'+(k?'<div class="cmt" translate="no">💬 '+esc(k)+(o.cm?'<button type="button" class="cmx" title="Smazat poznámku" aria-label="Smazat poznámku">✕</button>':'')+'</div>':'')+(drOf(c).length?'<span class="drn">✏ '+drOf(c).length+'</span>':'')+'</span>'+(o.cm?'<button class="btn cmb">💬</button>':'')+(o.dr?'<button class="btn drb" type="button" title="Okomentovat kresbou">✏</button>':'')+(o.cc&&c.s==="A"?'<button class="btn ccb" type="button" title="'+Lx("Opravit kód skautování (jen v aplikaci)","Fix the scouting code (in the app only)")+'">🔧</button>':'')+(o.share&&c.v!=null?'<button class="btn shb" type="button" title="'+Lx("Sdílet klip hráčce","Share clip with a player")+'">↗</button>':'')+'</div>'}).join("")};
   me.playOne=function(c,lab){me.setActs([c],lab);playAt(0)};
   me.stop=function(){stopAt=null;pause()};
   return me}
