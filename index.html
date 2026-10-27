@@ -294,7 +294,7 @@ body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #ss
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 100</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 101</footer>
 </main>
 <script>
 (function(){
@@ -1115,7 +1115,7 @@ function PlayerView(host,editable,onFb){
 /* ---------- aplikace ---------- */
 var matches=[],cur=null,notes={},VIEWS=["matches","match","players","me","login","pick","admin","consent","opp","oppadm","pml","up1","wl","sst"];
 function show(v){VIEWS.forEach(function(x){$("v-"+x).hidden=x!==v});gbandUpd(v);[].forEach.call(document.querySelectorAll(".tab"),function(t){t.setAttribute("aria-selected",t.dataset.go===v||(v==="match"&&t.dataset.go==="matches"))});window.scrollTo(0,0);if(v==="matches"&&ctx&&ctx.grp){try{renderList()}catch(e){}}if(v==="players")renderPlayers();if(v==="admin")renderAdmin();if(v==="opp")renderOpp();if(v==="oppadm")renderOppAdm();if(v==="up1")renderList();if(v==="wl")renderWl();if(v==="sst")renderSst()}
-document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){if(PVP())pvGo(b.dataset.go);else show(b.dataset.go)}});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){if(PT())pvGo(b.dataset.go);else show(b.dataset.go)}});
 function sortM(a,b){var d=function(m){var p=m.date.split("/");return p[2]+p[0]+p[1]+m.time};return d(a)<d(b)?-1:1}
 function mTitle(m){return m.teams[0].name+" "+m.teams[0].sets+" : "+m.teams[1].sets+" "+m.teams[1].name}
 async function loadStaff(){var q="season=eq."+enc(ctx.season)+"&grp=eq."+enc(ctx.grp);var ms=await getAll("/rest/v1/matches?select=*&"+q+"&order=id");
@@ -1302,9 +1302,9 @@ async function rkCard(ms0,g,seas){var ms=ms0.filter(function(m){return m.rl}).sl
  if(comp){try{var o=await rkComp(seas);teams=teams.concat(o)}catch(e){}}
  var ttl=comp?Lx("Žebříček "+g+" v rámci EX-Z","Ranking "+g+" within EX-Z"):Lx("Žebříček "+g,"Ranking "+g);
  return '<div class="card"><h2>'+ttl+'</h2><div class="kg">'+KP.map(function(d){return rkTile(d,Rz,teams,comp)}).join("")+'</div></div>'}
-function sstBtns(){var w=$("sstbtnw");if(!w)return;var gs=[];(playerM||[]).forEach(function(m){if(m.season===pSeason&&m.grp&&gs.indexOf(m.grp)<0)gs.push(m.grp)});if(PVP()&&ctx&&ctx.grp)gs=[ctx.grp];
+function sstBtns(){var w=$("sstbtnw");if(!w)return;var gs=[];(playerM||[]).forEach(function(m){if(m.season===pSeason&&m.grp&&gs.indexOf(m.grp)<0)gs.push(m.grp)});if(PT()&&ctx&&ctx.grp)gs=[ctx.grp];
   w.hidden=!gs.length;w.innerHTML=gs.length?'<button class="btn pri" data-sstg="1" style="font-size:15px;padding:12px 16px">'+Lx("STATISTIKA NVC CELÁ SEZÓNA","STATISTICS NVC WHOLE SEASON")+'</button>':""}
-async function sstOpen(){var gs=[];(playerM||[]).forEach(function(m){if(m.season===pSeason&&m.grp&&gs.indexOf(m.grp)<0)gs.push(m.grp)});var items=[];
+async function sstOpen(){var gs=[];(playerM||[]).forEach(function(m){if(m.season===pSeason&&m.grp&&gs.indexOf(m.grp)<0)gs.push(m.grp)});if(RPK&&ctx.grp)gs=[ctx.grp];var items=[];
   if(PVP()){await loadStaff();items=[{g:ctx.grp,ms:matches.filter(function(m){return m.published&&m.grp===ctx.grp})}];SSTP={items:items,season:pSeason||ctx.season}}
   else{for(var i=0;i<gs.length;i++){var q=await sb("POST","/rest/v1/rpc/my_team_matches",{s:pSeason,g:gs[i]});items.push({g:gs[i],ms:sstMap(q)})}SSTP={items:items,season:pSeason}}
   show("sst")}
@@ -1483,14 +1483,16 @@ function gbandUpd(v){var gb=$("gband");if(!gb){gb=document.createElement("div");
   if(mode==="staff"&&ctx.grp&&access&&v&&v!=="pick"&&v!=="login"&&v!=="consent"){gb.hidden=false;gb.className="gband g"+(groups.map(function(q){return q.id}).indexOf(ctx.grp)%2);gb.textContent=ctx.grp+" · "+seasonName(ctx.season)}else gb.hidden=true}
 function setUbar(){if(!prof&&!access)return;pvBar();oppTabs();gbandUpd(VIEWS.filter(function(x){return!$("v-"+x).hidden})[0]);var rl=access.admin?"administrátor":(mode==="staff"?"realizační tým":"hráčka");
   $("uinfo").textContent=access.email+" · "+(LANG==="en"?trEn(rl):rl);
-  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&!PREV&&ctx&&ctx.season?staffOptions():[],gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
-    wrap=opts.length>0;gs.hidden=!wrap;gs.innerHTML=!wrap?"":(gso.length>1?gso.map(function(x){return '<button class="gsw g'+(groups.map(function(q){return q.id}).indexOf(x.grp)%2)+'" data-gsw="'+esc(x.grp)+'" aria-pressed="'+(x.grp===ctx.grp)+'">'+esc(x.grp)+'</button>'}).join(""):"")+(ses.length>1?'<div><select id="sesel" aria-label="'+Lx("Sezóna","Season")+'">'+ses.map(function(x){return '<option value="'+esc(x)+'"'+(x===ctx.season?' selected':'')+'>'+esc(Lx("Sezóna ","Season ")+seasonName(x))+'</option>'}).join("")+'</select></div>':"")}
+  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&!PREV&&ctx&&ctx.season?staffOptions():(RPK&&mode==="player"&&ctx.grp?playerOpts():[]),gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
+    wrap=RPK&&mode==="player"?(gso.length>1||ses.length>1):opts.length>0;gs.hidden=!wrap;gs.innerHTML=!wrap?"":(gso.length>1?gso.map(function(x){return '<button class="gsw g'+(groups.map(function(q){return q.id}).indexOf(x.grp)%2)+'" data-gsw="'+esc(x.grp)+'" aria-pressed="'+(x.grp===ctx.grp)+'">'+esc(x.grp)+'</button>'}).join(""):"")+(ses.length>1?'<div><select id="sesel" aria-label="'+Lx("Sezóna","Season")+'">'+ses.map(function(x){return '<option value="'+esc(x)+'"'+(x===ctx.season?' selected':'')+'>'+esc(Lx("Sezóna ","Season ")+seasonName(x))+'</option>'}).join("")+'</select></div>':"")}
   var u=$("uctx");u.hidden=wrap;u.textContent=(mode==="staff"&&ctx.grp?ctx.season+" · "+ctx.grp:(pSeason||ctx.season||""))+" ▾"}
 async function enterPlayer(season){mode="player";pSeason=season||pSeason;if(!pSeason)pSeason=seasonsOf(playerM)[0];
+  if(RPK){ctx.season=pSeason;var po=playerOpts();if(!po.some(function(x){return x.season===pSeason&&x.grp===ctx.grp}))ctx.grp=(po.filter(function(x){return x.season===pSeason})[0]||{}).grp||""}
   var rs;if(PVP()){await loadStaff();rs=matches.filter(function(m){return m.published&&m.grp===ctx.grp}).map(function(m){var r=rowFor(m,PREV.key,1);return r?{data:r.row,season:m.season,grp:m.grp}:null}).filter(Boolean)}else rs=await getAll("/rest/v1/player_data?select=data,season,grp&season=eq."+enc(pSeason));
   try{shRows=await getAll("/rest/v1/shared_clips?select=*&to_season=eq."+enc(pSeason)+(PVP()?"&to_key=eq."+enc(PREV.key):"")+"&order=created_at.desc")}catch(e){shRows=[]}
   pRows=rs.map(function(r){var d=r.data;d.grp=r.grp;d.season=r.season;return d}).sort(function(a,b){var k=function(r){var p=(r.date||"").split("/");return p[2]+p[0]+p[1]+(r.time||"")};return k(a)<k(b)?-1:1});
-  lastLoad=Date.now();$("tabs").hidden=true;setUbar();drawMe();show("me")}
+  if(RPK&&ctx.grp){matches=[];notes={};try{matches=sstMap(await sb("POST","/rest/v1/rpc/my_team_matches",{s:pSeason,g:ctx.grp}));matches.forEach(function(m){var r=pRows.filter(function(x){return x.id===m.id})[0];if(r){m.yt=r.yt||"";m.off=r.off||0;m.yt2=r.yt2||"";m.off2=r.off2||0}})}catch(e){matches=[]}}
+  lastLoad=Date.now();if(RPK&&ctx.grp){document.body.classList.add("pvp");pGrp=ctx.grp;PSEL1="";pvTabs()}else $("tabs").hidden=true;setUbar();drawMe();show("me");if(RPK&&ctx.grp)pvTab("players")}
 function drawMe(){var ss=seasonsOf(playerM),sb=$("mesea");sb.hidden=ss.length<2;
   sb.innerHTML=ss.length<2?"":ss.map(function(s){return '<button class="chip" translate="no" data-ms="'+esc(s)+'" aria-pressed="'+(s===pSeason)+'">'+esc(seasonName(s))+'</button>'}).join("");
   var gs={};pRows.forEach(function(r){gs[r.grp]=1});var gl=Object.keys(gs).sort(),gb=$("megrp");gb.hidden=gl.length<2;
@@ -1502,7 +1504,7 @@ function drawMe(){var ss=seasonsOf(playerM),sb=$("mesea");sb.hidden=ss.length<2;
 $("megrp").addEventListener("click",function(e){var b=e.target.closest("[data-mg]");if(!b)return;pGrp=b.dataset.mg;drawMe()});
 $("mesea").addEventListener("click",function(e){var b=e.target.closest("[data-ms]");if(!b)return;pGrp="";enterPlayer(b.dataset.ms).catch(function(x){$("memade").textContent="Chyba: "+x.message})});
 $("mereload").onclick=function(){enterPlayer().catch(function(e){$("memade").textContent="Nepodařilo se načíst: "+e.message})};
-document.addEventListener("visibilitychange",function(){if(!document.hidden&&mode==="player"&&access&&Date.now()-lastLoad>60000)enterPlayer().catch(function(){})});
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&mode==="player"&&access&&Date.now()-lastLoad>60000&&(!RPK||!$("v-me").hidden))enterPlayer().catch(function(){})});
 /* --- kontext (sezóna, skupina), práva --- */
 var access=null,staffM=[],playerM=[],seasons=[],groups=[],ctx={season:"",grp:""},mode="",admS="";
 function seasonName(id){var s=seasons.filter(function(x){return x.id===id})[0];return s?s.name:id}
@@ -1526,8 +1528,8 @@ function showPick(keep){var ss;
 $("pseasons").addEventListener("click",function(e){var b=e.target.closest("[data-ps]");if(!b)return;pickS=b.dataset.ps;
   if(mode==="player"){pGrp="";enterPlayer(pickS).catch(function(x){alert(x.message)})}else showPick(true)});
 $("pgroups").addEventListener("click",function(e){var b=e.target.closest("[data-pg]");if(!b)return;enterStaff(pickS,b.dataset.pg).catch(function(x){alert(x.message)})});
-document.addEventListener("change",function(e){if(e.target.id!=="sesel")return;var sv=e.target.value,o=staffOptions().filter(function(x){return x.season===sv}),g=o.some(function(x){return x.grp===ctx.grp})?ctx.grp:(o[0]&&o[0].grp);if(g)enterStaff(sv,g).catch(function(x){alert(x.message)})});
-document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||b.dataset.gsw===ctx.grp)return;enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
+document.addEventListener("change",function(e){if(e.target.id!=="sesel")return;if(RPK&&mode==="player"){var sv0=e.target.value;PSEL1="";enterPlayer(sv0).then(ctxSave).catch(function(x){alert(x.message)});return}var sv=e.target.value,o=staffOptions().filter(function(x){return x.season===sv}),g=o.some(function(x){return x.grp===ctx.grp})?ctx.grp:(o[0]&&o[0].grp);if(g)enterStaff(sv,g).catch(function(x){alert(x.message)})});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||b.dataset.gsw===ctx.grp)return;if(RPK&&mode==="player"){rpGrp(b.dataset.gsw);return}enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
 $("uctx").onclick=async function(){if(PREV){await vasExit()}try{access=await sb("POST","/rest/v1/rpc/my_access",{});staffM=access.memberships.filter(function(m){return m.role==="coach"&&m.active});playerM=access.memberships.filter(function(m){return m.role==="player"})}catch(e){}showPick(true)};
 /* --- správa (admin / správce) --- */
 var memAll=[],admPF=null;
@@ -1690,10 +1692,11 @@ var OPPG=["EX-NVC"],OPPU=["EX-NVC","1-NVC"],OPP={list:[],sum:{},full:{}},oppSel=
 function uuid4(){try{if(crypto.randomUUID)return crypto.randomUUID()}catch(e){}var b=new Uint8Array(16);try{crypto.getRandomValues(b)}catch(e){for(var i=0;i<16;i++)b[i]=Math.random()*256}b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return("0"+x.toString(16)).slice(-2)}).join("");return h.slice(0,8)+"-"+h.slice(8,12)+"-"+h.slice(12,16)+"-"+h.slice(16,20)+"-"+h.slice(20)}
 function nrm(s){return(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"")}
 function oppCtx(){if(mode==="staff")return OPPG.indexOf(ctx.grp)>=0?{season:ctx.season,grp:ctx.grp}:null;
+  if(RPK&&ctx.grp)return OPPG.indexOf(ctx.grp)>=0&&playerOpts().some(function(x){return x.season===pSeason&&x.grp===ctx.grp})?{season:pSeason,grp:ctx.grp}:null;
   var m=(playerM||[]).filter(function(x){return x.season===pSeason&&x.active&&OPPG.indexOf(x.grp)>=0})[0];return m?{season:pSeason,grp:m.grp}:null}
 function oppAdmOk(){return mode==="staff"&&OPPU.indexOf(ctx.grp)>=0&&canW()}
 function oppCtxU(){return mode==="staff"?(OPPU.indexOf(ctx.grp)>=0?{season:ctx.season,grp:ctx.grp}:null):oppCtx()}
-function oppTabs(){tabLbl();var c=oppCtx();$("tabopp").hidden=!((mode==="staff"||PVP())&&c);$("tabopa").hidden=!(mode==="staff"&&canW());var w=$("oppbtnw");if(w)w.hidden=!(mode==="player"&&c)}
+function oppTabs(){tabLbl();var c=oppCtx();$("tabopp").hidden=!((mode==="staff"||PT())&&c);$("tabopa").hidden=!(mode==="staff"&&canW());var w=$("oppbtnw");if(w)w.hidden=!(mode==="player"&&c)}
 async function oppLoadList(){var c=oppCtxU();if(!c){OPP.list=[];OPP.sum={};return}var q="season=eq."+enc(c.season)+"&grp=eq."+enc(c.grp);
   OPP.list=await getAll("/rest/v1/opponents?select=*&"+q+"&order=name");
   var rs=await getAll("/rest/v1/opp_matches?select=id,opp_id,yt,off,yt2,off2,our,teams:data->teams,date:data->date,time:data->time&"+q+"&order=id");
@@ -1907,7 +1910,7 @@ function statRedraw(){try{if(!$("v-match").hidden&&cur)renderTables(cur);else if
 document.addEventListener("click",function(e){var b=e.target.closest("[data-ss]");if(!b)return;SEAS=b.dataset.ss==="4"?"4":"a";try{localStorage.setItem("nvc-seas",SEAS)}catch(x){}statRedraw()});
 /* popisky záložek podle skupiny */
 var APPN=0;
-function tabLbl(){var g=((mode==="staff"||PVP())&&ctx&&ctx.grp)||"",ex=OPPG.indexOf(g)>=0,exu=OPPU.indexOf(g)>=0;
+function tabLbl(){var g=((mode==="staff"||PT())&&ctx&&ctx.grp)||"",ex=OPPG.indexOf(g)>=0,exu=OPPU.indexOf(g)>=0;
   var set=function(id,t){var b=$(id);if(b&&b._lb!==t){b._lb=t;b.innerHTML=esc(t).replace("\n","<br>")}};
   var ta=$("tabopa");if(ta)ta.dataset.go=exu?"oppadm":"up1";
   set("tabopa","NAHRÁVÁNÍ UTKÁNÍ "+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA HRÁČKY","PLAYER CARD")+"\n"+g);set("tabopp","SOUPEŘI V EX-Z");
@@ -1943,6 +1946,10 @@ document.addEventListener("click",async function(e){var t=e.target;
 /* ---------- v22: náhled hráčky s kartami ---------- */
 var PSEL1="";
 function PVP(){return!!(PREV&&PREV.kind==="player")}
+var RPK="";
+function PT(){return PVP()||!!RPK}
+function playerOpts(){var o=[];(playerM||[]).forEach(function(m){if(m.active===false||!m.grp)return;if(!o.some(function(x){return x.season===m.season&&x.grp===m.grp}))o.push({season:m.season,grp:m.grp})});return o}
+function rpGrp(g){ctx.grp=g;pGrp=g;PSEL1="";ctxSave();enterPlayer(pSeason).catch(function(x){alert(x.message)})}
 function pvRows(){return pRows.filter(function(r){return r.grp===ctx.grp})}
 function pvTab(go){[].forEach.call(document.querySelectorAll(".tab"),function(t){t.setAttribute("aria-selected",t.dataset.go===go||(go==="match"&&t.dataset.go==="matches"))})}
 function pvTabs(){$("tabs").hidden=false;$("tabwl").hidden=true;$("tabss").hidden=false;$("tabadmin").hidden=true;$("tabopa").hidden=true;oppTabs();tabLbl()}
@@ -1957,7 +1964,7 @@ function pvGo(go){
   if(go==="sst"){sstOpen().then(function(){pvTab("sst")}).catch(function(x){alert(x.message)});return}
   if(go==="opp"){show("opp");pvTab("opp")}}
 $("v-pml").addEventListener("click",function(e){var m=e.target.closest("[data-pm]");if(!m)return;PSEL1=m.dataset.pm;pvGo("match")});
-async function start(){$("lretrywrap").hidden=true;lmsg("Načítám…");show("login");$("lstep1").hidden=true;$("lstep2").hidden=true;
+async function start(){RPK="";if(!PREV)document.body.classList.remove("pvp");$("lretrywrap").hidden=true;lmsg("Načítám…");show("login");$("lstep1").hidden=true;$("lstep2").hidden=true;
   try{access=await sb("POST","/rest/v1/rpc/my_access",{});seasons=await getAll("/rest/v1/seasons?select=*&order=id.desc");groups=await getAll("/rest/v1/groups?select=*&order=id")}
   catch(e){if(e.status===401||e.status===403){ses=null;sesSave();viewLogin("Přihlášení vypršelo. Přihlas se znovu.",1);return}
     $("lretrywrap").hidden=false;lmsg("Nepodařilo se spojit se serverem: "+e.message,1);return}
@@ -1973,7 +1980,10 @@ async function start(){$("lretrywrap").hidden=true;lmsg("Načítám…");show("l
       var ent=0;try{ent=sessionStorage.getItem("nvc-ent")==="1"}catch(e){}
       if(ent&&saved&&saved.mode==="staff"&&o.some(function(x){return x.season===saved.season&&x.grp===saved.grp}))await enterStaff(saved.season,saved.grp);
       else if(o.length){var ns=o[0].season;o.forEach(function(x){if(x.season>ns)ns=x.season});var og=o.filter(function(x){return x.season===ns}),sg=og.filter(function(x){return saved&&saved.grp===x.grp})[0]||og[0];await enterStaff(ns,sg.grp)}else{ctx={season:saved&&saved.season||"",grp:""};setUbar();showPick(false)}}
-    else{mode="player";if(!(await consentOk())){$("tabs").hidden=true;show("consent");return}var ss=seasonsOf(playerM);pSeason=saved&&saved.mode==="player"&&ss.indexOf(saved.season)>=0?saved.season:ss[0];await enterPlayer(pSeason)}}
+    else{mode="player";if(!(await consentOk())){$("tabs").hidden=true;show("consent");return}var ss=seasonsOf(playerM);pSeason=saved&&saved.mode==="player"&&ss.indexOf(saved.season)>=0?saved.season:ss[0];
+      RPK="";(playerM||[]).forEach(function(m){if(!RPK&&m.player_key)RPK=m.player_key});var po0=playerOpts().filter(function(x){return x.season===pSeason});
+      if(RPK&&po0.length){ctx={season:pSeason,grp:(saved&&saved.mode==="player"&&po0.some(function(x){return x.grp===saved.grp})?saved.grp:po0[0].grp)}}else RPK="";
+      await enterPlayer(pSeason)}}
   catch(e){$("lretrywrap").hidden=false;lmsg("Nepodařilo se načíst data: "+e.message,1);show("login");$("lstep1").hidden=true}}
 async function boot(){
   try{if(/access_token=/.test(location.hash)){var h=new URLSearchParams(location.hash.slice(1));setSes({access_token:h.get("access_token"),refresh_token:h.get("refresh_token"),expires_in:+h.get("expires_in")||3600});history.replaceState(null,"",location.pathname+location.search)}}catch(e){}
