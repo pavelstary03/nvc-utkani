@@ -120,6 +120,40 @@ svg.ch{width:100%;height:auto;background:#fff;border:1px solid var(--line);borde
 .lgs{display:flex;gap:6px}.lgs .chip{padding:4px 10px;font-size:12px}
 footer{margin:18px 0 8px;text-align:center;font-size:12px;opacity:.65}
 [hidden]{display:none!important}
+/* v115: nový přehrávač (testovací režim) */
+.ctl.old{display:none!important}
+.pw{display:grid;gap:12px;grid-template-columns:minmax(0,1fr);margin:0 0 10px}
+.pw .pv{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;justify-self:start}
+.pw .pv .ytw,.pw .pv video{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;aspect-ratio:auto!important;background:#000}
+.pw .pv .ytw iframe,.pw .pv .ytw>div{width:100%!important;height:100%!important;aspect-ratio:auto!important;max-width:none!important;border-radius:0!important}
+.pw .pv video{object-fit:contain}
+.tapc{position:absolute;inset:0;z-index:2}
+.pbadge{position:absolute;left:8px;top:8px;z-index:3;background:rgba(15,27,45,.78);color:#fff;font-weight:800;border-radius:9px;padding:3px 10px;font-size:13px;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none;transition:opacity .25s}
+.ctl2{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;text-transform:uppercase}
+.c2r{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.c2b{border:2px solid #c5cedb;background:#fff;color:var(--blue);border-radius:12px;font-weight:800;font-size:15px;height:46px;min-width:46px;padding:0 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;text-transform:uppercase;-webkit-tap-highlight-color:transparent}
+.c2b:active{transform:scale(.96)}
+.c2b.pl{background:var(--blue);color:#fff;border-color:var(--blue);width:88px;height:56px;font-size:28px;padding:0}
+.c2b.tr{width:62px;height:56px;font-size:22px;padding:0}.c2b.sm{width:58px;height:56px;font-size:12px;line-height:1.05;padding:0;text-align:center}
+.c2b.yl{background:#f2c200;border-color:#f2c200;color:#1a1400}.c2b.bl{background:var(--blue);color:#fff;border-color:var(--blue)}
+.c2b.sq{width:44px;padding:0;font-size:22px}
+.c2l{color:var(--mut);font-weight:800;font-size:12px}.c2v{min-width:46px;text-align:center;font-weight:800;font-size:18px}
+.c2s{display:flex;align-items:center;gap:8px;width:100%}.c2s input[type=range]{flex:1;min-width:0;height:36px;accent-color:var(--blue)}
+.c2t{width:100%;height:30px;accent-color:var(--blue)}
+.c2pop{position:absolute;right:8px;bottom:calc(100% - 4px);background:#fff;border:2px solid var(--blue);border-radius:12px;padding:12px 14px;box-shadow:0 8px 24px #0f1b2d44;z-index:10;display:flex;flex-direction:column;gap:10px;min-width:260px}
+.c2pop[hidden]{display:none}.c2pop .ps{display:none}
+@media(min-aspect-ratio:13/10) and (min-height:500px){.pw:not(.ov){grid-template-columns:minmax(0,1fr) clamp(280px,27vw,360px);align-items:start}.pw:not(.ov) .pv{max-height:calc(100vh - 150px);width:min(100%,calc((100vh - 150px)*16/9))}.pw:not(.ov) .ctl2{padding:12px}.pw:not(.ov) .c2b.tr{width:50px;height:52px;font-size:19px}.pw:not(.ov) .c2b.sm{width:50px;height:52px;font-size:11px}.pw:not(.ov) .c2b.pl{width:72px;height:52px;font-size:26px}.pw:not(.ov) .c2r{gap:6px}}
+@media(max-width:620px){.c2p{display:none!important}.c2pop .ps{display:flex}.c2b{height:42px;font-size:14px}.c2b.pl{width:66px;height:50px}.c2b.tr{width:46px;height:50px;font-size:18px}.c2b.sm{width:46px;height:50px;font-size:10px}.c2r{gap:5px}.c2pop{left:8px;right:8px;min-width:0}}
+.pw.ov{display:block;position:relative}
+.pw.ov .pv{max-height:none;width:100%}
+.pw.ov .ctl2{position:absolute;left:0;right:0;bottom:0;z-index:4;background:linear-gradient(transparent,rgba(0,0,0,.78));border:0;border-radius:0;padding:34px 12px 10px;transition:opacity .25s}
+.pw.ov .ctl2{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:14px;row-gap:6px;padding-top:30px}.pw.ov .c2t{flex:1 0 100%;height:22px}.pw.ov .c2s{flex:1 1 240px;max-width:520px;width:auto}.pw.ov .c2p{display:none}.pw.ov .c2pop .ps{display:flex}.pw.ov .c2b{height:42px}.pw.ov .c2b.tr{height:46px;width:50px;font-size:18px}.pw.ov .c2b.sm{height:46px;width:48px;font-size:10px}.pw.ov .c2b.pl{height:46px;width:64px;font-size:24px}.pw.ov .c2l{color:#fff}.pw.ov .c2v{color:#fff}
+.pw.ov.hid .ctl2,.pw.ov.hid .pbadge{opacity:0;pointer-events:none}
+.rfs .pw{flex:1 1 auto;min-height:0;margin:0}
+.rfs .pw .pv{position:absolute;inset:0;aspect-ratio:auto;max-height:none!important;width:100%!important;border-radius:0}
+.rfs.rfsd .pw{flex:none;height:min(62vh,calc((100vw - 28px)*9/16));min-height:220px}
+.rfs.rfsd .ctl2,.rfs.rfsd .tapc{display:none}
+.rfs .pw~.cur{display:none!important}
 @media print{.tabs,.noprint,video,.ytw,.acts,.filters,.ctl{display:none!important}body{background:#fff}.card{break-inside:avoid}}
 
 body{overflow-x:hidden}
@@ -305,7 +339,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 114</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 115</footer>
 </main>
 <script>
 (function(){
@@ -823,7 +857,8 @@ async function shareClips(snaps){if(!snaps.length)return"";var pl;try{pl=await s
   catch(e){return /shared_clips|relation|404|PGRST/i.test(e.message||"")?Lx("Sdílení ještě není nastavené – spusť v Supabase skript nvc-setup-v6-sdileni.sql.","Sharing is not set up yet – run nvc-setup-v6-sdileni.sql in Supabase."):Lx("Odeslání se nezdařilo: ","Sending failed: ")+e.message}}
 function shSeen(id){try{return localStorage.getItem("nvc-sh:"+id)==="1"}catch(e){return false}}
 function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
-function Rep(el,o){
+function NEWUI(){try{return!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){return false}}
+function Rep(el,o){var NU=NEWUI();
   var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null;
   el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
    '<div class="ctl noprint"><button class="btn pri" id="'+id+'fs" type="button">'+Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN")+'</button><label class="adv">Před (s)<input type="number" id="'+id+'b" min="0" max="30" value="3" style="width:70px"></label><label class="adv">Po (s)<input type="number" id="'+id+'a" min="0" max="30" value="4" style="width:70px"></label>'+
@@ -843,14 +878,14 @@ function Rep(el,o){
   function drawAng(){var b=g("g");b.hidden=!(S.length>1&&mode()==="yt");b.innerHTML='<span class="mut" style="font-weight:700;font-size:12px">POHLED:</span>'+S.map(function(s,i){return '<button class="chip" data-ang="'+i+'" aria-pressed="'+(i===ang)+'">'+esc(s.name)+'</button>'}).join("")}
   function offs(){return mode()==="yt"&&S[ang]?S[ang].off:(+g("o").value||0)}
   function ensureYt(){if(ytp||!S.length)return;g("y").hidden=false;msg("Načítám YouTube…");curVid=S[ang].id;
-    ytReadyP().then(function(){ytp=new YT.Player(id+"yp",{videoId:curVid,playerVars:{playsinline:1,rel:0,modestbranding:1},events:{
+    ytReadyP().then(function(){ytp=new YT.Player(id+"yp",{videoId:curVid,playerVars:Object.assign({playsinline:1,rel:0,modestbranding:1},NU?{controls:0,disablekb:1,fs:0,iv_load_policy:3}:{}),events:{
       onStateChange:function(ev){if(ev&&ev.data===1)applyRate()},
       onReady:function(){ytReady=true;msg("");applyRate();if(pend){var c=pend;pend=null;play(c)}},
       onError:function(e){msg("Video nelze přehrát (chyba "+(e&&e.data)+"). Zkontroluj, že je video neveřejné a že je povoleno vložení.")}}})}).catch(function(){msg("YouTube se nepodařilo načíst. Zkontroluj připojení k internetu.")})}
   function range(c){var b=+g("b").value||0,a=+g("a").value||0,of=offs(),s=c.v,e=c.v;if(g("r").checked&&c.rs!=null){s=c.rs;e=c.re}return[Math.max(0,s-b+of),e+a+of]}
   function seekP(t){try{if(mode()==="yt"){ytp.seekTo(t,true);ytp.playVideo()}else{var v=g("v");v.currentTime=t;var p=v.play();if(p&&p.catch)p.catch(function(){})}}catch(e){}}
   function tick(){if(stopAt==null){clearInterval(tm);tm=null;return}if(dpaused)return;if(Date.now()-t0<900)return;
-    if(getT()>=stopAt){if(!reel&&g("L").checked&&lastR){seekP(lastR[0]);t0=Date.now();return}pause();stopAt=null;clearInterval(tm);tm=null;if(reel&&pos<acts.length-1)playAt(pos+1);else reel=false}}
+    if(getT()>=stopAt){if(!reel&&g("L").checked&&lastR){seekP(lastR[0]);t0=Date.now();return}pause();stopAt=null;clearInterval(tm);tm=null;if(reel&&pos<acts.length-1)playAt(pos+1);else if(reel&&NU&&acts.length)playAt(0);else reel=false}}
   function play(c){if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
     if(md==="yt"){ensureYt();if(!ytReady){pend=c;return}var vid=S[ang].id;
       if(curVid!==vid){curVid=vid;ytp.loadVideoById({videoId:vid,startSeconds:r[0]})}else{ytp.seekTo(r[0],true);ytp.playVideo()}}
@@ -863,7 +898,7 @@ function Rep(el,o){
   function playAt(i){if(i<0||i>=acts.length)return;pos=i;var c=acts[i];drOn=true;work=[];curStk=null;dpaused=false;drSig="";setTimeout(function(){updDt();if(drawOn)updTb()},0);
     [].forEach.call(g("l").querySelectorAll(".act"),function(x){x.classList.toggle("on",+x.dataset.i===i)});
     var e=g("l").querySelector('.act[data-i="'+i+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
-    var cu=g("u");if(cu&&e)cu.textContent=(i+1)+"/"+acts.length+" · "+(e.innerText||"").replace(/\s+/g," ").trim().slice(0,160);
+    var cu=g("u");if(cu&&e)cu.textContent=(i+1)+"/"+acts.length+" · "+(e.innerText||"").replace(/\s+/g," ").trim().slice(0,160);var pbd=g("pb");if(pbd)pbd.textContent=cu.textContent;
     if(c.v!=null&&g("AF").checked&&!fsOn)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
@@ -884,6 +919,57 @@ function Rep(el,o){
       var ta=document.createElement("textarea");ta.placeholder="Komentář – uvidí ho jen tato hráčka";ta.value=o.cm.get(acts[i]);ta.oninput=function(){o.cm.set(acts[i],ta.value);setCm(a,ta.value)};
       ed.appendChild(ta);a.querySelector(".abody").appendChild(ed);ta.focus();return}
     if(e.target.closest(".cmed"))return;reel=false;playAt(i)});
+
+  /* ---------- v115: nové ovládání ---------- */
+  var nuHide=0;
+  if(NU){(function(){
+    var oldCtl=el.querySelector(".ctl");oldCtl.classList.add("old");g("L").checked=true;g("r").checked=false;
+    var ytw=g("y"),vd=g("v");vd.removeAttribute("controls");
+    var pw=document.createElement("div");pw.className="pw";pw.id=id+"pw";var pv=document.createElement("div");pv.className="pv";
+    ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pv.appendChild(vd);
+    var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
+    var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
+    var B=function(cls,x,t,tt){return '<button type="button" class="c2b '+cls+'" data-c2="'+x+'"'+(tt?' title="'+tt+'"':'')+'>'+t+'</button>'};
+    c2.innerHTML='<input type="range" class="c2t" min="0" max="1000" value="0" data-c2="tl" aria-label="Časová osa">'+
+     '<div class="c2r">'+B("tr","pv","⏮",Lx("Předchozí klip","Previous clip"))+B("sm","bk","◀◀<br>1 s")+B("pl","pp","▶")+B("sm","fw","1 s<br>▶▶")+B("tr","nx","⏭",Lx("Další klip","Next clip"))+'</div>'+
+     '<div class="c2s"><span class="c2l">'+Lx("RYCHLOST","SPEED")+'</span>'+B("sq","sm","−")+'<input type="range" min="25" max="100" step="25" data-c2="sp" aria-label="Rychlost"><button type="button" class="c2b sq" data-c2="sa">+</button><span class="c2v" data-c2="sv"></span></div>'+
+     '<div class="c2r c2p"><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PŘED","BEFORE")+'</span>'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PO","AFTER")+'</span>'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div>'+
+     '<div class="c2r">'+(o.dr?B("yl","dw","✎ "+Lx("KRESLIT","DRAW")):"")+B("bl","al","▶▶ "+Lx("PŘEHRÁT VŠECHNY","PLAY ALL"))+(o.share?B("","sh","↗",Lx("Sdílet klip","Share clip")):"")+B("","fs","⛶",Lx("Celá obrazovka","Full screen"))+B("","gr","⚙",Lx("Nastavení","Settings"))+'</div>'+
+     '<div class="c2pop" hidden><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("POSUN VIDEA","VIDEO OFFSET")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","om","−")+'<span class="c2v" data-c2="ov"></span>'+B("sq","oa","+")+'</span></div>'+
+     '<div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("AUTO CELÁ OBRAZOVKA","AUTO FULL SCREEN")+'</span>'+B("","af","")+'</div>'+
+     '<div class="ps c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PŘED (s)","BEFORE (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span></div>'+
+     '<div class="ps c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PO (s)","AFTER (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div></div>';
+    pw.appendChild(c2);
+    var q=function(x){return[].slice.call(c2.querySelectorAll('[data-c2="'+x+'"]'))};
+    var lastAct=Date.now(),pop=c2.querySelector(".c2pop");
+    function playing(){try{return mode()==="yt"?!!(ytp&&ytp.getPlayerState&&ytp.getPlayerState()===1):!g("v").paused}catch(e){return false}}
+    function lbl(){q("sv").forEach(function(x){x.textContent=Math.round(RATE*100)+"%"});q("sp").forEach(function(x){x.value=Math.round(RATE*100)});q("bv").forEach(function(x){x.textContent=(+g("b").value||0)+" s"});q("av").forEach(function(x){x.textContent=(+g("a").value||0)+" s"});q("ov").forEach(function(x){x.textContent=(+g("o").value||0)+" s"});q("af").forEach(function(x){x.textContent=g("AF").checked?"✓ "+Lx("ZAP","ON"):Lx("VYP","OFF");x.classList.toggle("bl",g("AF").checked)});q("pp").forEach(function(x){x.textContent=playing()?"⏸":"▶"})}
+    function setRate(p){p=Math.max(25,Math.min(100,Math.round(p/25)*25));RATE=p/100;try{localStorage.setItem("nvc-rate",String(RATE))}catch(e){}drawRate();applyRate();lbl()}
+    function stepIn(id,d,mn,mx){var i=g(id),v=Math.max(mn,Math.min(mx,(+i.value||0)+d));i.value=Math.round(v*10)/10;i.dispatchEvent(new Event("change"));lbl()}
+    function seekBy(d){var t=Math.max(0,getT()+d);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(e){}t0=Date.now()}
+    function overlay(){return fsOn||(window.matchMedia&&matchMedia("(max-height:499px) and (orientation:landscape)").matches)}
+    function touch(){lastAct=Date.now();pw.classList.remove("hid")}
+    c2.addEventListener("click",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();var x=b.dataset.c2;
+      if(x==="pv")g("p").click();else if(x==="nx")g("n").click();else if(x==="al")g("all").click();else if(x==="dw"&&g("dw"))g("dw").click();else if(x==="sh"&&g("sh"))g("sh").click();else if(x==="fs")g("fs").click();
+      else if(x==="bk")seekBy(-1);else if(x==="fw")seekBy(1);
+      else if(x==="pp"){if(playing()){dpaused=true;pause()}else if(stopAt==null&&pos>=0)playAt(pos);else if(pos<0&&acts.length){reel=false;playAt(0)}else resume()}
+      else if(x==="sm")setRate(RATE*100-25);else if(x==="sa")setRate(RATE*100+25);
+      else if(x==="bm")stepIn("b",-1,0,30);else if(x==="ba")stepIn("b",1,0,30);else if(x==="am")stepIn("a",-1,0,30);else if(x==="aa")stepIn("a",1,0,30);
+      else if(x==="om")stepIn("o",-.5,-60,60);else if(x==="oa")stepIn("o",.5,-60,60);
+      else if(x==="af"){g("AF").checked=!g("AF").checked;g("AF").onchange&&g("AF").onchange();lbl()}
+      else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}
+      lbl()});
+    c2.addEventListener("input",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();if(b.dataset.c2==="sp")setRate(+b.value);
+      else if(b.dataset.c2==="tl"&&lastR){var t=lastR[0]+(+b.value/1000)*(lastR[1]-lastR[0]);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(x){}t0=Date.now()}});
+    var tpt="";tc.addEventListener("pointerdown",function(e){tpt=e.pointerType||""});
+    tc.addEventListener("click",function(){var tog=function(){touch();if(playing()){dpaused=true;pause()}else if(stopAt==null&&pos>=0)playAt(pos);else resume();lbl()};
+      if(tpt==="mouse"||!pw.classList.contains("ov")){tog();return}
+      if(pw.classList.contains("hid"))touch();else{pop.hidden=true;pw.classList.add("hid")}});
+    pw.addEventListener("pointermove",function(e){if(e.pointerType==="mouse"&&Date.now()-lastAct>400)touch()});
+    var ti=setInterval(function(){if(!el.isConnected){clearInterval(ti);return}
+      var ov=overlay();pw.classList.toggle("ov",ov);if(!ov)pw.classList.remove("hid");else if(playing()&&Date.now()-lastAct>3000&&pop.hidden)pw.classList.add("hid");
+      lbl();var tl=q("tl")[0];if(tl&&lastR&&document.activeElement!==tl){var d=lastR[1]-lastR[0];if(d>0)tl.value=Math.max(0,Math.min(1000,Math.round((getT()-lastR[0])/d*1000)))}},300);
+    nuHide=1;lbl()})()}
   var fsOn=false,fsApi=false;
   function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");
     try{var q=el.requestFullscreen||el.webkitRequestFullscreen;if(q){fsApi=true;var pr=q.call(el);if(pr&&pr.catch)pr.catch(function(){fsApi=false})}}catch(e){fsApi=false}}
@@ -1612,8 +1698,9 @@ $("hubgrid").addEventListener("click",function(e){var b=e.target.closest("[data-
   admSec=k;admPF=k.indexOf("g:")===0?k.slice(2):(k==="oth"?"-":admPF);show("admin")});
 function admHead(){$("admback").textContent="← "+Lx("ZPĚT","BACK");var t={adm:Lx("ADMINS A SEZÓNA","ADMINS AND SEASON"),acc:Lx("SCHVALOVÁNÍ PŘÍSTUPU","ACCESS APPROVALS"),oth:Lx("SPRÁVA OSTATNÍ","MANAGE OTHERS")}[admSec];
   if(!t&&admSec.indexOf("g:")===0)t=Lx("SPRÁVA ","MANAGE ")+admSec.slice(2);var h=$("admsech");h.textContent=t||"";if(admSec.indexOf("g:")===0||admSec==="oth")h.textContent+=" · "+seasonName(curS())}
-function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tsttitle").textContent=Lx("TESTOVACÍ REŽIM","TEST MODE");
-  $("tstbox").innerHTML='<div class="card"><h2>'+Lx("TESTOVACÍ REŽIM","TEST MODE")+'</h2><p class="mut" style="margin:0">'+Lx("Zde se budou zkoušet novinky, které uvidí jen administrátor. Zatím je tu prázdno.","New features that only the administrator can see will be tried here. Empty for now.")+'</p></div>'}
+function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tsttitle").textContent=Lx("TESTOVACÍ REŽIM","TEST MODE");var on=NEWUI();
+  $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Vidíš ho jen ty jako administrátor a jen na tomto zařízení. Projeví se u utkání, soupeřů i osobní karty po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). Only you as administrator see it, only on this device. It applies to matches, opponents and the personal card after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
+  $("tstnu").onclick=function(){try{localStorage.setItem("nvc-newui",on?"0":"1")}catch(e){}renderTst()}}
 
 function agrp(){return admPF&&admPF!=="-"?admPF:(ctx.grp||"")}
 function inScope(p){var act=function(g){return p.rows[g]&&p.rows[g].active};return admPF==="-"?!groups.some(function(g){return act(g.id)}):!!act(admPF)}
