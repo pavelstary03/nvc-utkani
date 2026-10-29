@@ -409,7 +409,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 136</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 137</footer>
 </main>
 <script>
 (function(){
@@ -928,7 +928,7 @@ async function shareClips(snaps){if(!snaps.length)return"";var pl;try{pl=await s
 function shSeen(id){try{return localStorage.getItem("nvc-sh:"+id)==="1"}catch(e){return false}}
 function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
 setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!document.querySelector(".rfs"))document.body.classList.remove("rfsb")}catch(e){}},1000);
-function NEWUI(){var r=false;try{r=!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){}try{document.body.classList.toggle("nuui",r)}catch(e){}return r}
+function NEWUI(){var r=false;try{r=localStorage.getItem("nvc-newui")!=="0"}catch(e){r=true}try{document.body.classList.toggle("nuui",r)}catch(e){}return r}
 function Rep(el,o){var NU=NEWUI();
   var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null,ytp2=null,ytReady2=false,curVid2="",view="b",ytw2=null,pvEl=null,drView=null;
   el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline muted hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
@@ -1808,7 +1808,7 @@ $("hubgrid").addEventListener("click",function(e){var b=e.target.closest("[data-
 function admHead(){$("admback").textContent="← "+Lx("ZPĚT","BACK");var t={adm:Lx("ADMINS A SEZÓNA","ADMINS AND SEASON"),acc:Lx("SCHVALOVÁNÍ PŘÍSTUPU","ACCESS APPROVALS"),oth:Lx("SPRÁVA OSTATNÍ","MANAGE OTHERS")}[admSec];
   if(!t&&admSec.indexOf("g:")===0)t=Lx("SPRÁVA ","MANAGE ")+admSec.slice(2);var h=$("admsech");h.textContent=t||"";if(admSec.indexOf("g:")===0||admSec==="oth")h.textContent+=" · "+seasonName(curS())}
 function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tsttitle").textContent=Lx("TESTOVACÍ REŽIM","TEST MODE");var on=NEWUI();
-  $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Vidíš ho jen ty jako administrátor a jen na tomto zařízení. Projeví se u utkání, soupeřů i osobní karty po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). Only you as administrator see it, only on this device. It applies to matches, opponents and the personal card after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
+  $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Je zapnutý pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout (např. pro porovnání se starým vzhledem). Projeví se po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). It is on for all users. Here you can turn it off on this device only (e.g. to compare with the old look). It applies after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
   $("tstnu").onclick=function(){try{localStorage.setItem("nvc-newui",on?"0":"1")}catch(e){}renderTst()}}
 
 function agrp(){return admPF&&admPF!=="-"?admPF:(ctx.grp||"")}
