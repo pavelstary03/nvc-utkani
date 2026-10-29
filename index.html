@@ -180,6 +180,8 @@ footer{margin:18px 0 8px;text-align:center;font-size:12px;opacity:.65}
 .c2s input[type=range]::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:#fff;border:7px solid var(--blue);box-shadow:0 2px 8px #0005}
 .c2t::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:#fff;border:6px solid var(--blue);margin-top:-11px;box-shadow:0 2px 6px #0005}
 .c2t::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:6px solid var(--blue)}
+.c2b.ic{font-size:30px;font-weight:900;padding:0;width:58px;height:54px}.c2b.ic svg{display:block}.pw.ov .c2b.ic{width:54px;height:48px}
+.c2s input[type=range]::-webkit-slider-runnable-track{height:10px!important}.c2s input[type=range]::-webkit-slider-thumb{width:32px!important;height:32px!important;border-width:6px!important;margin-top:-11px!important}.c2s input[type=range]::-moz-range-thumb{width:20px!important;height:20px!important;border-width:6px!important}.c2s input[type=range]{height:40px!important}
 .pw.ov .c2s input[type=range]::-webkit-slider-runnable-track,.pw.ov .c2t::-webkit-slider-runnable-track{background:#ffffff88}
 .pw.ov .c2s input[type=range]::-moz-range-track,.pw.ov .c2t::-moz-range-track{background:#ffffff88}
 .rfs .pw{flex:1 1 auto;min-height:0;margin:0}
@@ -372,7 +374,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 122</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 123</footer>
 </main>
 <script>
 (function(){
@@ -963,12 +965,13 @@ function Rep(el,o){var NU=NEWUI();
     ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pv.appendChild(vd);
     var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
     var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
+    var FSI=function(on){return '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/>'+(on?'<path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#e5231b" stroke-width="3"/>':'')+'</svg>'};window.__FSI=FSI;
     var B=function(cls,x,t,tt){return '<button type="button" class="c2b '+cls+'" data-c2="'+x+'"'+(tt?' title="'+tt+'"':'')+'>'+t+'</button>'};
     c2.innerHTML='<input type="range" class="c2t" min="0" max="1000" value="0" data-c2="tl" aria-label="Časová osa">'+
      '<div class="c2r">'+B("tr","pv","⏮",Lx("Předchozí klip","Previous clip"))+B("sm","bk","◀◀<br>0,1 s",Lx("Zpět o 0,1 s","Back 0.1 s"))+B("pl","pp","▶")+B("sm","fw","0,1 s<br>▶▶",Lx("Vpřed o 0,1 s","Forward 0.1 s"))+B("tr","nx","⏭",Lx("Další klip","Next clip"))+'</div>'+
      '<div class="c2s"><span class="c2l">'+Lx("RYCHLOST","SPEED")+'</span>'+B("sq","sm","−")+'<input type="range" min="25" max="100" step="25" data-c2="sp" aria-label="Rychlost"><button type="button" class="c2b sq" data-c2="sa">+</button><span class="c2v" data-c2="sv"></span></div>'+
      '<div class="c2r c2p"><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PŘED","BEFORE")+'</span>'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PO","AFTER")+'</span>'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div>'+
-     '<div class="c2r">'+(o.dr?B("yl","dw","✎ "+Lx("KRESLIT","DRAW")):"")+B("bl","al","▶▶ "+Lx("PŘEHRÁT VŠECHNY","PLAY ALL"))+(o.share?B("","sh","↗",Lx("Sdílet klip","Share clip")):"")+B("","fs","⛶",Lx("Celá obrazovka","Full screen"))+B("","gr","⚙",Lx("Nastavení","Settings"))+'</div>'+
+     '<div class="c2r">'+(o.dr?B("yl","dw","✎ "+Lx("KRESLIT","DRAW")):"")+B("bl","al","▶▶ "+Lx("PŘEHRÁT VŠECHNY","PLAY ALL"))+(o.share?B("ic","sh","↗",Lx("Sdílet klip","Share clip")):"")+B("ic","fs",FSI(false),Lx("Celá obrazovka","Full screen"))+B("ic","gr","⚙",Lx("Nastavení","Settings"))+'</div>'+
      '<div class="c2pop" hidden><div class="c2r" style="justify-content:space-between"><b class="c2h">⚙ '+Lx("NASTAVENÍ PŘEHRÁVAČE","PLAYER SETTINGS")+'</b>'+B("sq","gx","✕",Lx("Zavřít","Close"))+'</div>'+
      '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("POSUN VIDEA","VIDEO OFFSET")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","om","−")+'<span class="c2v" data-c2="ov"></span>'+B("sq","oa","+")+'</span></div><p class="c2x">'+Lx("Použij, když klip začíná moc brzy nebo pozdě oproti akci. Tlačítko + začne klip později ve videu, − dříve (po půl vteřině). Hodnota se uloží k tomuto utkání a kameře.","Use it when a clip starts too early or too late compared to the action. + starts the clip later in the video, − earlier (in half-second steps). The value is saved for this match and camera.")+'</p></div>'+
      '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("AUTO CELÁ OBRAZOVKA","AUTO FULL SCREEN")+'</span>'+B("","af","")+'</div><p class="c2x">'+Lx("ZAP: po klepnutí na akci v seznamu se video samo otevře na celou obrazovku. VYP: video zůstane na stránce a na celou obrazovku přepneš tlačítkem ⛶. U Přehrát všechny se na celou obrazovku nepřepíná nikdy.","ON: tapping an action in the list opens the video full screen. OFF: the video stays on the page; use the ⛶ button for full screen. “Play all” never switches to full screen by itself.")+'</p></div>'+
@@ -1006,9 +1009,10 @@ function Rep(el,o){var NU=NEWUI();
       lbl();var tl=q("tl")[0];if(tl&&lastR&&document.activeElement!==tl){var d=lastR[1]-lastR[0];if(d>0)tl.value=Math.max(0,Math.min(1000,Math.round((getT()-lastR[0])/d*1000)))}},300);
     nuHide=1;lbl()})()}
   var fsOn=false,fsApi=false;
-  function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");
+  function c2fs(on){if(!NU||!window.__FSI)return;[].forEach.call(el.querySelectorAll('[data-c2="fs"]'),function(x){x.innerHTML=window.__FSI(on)})}
+  function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");c2fs(true);
     try{var q=el.requestFullscreen||el.webkitRequestFullscreen;if(q){fsApi=true;var pr=q.call(el);if(pr&&pr.catch)pr.catch(function(){fsApi=false})}}catch(e){fsApi=false}}
-  function exitFs(){if(!fsOn)return;fsOn=false;el.classList.remove("rfs");document.body.classList.remove("rfsb");g("fs").textContent=Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN");
+  function exitFs(){if(!fsOn)return;fsOn=false;el.classList.remove("rfs");document.body.classList.remove("rfsb");g("fs").textContent=Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN");c2fs(false);
     try{if(fsApi&&(document.fullscreenElement||document.webkitFullscreenElement))(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}fsApi=false}
   g("fs").onclick=function(){fsOn?exitFs():enterFs()};
   document.addEventListener("fullscreenchange",function(){if(!el.isConnected)return;if(fsOn&&fsApi&&!document.fullscreenElement)exitFs()});
