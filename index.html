@@ -334,7 +334,7 @@ body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #ss
 body.inadm #tabs{display:none}
 .admhd{display:flex;gap:10px;align-items:center;margin:0 0 10px}.admhd h2{margin:0;font-size:22px}
 @media(max-width:820px){.hubg{grid-template-columns:1fr 1fr}}@media(max-width:480px){.hubg{grid-template-columns:1fr}}
-td[data-vc]{cursor:pointer;background:#fde7f1}td[data-vc]:hover{background:#f9bcd6;text-decoration:underline}
+td[data-vc]{cursor:pointer}td[data-vc]:hover{background:#f9bcd6;text-decoration:underline}
 #vcov{position:fixed;inset:0;z-index:9000;background:#fff;overflow:auto;display:flex;flex-direction:column}#vcov .vch{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #ddd;position:sticky;top:0;background:#fff;z-index:2}#vcov .vch b{flex:1;font-size:14px;line-height:1.25}#vcov .vcb{padding:10px 12px}
 </style>
 </head>
@@ -411,7 +411,7 @@ td[data-vc]{cursor:pointer;background:#fde7f1}td[data-vc]:hover{background:#f9bc
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 138</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 139</footer>
 </main>
 <script>
 (function(){
@@ -858,7 +858,7 @@ async function reconcile(force){if(!canW())return 0;var n=0;
   return n}
 /* ---------- v9: stručná / podrobná statistika ---------- */
 var STATM="s";try{STATM=(function(v){return v==="d"||v==="e"?v:"s"})(localStorage.getItem("nvc-statm"))}catch(e){}
-function statBar(){return '<div class="row noprint statbar"><button class="chip" data-sm="s" aria-pressed="'+(STATM==="s")+'">'+Lx("Stručná statistika","Short statistics")+'</button><button class="chip" data-sm="d" aria-pressed="'+(STATM==="d")+'">'+Lx("Podrobná statistika","Detailed statistics")+'</button><button class="chip" data-sm="e" aria-pressed="'+(STATM==="e")+'">'+Lx("Statistika efektivity","Efficiency statistics")+'</button></div>'}
+function statBar(){return '<div class="row noprint statbar"><button class="chip" data-sm="s" aria-pressed="'+(STATM==="s")+'">'+Lx("Stručná statistika","Short statistics")+'</button><button class="chip" data-sm="d" aria-pressed="'+(STATM==="d")+'">'+Lx("Podrobná statistika","Detailed statistics")+'</button><button class="chip" data-sm="e" aria-pressed="'+(STATM==="e")+'">'+Lx("Statistika efektivity","Efficiency statistics")+'</button>'+(VCON()?'<span class="mut vchint">'+Lx("Kliknutím na příslušná políčka spustíš video vybraných akcí.","Click the relevant cells to play the video of the selected actions.")+'</span>':'')+'</div>'}
 var DSK=[["S","Podání","Serve"],["R","Příjem","Reception"],["A","Útok","Attack"],["B","Blok","Block"],["E","Nahrávka","Set"],["D","Obrana","Dig"],["F","Freeball","Free ball"]],DEV=["#","+","!","-","/","="];
 function dcnt(list){var o={};DSK.forEach(function(k){var x={t:0};DEV.forEach(function(e){x[e]=0});o[k[0]]=x});
   (list||[]).forEach(function(c){var x=o[c.s];if(!x)return;x.t++;if(x[c.e]!==undefined)x[c.e]++});return o}
