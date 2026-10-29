@@ -305,7 +305,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 110</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 111</footer>
 </main>
 <script>
 (function(){
@@ -1494,8 +1494,8 @@ function gbandUpd(v){var gb=$("gband");if(!gb){gb=document.createElement("div");
   if(mode==="staff"&&ctx.grp&&access&&v&&v!=="pick"&&v!=="login"&&v!=="consent"&&v!=="admin"&&v!=="adminhub"&&v!=="admtest"){gb.hidden=false;gb.className="gband g"+(groups.map(function(q){return q.id}).indexOf(ctx.grp)%2);gb.textContent=ctx.grp+" · "+seasonName(ctx.season)}else gb.hidden=true}
 function setUbar(){if(!prof&&!access)return;pvBar();admTileUpd();oppTabs();gbandUpd(VIEWS.filter(function(x){return!$("v-"+x).hidden})[0]);var rl=access.admin?"administrátor":(mode==="staff"?"realizační tým":"hráčka");
   $("uinfo").textContent=access.email+" · "+(LANG==="en"?trEn(rl):rl);
-  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&!PREV&&ctx&&ctx.season?staffOptions():(RPK&&mode==="player"&&ctx.grp?playerOpts():[]),gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
-    wrap=RPK&&mode==="player"?(gso.length>1||ses.length>1):opts.length>0;gs.hidden=!wrap;gs.innerHTML=!wrap?"":(gso.length>1?gso.map(function(x){return '<button class="gsw g'+(groups.map(function(q){return q.id}).indexOf(x.grp)%2)+'" data-gsw="'+esc(x.grp)+'" aria-pressed="'+(x.grp===ctx.grp)+'">'+esc(x.grp)+'</button>'}).join(""):"")+(ses.length>1?'<div><select id="sesel" aria-label="'+Lx("Sezóna","Season")+'">'+ses.map(function(x){return '<option value="'+esc(x)+'"'+(x===ctx.season?' selected':'')+'>'+esc(Lx("Sezóna ","Season ")+seasonName(x))+'</option>'}).join("")+'</select></div>':"")}
+  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&!PREV&&ctx&&ctx.season?staffOptions():((RPK||PVP())&&mode==="player"&&ctx.grp?playerOpts():[]),gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
+    wrap=(RPK||PVP())&&mode==="player"?(gso.length>1||ses.length>1):opts.length>0;gs.hidden=!wrap;gs.innerHTML=!wrap?"":(gso.length>1?gso.map(function(x){return '<button class="gsw g'+(groups.map(function(q){return q.id}).indexOf(x.grp)%2)+'" data-gsw="'+esc(x.grp)+'" aria-pressed="'+(x.grp===ctx.grp)+'">'+esc(x.grp)+'</button>'}).join(""):"")+(ses.length>1?'<div><select id="sesel" aria-label="'+Lx("Sezóna","Season")+'">'+ses.map(function(x){return '<option value="'+esc(x)+'"'+(x===ctx.season?' selected':'')+'>'+esc(Lx("Sezóna ","Season ")+seasonName(x))+'</option>'}).join("")+'</select></div>':"")}
   var u=$("uctx");u.hidden=wrap;u.textContent=(mode==="staff"&&ctx.grp?ctx.season+" · "+ctx.grp:(pSeason||ctx.season||""))+" ▾"}
 async function enterPlayer(season){mode="player";pSeason=season||pSeason;if(!pSeason)pSeason=seasonsOf(playerM)[0];
   if(RPK){ctx.season=pSeason;var po=playerOpts();if(!po.some(function(x){return x.season===pSeason&&x.grp===ctx.grp}))ctx.grp=(po.filter(function(x){return x.season===pSeason})[0]||{}).grp||""}
@@ -1547,8 +1547,8 @@ function showPick(keep){var ss;
 $("pseasons").addEventListener("click",function(e){var b=e.target.closest("[data-ps]");if(!b)return;pickS=b.dataset.ps;
   if(mode==="player"){pGrp="";enterPlayer(pickS).catch(function(x){alert(x.message)})}else showPick(true)});
 $("pgroups").addEventListener("click",function(e){var b=e.target.closest("[data-pg]");if(!b)return;enterStaff(pickS,b.dataset.pg).catch(function(x){alert(x.message)})});
-document.addEventListener("change",function(e){if(e.target.id!=="sesel")return;if(RPK&&mode==="player"){var sv0=e.target.value;PSEL1="";enterPlayer(sv0).then(ctxSave).catch(function(x){alert(x.message)});return}var sv=e.target.value,o=staffOptions().filter(function(x){return x.season===sv}),g=o.some(function(x){return x.grp===ctx.grp})?ctx.grp:(o[0]&&o[0].grp);if(g)enterStaff(sv,g).catch(function(x){alert(x.message)})});
-document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||b.dataset.gsw===ctx.grp)return;if(RPK&&mode==="player"){rpGrp(b.dataset.gsw);return}enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
+document.addEventListener("change",function(e){if(e.target.id!=="sesel")return;if((RPK||PVP())&&mode==="player"){var sv0=e.target.value;PSEL1="";enterPlayer(sv0).then(function(){if(!PVP())ctxSave();pvAfter()}).catch(function(x){alert(x.message)});return}var sv=e.target.value,o=staffOptions().filter(function(x){return x.season===sv}),g=o.some(function(x){return x.grp===ctx.grp})?ctx.grp:(o[0]&&o[0].grp);if(g)enterStaff(sv,g).catch(function(x){alert(x.message)})});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||b.dataset.gsw===ctx.grp)return;if((RPK||PVP())&&mode==="player"){rpGrp(b.dataset.gsw);return}enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
 $("uctx").onclick=async function(){if(PREV){await vasExit()}try{access=await sb("POST","/rest/v1/rpc/my_access",{});staffM=access.memberships.filter(function(m){return m.role==="coach"&&m.active});playerM=access.memberships.filter(function(m){return m.role==="player"})}catch(e){}showPick(true)};
 /* --- správa (admin / správce) --- */
 var memAll=[],admPF=null;
@@ -1992,7 +1992,8 @@ function PVP(){return!!(PREV&&PREV.kind==="player")}
 var RPK="";
 function PT(){return PVP()||!!RPK}
 function playerOpts(){var o=[];(playerM||[]).forEach(function(m){if(m.active===false||!m.grp)return;if(!o.some(function(x){return x.season===m.season&&x.grp===m.grp}))o.push({season:m.season,grp:m.grp})});return o}
-function rpGrp(g){ctx.grp=g;pGrp=g;PSEL1="";ctxSave();enterPlayer(pSeason).catch(function(x){alert(x.message)})}
+function pvAfter(){if(PVP()){pvBar();pvTabs();pvGo("players")}}
+function rpGrp(g){ctx.grp=g;pGrp=g;PSEL1="";if(!PVP())ctxSave();enterPlayer(pSeason).then(pvAfter).catch(function(x){alert(x.message)})}
 function pvRows(){return pRows.filter(function(r){return r.grp===ctx.grp})}
 function pvTab(go){[].forEach.call(document.querySelectorAll(".tab"),function(t){t.setAttribute("aria-selected",t.dataset.go===go||(go==="match"&&t.dataset.go==="matches"))})}
 function pvTabs(){$("tabs").hidden=false;$("tabwl").hidden=true;$("tabss").hidden=false;$("tabadmin").hidden=true;$("tabopa").hidden=true;oppTabs();tabLbl()}
