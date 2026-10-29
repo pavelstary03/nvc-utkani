@@ -140,7 +140,6 @@ footer{margin:18px 0 8px;text-align:center;font-size:12px;opacity:.65}
 .c2l{color:var(--mut);font-weight:800;font-size:12px}.c2v{min-width:46px;text-align:center;font-weight:800;font-size:18px}
 .c2s{display:flex;align-items:center;gap:8px;width:100%}.c2s input[type=range]{flex:1;min-width:0;height:36px;accent-color:var(--blue)}
 .c2t{width:100%;height:30px;accent-color:var(--blue)}
-.pw.crop .pv .ytw iframe{transform:scale(1.2);transform-origin:50% 50%}
 .c2h{font-size:15px;color:var(--ink)}.c2x{margin:4px 0 0;font-size:12px;line-height:1.35;color:var(--mut);text-transform:none;font-weight:500}.c2o{padding-top:8px;border-top:1px solid var(--line)}
 .c2pop{position:absolute;right:8px;bottom:calc(100% - 4px);max-width:min(420px,calc(100% - 16px));max-height:70vh;overflow:auto;background:#fff;border:2px solid var(--blue);border-radius:12px;padding:12px 14px;box-shadow:0 8px 24px #0f1b2d44;z-index:10;display:flex;flex-direction:column;gap:10px;min-width:280px}
 .c2pop[hidden]{display:none}.c2pop .ps{display:none}
@@ -351,7 +350,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 118</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 117</footer>
 </main>
 <script>
 (function(){
@@ -950,15 +949,14 @@ function Rep(el,o){var NU=NEWUI();
      '<div class="c2r">'+(o.dr?B("yl","dw","✎ "+Lx("KRESLIT","DRAW")):"")+B("bl","al","▶▶ "+Lx("PŘEHRÁT VŠECHNY","PLAY ALL"))+(o.share?B("","sh","↗",Lx("Sdílet klip","Share clip")):"")+B("","fs","⛶",Lx("Celá obrazovka","Full screen"))+B("","gr","⚙",Lx("Nastavení","Settings"))+'</div>'+
      '<div class="c2pop" hidden><div class="c2r" style="justify-content:space-between"><b class="c2h">⚙ '+Lx("NASTAVENÍ PŘEHRÁVAČE","PLAYER SETTINGS")+'</b>'+B("sq","gx","✕",Lx("Zavřít","Close"))+'</div>'+
      '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("POSUN VIDEA","VIDEO OFFSET")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","om","−")+'<span class="c2v" data-c2="ov"></span>'+B("sq","oa","+")+'</span></div><p class="c2x">'+Lx("Použij, když klip začíná moc brzy nebo pozdě oproti akci. Tlačítko + začne klip později ve videu, − dříve (po půl vteřině). Hodnota se uloží k tomuto utkání a kameře.","Use it when a clip starts too early or too late compared to the action. + starts the clip later in the video, − earlier (in half-second steps). The value is saved for this match and camera.")+'</p></div>'+
-     '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("SKRÝT PRVKY YOUTUBE","HIDE YOUTUBE OVERLAYS")+'</span>'+B("","yc","")+'</div><p class="c2x">'+Lx("ZAP: video se mírně přiblíží (asi o pětinu), takže se oříznou okraje, kde YouTube ukazuje název videa, loga a ikony. VYP: vidíš celý záběr, ale i s těmito prvky.","ON: the video is zoomed in slightly (about a fifth), so the edges where YouTube shows the title, logos and icons are cropped. OFF: you see the whole frame, including those items.")+'</p></div>'+
      '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("AUTO CELÁ OBRAZOVKA","AUTO FULL SCREEN")+'</span>'+B("","af","")+'</div><p class="c2x">'+Lx("ZAP: po klepnutí na akci v seznamu se video samo otevře na celou obrazovku. VYP: video zůstane na stránce a na celou obrazovku přepneš tlačítkem ⛶. U Přehrát všechny se na celou obrazovku nepřepíná nikdy.","ON: tapping an action in the list opens the video full screen. OFF: the video stays on the page; use the ⛶ button for full screen. “Play all” never switches to full screen by itself.")+'</p></div>'+
      '<div class="ps c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PŘED AKCÍ (s)","BEFORE ACTION (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span></div><p class="c2x">'+Lx("Kolik vteřin klipu je před okamžikem akce.","How many seconds of the clip come before the action.")+'</p></div>'+
      '<div class="ps c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PO AKCI (s)","AFTER ACTION (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div><p class="c2x">'+Lx("Kolik vteřin klipu je po okamžiku akce.","How many seconds of the clip come after the action.")+'</p></div></div>';
     pw.appendChild(c2);
     var q=function(x){return[].slice.call(c2.querySelectorAll('[data-c2="'+x+'"]'))};
-    var lastAct=Date.now(),pop=c2.querySelector(".c2pop");function cropOn(){try{return localStorage.getItem("nvc-ytcrop")!=="0"}catch(e){return true}}pw.classList.toggle("crop",cropOn());
+    var lastAct=Date.now(),pop=c2.querySelector(".c2pop");
     function playing(){try{return mode()==="yt"?!!(ytp&&ytp.getPlayerState&&ytp.getPlayerState()===1):!g("v").paused}catch(e){return false}}
-    function lbl(){q("sv").forEach(function(x){x.textContent=Math.round(RATE*100)+"%"});q("sp").forEach(function(x){x.value=Math.round(RATE*100)});q("bv").forEach(function(x){x.textContent=(+g("b").value||0)+" s"});q("av").forEach(function(x){x.textContent=(+g("a").value||0)+" s"});q("ov").forEach(function(x){x.textContent=(+g("o").value||0)+" s"});q("af").forEach(function(x){x.textContent=g("AF").checked?"✓ "+Lx("ZAP","ON"):Lx("VYP","OFF");x.classList.toggle("bl",g("AF").checked)});q("pp").forEach(function(x){x.textContent=playing()?"⏸":"▶"});q("yc").forEach(function(x){var on=cropOn();x.textContent=on?"✓ "+Lx("ZAP","ON"):Lx("VYP","OFF");x.classList.toggle("bl",on)});pw.classList.toggle("crop",cropOn())}
+    function lbl(){q("sv").forEach(function(x){x.textContent=Math.round(RATE*100)+"%"});q("sp").forEach(function(x){x.value=Math.round(RATE*100)});q("bv").forEach(function(x){x.textContent=(+g("b").value||0)+" s"});q("av").forEach(function(x){x.textContent=(+g("a").value||0)+" s"});q("ov").forEach(function(x){x.textContent=(+g("o").value||0)+" s"});q("af").forEach(function(x){x.textContent=g("AF").checked?"✓ "+Lx("ZAP","ON"):Lx("VYP","OFF");x.classList.toggle("bl",g("AF").checked)});q("pp").forEach(function(x){x.textContent=playing()?"⏸":"▶"})}
     function setRate(p){p=Math.max(25,Math.min(100,Math.round(p/25)*25));RATE=p/100;try{localStorage.setItem("nvc-rate",String(RATE))}catch(e){}drawRate();applyRate();lbl()}
     function stepIn(id,d,mn,mx){var i=g(id),v=Math.max(mn,Math.min(mx,(+i.value||0)+d));i.value=Math.round(v*10)/10;i.dispatchEvent(new Event("change"));lbl()}
     function seekBy(d){var t=Math.max(0,getT()+d);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(e){}t0=Date.now()}
@@ -972,7 +970,7 @@ function Rep(el,o){var NU=NEWUI();
       else if(x==="bm")stepIn("b",-1,0,30);else if(x==="ba")stepIn("b",1,0,30);else if(x==="am")stepIn("a",-1,0,30);else if(x==="aa")stepIn("a",1,0,30);
       else if(x==="om")stepIn("o",-.5,-60,60);else if(x==="oa")stepIn("o",.5,-60,60);
       else if(x==="af"){g("AF").checked=!g("AF").checked;g("AF").onchange&&g("AF").onchange();lbl()}
-      else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}else if(x==="gx"){pop.hidden=true}else if(x==="yc"){try{localStorage.setItem("nvc-ytcrop",cropOn()?"0":"1")}catch(e){}lbl()}
+      else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}else if(x==="gx"){pop.hidden=true}
       lbl()});
     c2.addEventListener("input",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();if(b.dataset.c2==="sp")setRate(+b.value);
       else if(b.dataset.c2==="tl"&&lastR){var t=lastR[0]+(+b.value/1000)*(lastR[1]-lastR[0]);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(x){}t0=Date.now()}});
@@ -1014,7 +1012,7 @@ function Rep(el,o){var NU=NEWUI();
     var ar=16/9;if(mode()==="local"){var v=g("v");if(v.videoWidth&&v.videoHeight)ar=v.videoWidth/v.videoHeight}
     var bw=w,bh=w/ar;if(bh>h){bh=h;bw=h*ar}var x=r.left-e.left+sx+(w-bw)/2,y=r.top-e.top+sy+(h-bh)/2,k=[x,y,bw,bh].map(Math.round).join(",");
     if(k!==lay.k){lay={x:x,y:y,w:bw,h:bh,k:k};cv.style.left=x+"px";cv.style.top=y+"px";cv.style.width=bw+"px";cv.style.height=bh+"px";var d=window.devicePixelRatio||1;cv.width=Math.round(bw*d);cv.height=Math.round(bh*d);drSig=""}
-    var zc=(NU&&mode()==="yt"&&el.querySelector(".pw.crop"))?"scale(1.2)":"";if(cv.style.transform!==zc)cv.style.transform=zc;cv.hidden=false;return true}
+    cv.hidden=false;return true}
   function paintStk(ctx,s,W,H){var p=s.p;if(!p||!p.length)return;ctx.strokeStyle=ctx.fillStyle=s.c;var lw=Math.max(1.5,s.w*W/700);ctx.lineWidth=lw;ctx.lineCap=ctx.lineJoin="round";
     var X=function(q){return q[0]/1000*W},Y=function(q){return q[1]/1000*H};ctx.beginPath();
     if(s.k==="p"){ctx.moveTo(X(p[0]),Y(p[0]));if(p.length===1)ctx.lineTo(X(p[0])+.1,Y(p[0]));for(var i=1;i<p.length;i++)ctx.lineTo(X(p[i]),Y(p[i]));ctx.stroke()}
