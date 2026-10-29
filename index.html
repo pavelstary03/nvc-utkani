@@ -140,6 +140,10 @@ body.nuui .c2l{color:#1f4f9a;font-weight:800}
 /* v132: připravené YouTube hned po otevření */
 .pbadge:empty{display:none}
 body.nuui .pw .pv .ytw:not(:has(iframe)){background:#eef1f6!important}
+/* v134 */
+.pw .pv .ytw2{width:50%!important;right:auto!important;left:50%!important;visibility:hidden;pointer-events:none}.pw .pv .ytw2.on{visibility:visible;pointer-events:auto}
+.pw .pv.dual .ytw{height:auto!important;aspect-ratio:16/9!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
+.pw .pv.noyt::after{content:attr(data-ph);position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:#eef1f6;color:#4a5b75;font-weight:700;font-size:16px;line-height:1.4}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -392,7 +396,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 133</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 134</footer>
 </main>
 <script>
 (function(){
@@ -953,16 +957,18 @@ function Rep(el,o){var NU=NEWUI();
   function dualOn(){return NU&&mode()==="yt"&&S.length>1&&view==="b"}
   function d2t(t){return t-S[ang].off+S[oth()].off}
   function p2(f){if(!ytp2||!ytReady2||!dualOn())return;try{f(ytp2)}catch(e){}}
-  function dualLayout(){if(!NU||!pvEl)return;var d=dualOn();pvEl.classList.toggle("dual",d);if(ytw2){ytw2.hidden=!d;ytw2.dataset.side=ang===0?"r":"l"}g("y").dataset.side=ang===0?"l":"r";[].forEach.call(pvEl.querySelectorAll(".dvfs"),function(b){b.hidden=!d})}
+  function dualLayout(){if(!NU||!pvEl)return;var d=dualOn();pvEl.classList.toggle("dual",d);if(ytw2){ytw2.classList.toggle("on",d);ytw2.dataset.side=ang===0?"r":"l"}phUpd();g("y").dataset.side=ang===0?"l":"r";[].forEach.call(pvEl.querySelectorAll(".dvfs"),function(b){b.hidden=!d})}
   function ensureYt2(cb){if(ytp2){if(ytReady2)cb&&cb();else(ensureYt2.q=ensureYt2.q||[]).push(cb);return}if(!S.length)return;ensureYt2.q=[cb];curVid2=S[oth()].id;
     ytReadyP().then(function(){ytp2=new YT.Player(id+"yp2",{videoId:curVid2,playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,disablekb:1,fs:0,iv_load_policy:3},events:{onReady:function(){ytReady2=true;try{ytp2.mute()}catch(e){}var q=ensureYt2.q||[];ensureYt2.q=[];q.forEach(function(f){f&&f()})},onStateChange:function(){try{ytp2.mute()}catch(e){}}}})}).catch(function(){})}
   function playSecond(t){if(!dualOn())return;dualLayout();ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));
     if(curVid2!==o2.id){curVid2=o2.id;ytp2.loadVideoById({videoId:o2.id,startSeconds:tt})}else{ytp2.seekTo(tt,true);ytp2.playVideo()}try{ytp2.setPlaybackRate(RATE)}catch(e){}})}
   function drift(){if(!dualOn()||!ytp||!ytp2||!ytReady2)return;try{var e2=Math.max(0,d2t(ytp.getCurrentTime())),a2=ytp2.getCurrentTime(),s1=ytp.getPlayerState(),s2=ytp2.getPlayerState();
     if(s1===1&&s2!==1&&s2!==3)ytp2.playVideo();else if(s1===2&&s2===1)ytp2.pauseVideo();if(s1===1&&Math.abs(a2-e2)>.4)ytp2.seekTo(e2,true)}catch(x){}}
+  function phUpd(){if(pvEl)pvEl.classList.toggle("noyt",!S.length&&!local)}
+  function refreshCue(){setTimeout(function(){if(!dualOn()||!ytp||!ytp2||!ytReady||!ytReady2)return;try{var t=getT();if(ytp.getPlayerState()!==1)ytp.cueVideoById({videoId:S[ang].id,startSeconds:t});if(ytp2.getPlayerState()!==1)ytp2.cueVideoById({videoId:S[oth()].id,startSeconds:Math.max(0,d2t(t))})}catch(e){}},400)}
   function setView(v){if(!NU||S.length<2||mode()!=="yt")return;
     if(v==="b"){view="b";dualLayout();var t=getT(),pl=false;try{pl=ytp&&ytp.getPlayerState()===1}catch(e){}
-      ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));if(curVid2!==o2.id){curVid2=o2.id;if(pl)ytp2.loadVideoById({videoId:o2.id,startSeconds:tt});else ytp2.cueVideoById({videoId:o2.id,startSeconds:tt})}else{ytp2.seekTo(tt,true);if(pl)ytp2.playVideo();else ytp2.pauseVideo()}try{ytp2.setPlaybackRate(RATE)}catch(e){}})}
+      ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));if(curVid2!==o2.id){curVid2=o2.id;if(pl)ytp2.loadVideoById({videoId:o2.id,startSeconds:tt});else ytp2.cueVideoById({videoId:o2.id,startSeconds:tt})}else{if(pl){ytp2.seekTo(tt,true);ytp2.playVideo()}else ytp2.cueVideoById({videoId:o2.id,startSeconds:tt})}try{ytp2.setPlaybackRate(RATE)}catch(e){}refreshCue()})}
     else{v=+v;if(!S[v])return;try{if(ytp2&&ytReady2)ytp2.pauseVideo()}catch(e){}view=v;if(v!==ang)switchAng(v)}
     drawAng();dualLayout();updTbSafe()}
   function updTbSafe(){try{if(typeof updTb==="function"&&drawOn)updTb()}catch(e){}}
@@ -973,7 +979,7 @@ function Rep(el,o){var NU=NEWUI();
     if(c.v!=null&&g("AF").checked&&!fsOn&&!reel)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
-  function applySource(s){srcRef=s;S=(s&&s.v)||[];if(view!=="b"&&!S[view])view="b";ang=(NU&&view!=="b")?view:0;g("o").value=S.length?S[ang].off:0;g("y").hidden=!(ytp&&S.length);drawAng()}
+  function applySource(s){srcRef=s;S=(s&&s.v)||[];if(view!=="b"&&!S[view])view="b";ang=(NU&&view!=="b")?view:0;g("o").value=S.length?S[ang].off:0;g("y").hidden=!(ytp&&S.length);drawAng();phUpd()}
   function setCm(el,k){var x=el.querySelector(".cmt");if(!k){if(x)x.remove();return}if(!x){x=document.createElement("div");x.className="cmt";x.setAttribute("translate","no");el.querySelector(".abody").appendChild(x)}x.textContent="💬 "+k;if(el.querySelector(".cmb")){var bx=document.createElement("button");bx.type="button";bx.className="cmx";bx.title="Smazat poznámku";bx.textContent="✕";x.appendChild(bx)}}
   g("g").addEventListener("click",function(e){var vb=e.target.closest("[data-view]");if(vb){setView(vb.dataset.view);return}var b=e.target.closest("[data-ang]");if(b)switchAng(+b.dataset.ang)});
   g("l").addEventListener("click",function(e){var a=e.target.closest(".act");if(!a)return;var i=+a.dataset.i;
@@ -997,7 +1003,7 @@ function Rep(el,o){var NU=NEWUI();
     var oldCtl=el.querySelector(".ctl");oldCtl.classList.add("old");g("L").checked=true;g("r").checked=false;
     var ytw=g("y"),vd=g("v");vd.removeAttribute("controls");
     var pw=document.createElement("div");pw.className="pw";pw.id=id+"pw";var pv=document.createElement("div");pv.className="pv";
-    ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pvEl=pv;ytw2=document.createElement("div");ytw2.className="ytw ytw2";ytw2.id=id+"y2";ytw2.hidden=true;ytw2.innerHTML='<div id="'+id+'yp2"></div>';pv.appendChild(ytw2);pv.appendChild(vd);
+    ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pvEl=pv;pv.dataset.ph=Lx("Toto utkání zatím nemá vložený odkaz na YouTube. Vlož ho v kartě utkání (pole ZEZADU / Z BOKU).","This match has no YouTube link yet. Add it in the match card (BEHIND / SIDE fields).");ytw2=document.createElement("div");ytw2.className="ytw ytw2";ytw2.id=id+"y2";ytw2.innerHTML='<div id="'+id+'yp2"></div>';pv.appendChild(ytw2);pv.appendChild(vd);
     [0,1].forEach(function(k){var fb=document.createElement("button");fb.type="button";fb.className="dvfs";fb.dataset.dv=k;fb.hidden=true;fb.title=Lx("Jen tato kamera na celou obrazovku","This camera only, full screen");fb.innerHTML=Lx("KAM. ","CAM. ")+(k+1)+" ⛶";fb.onclick=function(ev){ev.stopPropagation();setView(k);if(!fsOn)enterFs()};pv.appendChild(fb)});
     var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
     var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
@@ -1058,7 +1064,7 @@ function Rep(el,o){var NU=NEWUI();
   g("n").onclick=function(){reel=false;playAt(pos+1)};g("p").onclick=function(){reel=false;playAt(Math.max(0,pos-1))};
   g("all").onclick=function(){reel=true;playAt(0)};
   g("o").onchange=function(){var v=+this.value||0;if(mode()==="yt"&&S[ang]){S[ang].off=v;if(o.onOff)o.onOff(S[ang].k,v)}};
-  if(o.local){g("fb").onclick=function(){g("f").click()};g("f").onchange=function(e){var f=e.target.files[0];if(!f)return;if(local)URL.revokeObjectURL(local);local=URL.createObjectURL(f);g("v").src=local;g("v").hidden=false;g("y").hidden=true;pause();drawAng();msg("Video ze souboru: "+f.name+" (zůstává v tomto zařízení)")}}
+  if(o.local){g("fb").onclick=function(){g("f").click()};g("f").onchange=function(e){var f=e.target.files[0];if(!f)return;if(local)URL.revokeObjectURL(local);local=URL.createObjectURL(f);g("v").src=local;g("v").hidden=false;g("y").hidden=true;pause();drawAng();phUpd();msg("Video ze souboru: "+f.name+" (zůstává v tomto zařízení)")}}
   /* ---------- v32: kreslení do videa ---------- */
   var drOn=true,drawOn=false,dpaused=false,work=[],curStk=null,penSeen=false,tool="pen",col="#ff3b30",wd=4,drSig="",lay={x:0,y:0,w:0,h:0,k:""},drTm=null;
   var cv=document.createElement("canvas");cv.className="drc";cv.hidden=true;el.style.position="relative";el.appendChild(cv);
@@ -1158,7 +1164,7 @@ function Rep(el,o){var NU=NEWUI();
   if(g("sh"))g("sh").onclick=function(){var mk=Object.keys(marks).filter(function(k){return marks[k]}).map(function(k){return acts[+k]});shareNow(mk.length?mk:(pos>=0?[acts[pos]]:[]))};
   if(o.share&&!NU){var sb2=document.createElement("button");sb2.type="button";sb2.className="btn";sb2.setAttribute("data-dact","share");sb2.textContent="↗ "+Lx("SDÍLET KLIP","SHARE CLIP");var cb2=tb.querySelector('[data-dact="close"]');cb2.parentNode.insertBefore(sb2,cb2)}
   me.setSource=function(s){if(local){URL.revokeObjectURL(local);local=null;g("v").removeAttribute("src");g("v").hidden=true;try{g("v").load()}catch(e){}}
-    applySource(s);msg(S.length?"":"Zatím není vložen odkaz na YouTube.");stopAt=null;pause();if(NU&&S.length){var tries=0;(function pre(){if(local||!S.length||!el.isConnected)return;if(!el.offsetParent){if(tries++<25)setTimeout(pre,400);return}ensureYt();if(dualOn()){dualLayout();ensureYt2()}})()}};
+    applySource(s);msg(S.length?"":"Zatím není vložen odkaz na YouTube.");stopAt=null;pause();if(NU&&S.length){var tries=0;(function pre(){if(local||!S.length||!el.isConnected)return;if(!el.offsetParent){if(tries++<25)setTimeout(pre,400);return}ensureYt();if(dualOn()){dualLayout();ensureYt2(function(){setTimeout(refreshCue,300)})}})()}};
   function codeHtml(c){var ov=o.cc?o.cc.get(c):"";if(ov)return' · <s>'+esc(c.c)+'</s> <b>'+(ov.charAt(0)==="@"?Lx("zóna ","zone ")+ov.slice(1):esc(ov))+'</b> ✓';return c.c?' · '+esc(c.c):''}
   me.setActs=function(list,lab){acts=list;pos=-1;reel=false;stopAt=null;
     g("c").textContent=list.length+" akcí";
