@@ -414,7 +414,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 155</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 156</footer>
 </main>
 <script>
 (function(){
@@ -942,6 +942,11 @@ function sitRow(name,list,all){var ls=list.filter(function(c){return c.s==="S"&&
   var id=sitPush(ls),segs=SITC.map(function(e){var n=ls.filter(function(c){return c.e===e[0]}).length;if(!n)return"";var li=sitPush(ls);
     return '<i data-vc="'+li+'" data-vk="S:'+e[0]+'@'+SITT+'" data-vt="'+esc(name)+'" style="flex:'+n+';background:'+e[1]+';color:'+e[2]+(e[0]==="="?";box-shadow:inset 0 0 0 1px #9fb0cb":"")+'">'+(n>1?e[0]+" "+n:e[0])+'</i>'}).join("");
   return{n:ls.length,h:'<div class="sitp'+(all?" all":"")+'"><div class="ph" data-vc="'+id+'" data-vk="S@'+SITT+'" data-vt="'+esc(name)+'"><b translate="no">'+esc(name)+'</b><span>'+ls.length+'</span></div><div class="sev">'+segs+'</div></div>'}}
+var SITSET={};
+function sitSetOn(){return Object.keys(SITSET).some(function(k){return SITSET[k]})}
+function sitSetOk(c){return !sitSetOn()||!!SITSET[c.set]}
+function sitSetBar(ms){var mx=1;ms.forEach(function(m){mx=Math.max(mx,m.sets.length)});var h='';for(var i=1;i<=Math.min(mx,5);i++)h+='<button type="button" class="sitc" data-sitss="'+i+'" aria-pressed="'+!!SITSET[i]+'"><b>'+Lx(i+". SET","SET "+i)+'</b></button>';return '<div class="sitch">'+h+'</div>'}
+function sitFiltRz(Rz){return{ok:Rz.ok,rows:Rz.rows.map(function(q){return{nums:q.nums,name:q.name,L:q.L,list:q.list.filter(sitSetOk)}}),tot:Rz.tot.filter(sitSetOk),tp:Rz.tp,tb:Rz.tb,tw:Rz.tw}}
 var SITS="S",SITP={r:true,t:true},SITG={ins:false,out:false};
 var SITGI={X5:1,XP:1,XR:1,X9:1,X8:1,X6:1,X4:1,X0:1,XT:1,X3:1,CB:1,CF:1,CD:1,X1:1,XC:1,X7:1,X2:1};
 function sitGrp(code){return SITGI[code]?"ins":(code&&code.charAt(0)==="V")?"out":""}
@@ -952,7 +957,7 @@ function sitServe(Rz){var cnt={M:0,Q:0};Rz.tot.forEach(function(c){if(c.s==="S"&
 function sitAtt(ms){var items=[];
   ms.forEach(function(m){var R=repData(m);if(!R.ok)return;var PH=dsPhase(m),T=R[m.our].pl;
     Object.keys(T).forEach(function(n){n=+n;if(n<=0)return;var P=T[n];if(!P.p||!P.p.key)return;var nm=P.p.n!=null?P.p.n:n;
-      P.c.forEach(function(c){if(c.s!=="A")return;var ph=PH[c.i]==="r"?"r":"t",z=dsCol(m,c,ccGet(m,c.i));if(z==="X")z="S";else if(z!=="4"&&z!=="3"&&z!=="2"&&z!=="6"&&z!=="1")z="?";var ov=ccGet(m,c.i),code=(ov&&ov.charAt(0)!=="@")?ov:c.c;items.push({c:c,ph:ph,z:z,g:sitGrp(code),key:P.p.key,name:nm+" "+P.p.last+" "+P.p.first,last:P.p.last,first:P.p.first,num:nm})})})});
+      P.c.forEach(function(c){if(c.s!=="A")return;var ph=PH[c.i]==="r"?"r":"t",z=dsCol(m,c,ccGet(m,c.i));if(z==="X")z="S";else if(z!=="4"&&z!=="3"&&z!=="2"&&z!=="6"&&z!=="1")z="?";var ov=ccGet(m,c.i),code=(ov&&ov.charAt(0)!=="@")?ov:c.c;if(!sitSetOk(c))return;items.push({c:c,ph:ph,z:z,g:sitGrp(code),key:P.p.key,name:nm+" "+P.p.last+" "+P.p.first,last:P.p.last,first:P.p.first,num:nm})})})});
   var anyG=SITG.ins||SITG.out,on=items.filter(function(x){return SITP[x.ph]&&(!anyG||SITG[x.g])});
   function pc(L){return L.length?Math.round(100*L.filter(function(x){return x.c.e==="#"}).length/L.length)+" %":"–"}
   function btn(L,ttl,key){return 'data-vc="'+sitPush(L.map(function(x){return x.c}))+'" data-vk="'+(key||"A")+'" data-vt="'+esc(ttl)+'"'}
@@ -994,8 +999,8 @@ function sitRec(Rz){var MINR=5,rows=Rz.rows.map(function(q){var L=q.list.filter(
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
   var Rz=oppRoster(ms);if(!Rz.ok){box.hidden=true;return}
-  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span><span data-sits="R" class="'+(SITS==="R"?"on":"")+'">'+Lx("PŘÍJEM","SERVE RECEIVE")+'</span></div>'+(SITS==="A"?sitAtt(ms):SITS==="D"?sitDef(ms):SITS==="R"?sitRec(Rz):sitServe(Rz))}
-document.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest("[data-sitg]");if(g){SITG[g.dataset.sitg]=!SITG[g.dataset.sitg];oppSit();return}var b=e.target.closest&&e.target.closest("[data-sits]");if(b){SITS=b.dataset.sits;oppSit();return}b=e.target.closest&&e.target.closest("[data-sitph]");if(!b)return;var k=b.dataset.sitph;SITP[k]=!SITP[k];if(!SITP.r&&!SITP.t)SITP[k==="r"?"t":"r"]=true;oppSit()});
+  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span><span data-sits="R" class="'+(SITS==="R"?"on":"")+'">'+Lx("PŘÍJEM","SERVE RECEIVE")+'</span></div>'+(SITS==="A"?sitSetBar(ms)+sitAtt(ms):SITS==="D"?sitDef(ms):SITS==="R"?sitRec(Rz):sitSetBar(ms)+sitServe(sitFiltRz(Rz)))}
+document.addEventListener("click",function(e){var ss=e.target.closest&&e.target.closest("[data-sitss]");if(ss){SITSET[ss.dataset.sitss]=!SITSET[ss.dataset.sitss];oppSit();return}var g=e.target.closest&&e.target.closest("[data-sitg]");if(g){SITG[g.dataset.sitg]=!SITG[g.dataset.sitg];oppSit();return}var b=e.target.closest&&e.target.closest("[data-sits]");if(b){SITS=b.dataset.sits;oppSit();return}b=e.target.closest&&e.target.closest("[data-sitph]");if(!b)return;var k=b.dataset.sitph;SITP[k]=!SITP[k];if(!SITP.r&&!SITP.t)SITP[k==="r"?"t":"r"]=true;oppSit()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitt]");if(!b)return;SITT=b.dataset.sitt;oppSit()});
 function a1legend(){return STATM==="e"?eLegend():STATM==="d"?dLegend()+a1legendS():a1legendS()}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-sm]");if(!b)return;STATM=b.dataset.sm==="d"?"d":b.dataset.sm==="e"?"e":"s";try{localStorage.setItem("nvc-statm",STATM)}catch(x){}
