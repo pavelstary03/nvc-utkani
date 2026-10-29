@@ -305,7 +305,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 111</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 112</footer>
 </main>
 <script>
 (function(){
@@ -1494,7 +1494,7 @@ function gbandUpd(v){var gb=$("gband");if(!gb){gb=document.createElement("div");
   if(mode==="staff"&&ctx.grp&&access&&v&&v!=="pick"&&v!=="login"&&v!=="consent"&&v!=="admin"&&v!=="adminhub"&&v!=="admtest"){gb.hidden=false;gb.className="gband g"+(groups.map(function(q){return q.id}).indexOf(ctx.grp)%2);gb.textContent=ctx.grp+" · "+seasonName(ctx.season)}else gb.hidden=true}
 function setUbar(){if(!prof&&!access)return;pvBar();admTileUpd();oppTabs();gbandUpd(VIEWS.filter(function(x){return!$("v-"+x).hidden})[0]);var rl=access.admin?"administrátor":(mode==="staff"?"realizační tým":"hráčka");
   $("uinfo").textContent=access.email+" · "+(LANG==="en"?trEn(rl):rl);
-  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&!PREV&&ctx&&ctx.season?staffOptions():((RPK||PVP())&&mode==="player"&&ctx.grp?playerOpts():[]),gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
+  var gs=$("gsw"),wrap=false;if(gs){var opts=mode==="staff"&&(!PREV||PREV.kind==="coach")&&ctx&&ctx.season?staffOptions():((RPK||PVP())&&mode==="player"&&ctx.grp?playerOpts():[]),gso=opts.filter(function(x){return x.season===ctx.season}),ses=[];opts.forEach(function(x){if(ses.indexOf(x.season)<0)ses.push(x.season)});
     wrap=(RPK||PVP())&&mode==="player"?(gso.length>1||ses.length>1):opts.length>0;gs.hidden=!wrap;gs.innerHTML=!wrap?"":(gso.length>1?gso.map(function(x){return '<button class="gsw g'+(groups.map(function(q){return q.id}).indexOf(x.grp)%2)+'" data-gsw="'+esc(x.grp)+'" aria-pressed="'+(x.grp===ctx.grp)+'">'+esc(x.grp)+'</button>'}).join(""):"")+(ses.length>1?'<div><select id="sesel" aria-label="'+Lx("Sezóna","Season")+'">'+ses.map(function(x){return '<option value="'+esc(x)+'"'+(x===ctx.season?' selected':'')+'>'+esc(Lx("Sezóna ","Season ")+seasonName(x))+'</option>'}).join("")+'</select></div>':"")}
   var u=$("uctx");u.hidden=wrap;u.textContent=(mode==="staff"&&ctx.grp?ctx.season+" · "+ctx.grp:(pSeason||ctx.season||""))+" ▾"}
 async function enterPlayer(season){mode="player";pSeason=season||pSeason;if(!pSeason)pSeason=seasonsOf(playerM)[0];
@@ -1535,7 +1535,7 @@ function canMng(){return !!(access&&(access.admin||staffM.some(function(m){retur
 function staffOptions(){var o=[];seasons.forEach(function(s){groups.forEach(function(g){if(access.admin||staffM.some(function(m){return m.season===s.id&&m.grp===g.id}))o.push({season:s.id,grp:g.id})})});return o}
 function ctxSave(){try{localStorage.setItem("nvc-ctx",JSON.stringify({mode:mode,season:mode==="staff"?ctx.season:pSeason,grp:ctx.grp}))}catch(e){}}
 function ctxLoad(){try{return JSON.parse(localStorage.getItem("nvc-ctx")||"null")}catch(e){return null}}
-async function enterStaff(s,g){oppSel="";oppAdmSel="";UP.pend=[];admPF=null;mode="staff";ctx={season:s,grp:g};ctxSave();try{sessionStorage.setItem("nvc-ent","1")}catch(e){}pv=null;cur=null;
+async function enterStaff(s,g){oppSel="";oppAdmSel="";UP.pend=[];admPF=null;mode="staff";ctx={season:s,grp:g};if(!PREV)ctxSave();try{sessionStorage.setItem("nvc-ent","1")}catch(e){}pv=null;cur=null;
   await loadStaff();reconcile(false);$("tabs").hidden=false;$("tabwl").hidden=false;$("tabss").hidden=false;$("tabadmin").hidden=true;if(access.admin)apprBadge();setUbar();renderList();show("matches")}
 function showPick(keep){var ss;
   if(mode==="staff"){var o=staffOptions(),u=[];o.forEach(function(x){if(u.indexOf(x.season)<0)u.push(x.season)});ss=u.sort().reverse()}else ss=seasonsOf(playerM);
