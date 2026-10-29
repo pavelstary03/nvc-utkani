@@ -412,7 +412,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 142</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 143</footer>
 </main>
 <script>
 (function(){
@@ -679,7 +679,7 @@ function sdOf(m,n,key){if(!isSetter(key))return null;var cs=m.contacts,PH=dsPhas
   out.dm=dm;return out}
 function hasConsent(key){var e=PEMAIL[key];return !!(e&&CONSENT[e])}
 function renderTables(m){
-  $("ptables").innerHTML=(window.__ih||"")+statBar()+a1table(m,m.our)+a1table(m,m.our==="H"?"A":"H");
+  $("ptables").innerHTML=(window.__ih||"")+statBar()+a1table(m,m.our)+a1table(m,m.our==="H"?"A":"H")+serMatch(m,m.our)+serMatch(m,m.our==="H"?"A":"H");
   $("psumm").innerHTML=a1summary(m)+a1legend()}
 function renderReports(m){
   var inf=m.info||{},ih=(inf.no||inf.city||inf.hall||inf.ref)?'<div class="card"><div class="row" style="gap:6px 28px;flex-wrap:wrap;font-size:13px">'+[["Utkání",inf.no],["Datum",m.date],["Čas",(m.time||"").replace(/\./g,":")],["Město",inf.city],["Hala",inf.hall],["Rozhodčí",inf.ref]].filter(function(x){return x[1]}).map(function(x){return '<span><b>'+x[0]+'</b> <span translate="no">'+esc(x[1])+'</span></span>'}).join("")+'</div></div>':"";
@@ -903,8 +903,8 @@ function a1Season0(rows,name){if(STATM==="e"){var al=[];var rs2=rows.map(functio
   return dtbl(name||"",rs,all,SEALBL())}
 /* --- v138: klik na číslo v tabulce -> přehrání videí (testovací režim) --- */
 var vcRep=null;
-function vcLabel(k){if(k==="pts")return Lx("Body celkem","Points total");var a=k.split(":"),sk=DSK.filter(function(x){return x[0]===a[0]})[0],n=sk?Lx(sk[1],sk[2]):a[0];return n+" "+(a[1]?(a[1]==="/="?Lx("chyby","errors"):a[1]):Lx("celkem","total"))}
-function vcFilt(k){var a=k.split(":");if(k==="pts")return function(c){return c.e==="#"&&"SAB".indexOf(c.s)>=0};return function(c){return c.s===a[0]&&(!a[1]||a[1].indexOf(c.e)>=0)}}
+function vcLabel(k){var ty="",q=k.split("@");if(q.length>1){k=q[0];ty=" · "+(SERTP[q[1]]||q[1])}if(k==="pts")return Lx("Body celkem","Points total");var a=k.split(":"),sk=DSK.filter(function(x){return x[0]===a[0]})[0],n=sk?Lx(sk[1],sk[2]):a[0];return n+ty+" "+(a[1]?(a[1]==="/="?Lx("chyby","errors"):a[1]):Lx("celkem","total"))}
+function vcFilt(k){var ty=null,q=k.split("@");if(q.length>1){k=q[0];ty=q[1]}var a=k.split(":");if(k==="pts")return function(c){return c.e==="#"&&"SAB".indexOf(c.s)>=0};return function(c){return c.s===a[0]&&(!a[1]||a[1].indexOf(c.e)>=0)&&(ty===null||(ty==="X"?"HMQ".indexOf(c.y)<0:c.y===ty))}}
 function vcClose(){var o=$("vcov");if(vcRep){try{vcRep.stop()}catch(e){}vcRep=null}if(o)o.remove()}
 function vcOpen(list,key,title){vcClose();var f=vcFilt(key),all=list.filter(f),acts=[],nov=0;
   all.forEach(function(c){var v=CMAP.get(c);if(!v)return;var isM=!!v.contacts,src=isM?srcOf(v):v.src;if(!src||!src.v.length||c.v==null){nov++;return}
@@ -918,6 +918,20 @@ function vcOpen(list,key,title){vcClose();var f=vcFilt(key),all=list.filter(f),a
   vcRep.setActs(acts,function(c){return '<b>'+esc(SK[c.s])+'</b> · '+esc(c.rl)})}
 document.addEventListener("click",function(e){var td=e.target.closest&&e.target.closest("td[data-vc]");if(!td||!VCON())return;var l=VCR[+td.dataset.vc];if(!l)return;
   var tr=td.parentNode,t=[].slice.call(tr.children,0,3).map(function(x){return x.textContent.trim()}).filter(Boolean).join(" ");vcOpen(l,td.dataset.vk,t)});
+/* v143: podání podle typu (test) */
+var SERTP={H:"Float (H)",M:"Hybrid (M)",Q:"Jump (Q)",X:"Jiný"};
+function serOn(){try{return localStorage.getItem("nvc-sertype")==="1"}catch(e){return false}}
+function serCells(list,id){var o={};["H","M","Q","X"].forEach(function(t){var x={t:0};DEV.forEach(function(e){x[e]=0});o[t]=x});
+  list.forEach(function(c){if(c.s!=="S")return;var t="HMQ".indexOf(c.y)>=0?c.y:"X",x=o[t];x.t++;if(x[c.e]!==undefined)x[c.e]++});
+  return["H","M","Q","X"].map(function(t){var x=o[t];return '<td class="sp b"'+vca(id,"S@"+t,x.t)+'>'+dd(x.t)+'</td>'+DEV.map(function(e){return '<td class="'+(e==="#"?"evg":e==="="?"evr":"")+'"'+vca(id,"S:"+e+"@"+t,x[e])+'>'+dd(x[e])+'</td>'}).join("")}).join("")}
+function serTbl(title,rows,tot,totLbl){var hd='<thead><tr class="g"><th colspan="3" class="l tt">'+esc(title)+'</th>'+["H","M","Q","X"].map(function(t){return '<th colspan="7" class="sp">'+SERTP[t]+'</th>'}).join("")+'</tr><tr><th colspan="3"></th>'+["H","M","Q","X"].map(function(){return '<th class="sp">'+Lx("Celk","Tot")+'</th>'+DEV.map(function(e){return '<th>'+e+'</th>'}).join("")}).join("")+'</tr></thead>';
+  var h=rows.map(function(r){return '<tr>'+r.lead+serCells(r.list,vcId(r.list))+'</tr>'}).join("");
+  if(tot)h+='<tr class="tot"><td class="l" colspan="3">'+totLbl+'</td>'+serCells(tot,vcId(tot))+'</tr>';
+  return '<div class="scroll"><table class="a1 dt">'+hd+'<tbody>'+h+'</tbody></table></div>'}
+function serCard(rows,tot,title,totLbl){if(!serOn())return"";return '<div class="card"><h2>'+Lx("PODÁNÍ PODLE TYPU (TEST)","SERVES BY TYPE (TEST)")+'</h2>'+serTbl(title,rows,tot,totLbl)+'<p class="mut" style="margin:6px 0 0;font-size:12px">'+Lx("Float (H) = plachtící, Hybrid (M) = jump float, Jump (Q) = podání ve výskoku. „Jiný“ = typ nezadán nebo nestandardní.","Float (H) = floating, Hybrid (M) = jump float, Jump (Q) = jump serve. “Other” = type not entered or non-standard.")+'</p></div>'}
+function serMatch(m,sd){var R=repData(m);if(!R.ok)return"";var T=R[sd].pl,t=m.teams[sd==="H"?0:1];
+  var ids=Object.keys(T).map(Number).filter(function(n){return n>0}).sort(function(a,b){return a-b}),rows=ids.map(function(n){var P=T[n];return{lead:'<td class="l n">'+n+'</td><td class="l"></td><td class="l nm" translate="no">'+esc(P.p?P.p.last+" "+P.p.first:"#"+n)+'</td>',list:P.c.filter(function(c){return c.s==="S"})}}).filter(function(r){return r.list.length});
+  return serCard(rows,m.contacts.filter(function(c){return c.t===sd&&c.s==="S"}),t.name,Lx("Celkem","Total"))}
 function a1legend(){return STATM==="e"?eLegend():STATM==="d"?dLegend()+a1legendS():a1legendS()}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-sm]");if(!b)return;STATM=b.dataset.sm==="d"?"d":b.dataset.sm==="e"?"e":"s";try{localStorage.setItem("nvc-statm",STATM)}catch(x){}
   [].forEach.call(document.querySelectorAll("[data-sm]"),function(x){x.setAttribute("aria-pressed",x.dataset.sm===STATM)});
@@ -1835,6 +1849,8 @@ function admHead(){$("admback").textContent="← "+Lx("ZPĚT","BACK");var t={adm
 function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tsttitle").textContent=Lx("TESTOVACÍ REŽIM","TEST MODE");var on=NEWUI();
   $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Je zapnutý pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout (např. pro porovnání se starým vzhledem). Projeví se po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). It is on for all users. Here you can turn it off on this device only (e.g. to compare with the old look). It applies after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
   var vo=VCON();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VIDEA Z TABULKY STATISTIKY","VIDEOS FROM STATISTICS TABLE")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na růžově podbarvené číslo v tabulkách (utkání, hráčka, sezóna, soupeři) přehraje příslušné akce. Je zapnuto pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout. Projeví se po překreslení tabulky.","Click a pink-shaded number in the tables (match, player, season, opponents) to play the matching actions. It is on for all users. Here you can turn it off on this device only. Applies after the table is redrawn.")+'</p><button class="btn '+(vo?"":"pri")+'" id="tstvc">'+(vo?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  var so=serOn();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("PODÁNÍ PODLE TYPU (FLOAT / HYBRID / JUMP)","SERVES BY TYPE (FLOAT / HYBRID / JUMP)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Přidá do karty utkání a do soupeřů tabulku podání rozdělenou podle typu s přehráváním videí. Jen na tomto zařízení.","Adds a serve table split by type, with video playback, to the match card and opponents. This device only.")+'</p><button class="btn '+(so?"":"pri")+'" id="tstser">'+(so?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  $("tstser").onclick=function(){try{localStorage.setItem("nvc-sertype",so?"0":"1")}catch(e){}renderTst()};
   $("tstvc").onclick=function(){try{localStorage.setItem("nvc-vclick",vo?"0":"1")}catch(e){}renderTst()};
   $("tstnu").onclick=function(){try{localStorage.setItem("nvc-newui",on?"0":"1")}catch(e){}renderTst()}}
 
@@ -2050,7 +2066,7 @@ function oppTeam(){var box=$("oppteam");if(!box)return;var all=OPP.full[oppSel]|
   else if(STATM==="d")tb=dtbl(op.name,Rz.rows.map(function(q){return{lead:lead(q),list:q.list}}),Rz.tot,lbl);
   else{var body=Rz.rows.map(function(q){return '<tr>'+lead(q)+a1boxes(null,0)+a1cells(stat(q.list),q.pts,q.bp,q.wl,q.list)+'</tr>'}).join("")+'<tr class="tot"><td class="l" colspan="3">'+lbl+'</td>'+a1boxes(null,0)+a1cells(stat(Rz.tot),Rz.tp,Rz.tb,Rz.tw,Rz.tot)+'</tr>';
     tb='<div class="scroll"><table class="a1">'+a1hdr(op.name,0)+'<tbody>'+body+'</tbody></table></div>'}
-  box.innerHTML=title+statBar()+tb+a1legend()}
+  box.innerHTML=title+statBar()+tb+a1legend()+serCard(Rz.rows.map(function(q){return{lead:lead(q),list:q.list.filter(function(c){return c.s==="S"})}}).filter(function(r){return r.list.length}),Rz.tot.filter(function(c){return c.s==="S"}),op.name,lbl)}
 function oppStat(){try{oppTeam()}catch(e){}var ms=OPP.full[oppSel]||[],f=oppSt,box=$("oppstat");if(!box)return;
   if(f.pl){var rows=[],name="";ms.forEach(function(m){if(!oppInSel(m))return;var r=rowFor(m,f.pl);if(r){name=r.name;r.row.grp="";r.row.s=stat(r.row.acts);rows.push(r.row)}});box.hidden=!rows.length;box.innerHTML=rows.length?'<h2>'+Lx("STATISTIKA HRÁČKY","PLAYER STATISTICS")+'</h2>'+statBar()+a1Season0(rows,name)+a1legend():''}
   else box.hidden=true}
