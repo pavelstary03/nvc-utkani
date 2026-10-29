@@ -122,6 +122,7 @@ textarea{width:100%;min-height:90px}
 .ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}
 .acts{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
 .act{display:flex;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;align-items:center;font-size:13px}
+.act .btn .ai{display:block}.act .btn.cmb,.act .btn.drb,.act .btn.ccb,.act .btn.shb{color:var(--blue)}.act .btn:has(.ai){border:2px solid #c5cedb!important;background:#fff!important;width:56px;height:52px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12px}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -374,7 +375,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 123</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 124</footer>
 </main>
 <script>
 (function(){
@@ -1009,6 +1010,8 @@ function Rep(el,o){var NU=NEWUI();
       lbl();var tl=q("tl")[0];if(tl&&lastR&&document.activeElement!==tl){var d=lastR[1]-lastR[0];if(d>0)tl.value=Math.max(0,Math.min(1000,Math.round((getT()-lastR[0])/d*1000)))}},300);
     nuHide=1;lbl()})()}
   var fsOn=false,fsApi=false;
+  var AIP={c:'<path d="M4 5h16v11H9l-5 4z"/>',p:'<path d="M4 20l1-5L16 4l4 4L9 19zM14 6l4 4"/>',w:'<path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>',s:'<path d="M7 17L17 7M9 7h8v8"/>'};
+  function AI(k){return NU?'<svg class="ai" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'+AIP[k]+'</svg>':({c:"💬",p:"✏",w:"🔧",s:"↗"})[k]}
   function c2fs(on){if(!NU||!window.__FSI)return;[].forEach.call(el.querySelectorAll('[data-c2="fs"]'),function(x){x.innerHTML=window.__FSI(on)})}
   function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");c2fs(true);
     try{var q=el.requestFullscreen||el.webkitRequestFullscreen;if(q){fsApi=true;var pr=q.call(el);if(pr&&pr.catch)pr.catch(function(){fsApi=false})}}catch(e){fsApi=false}}
@@ -1123,7 +1126,7 @@ function Rep(el,o){var NU=NEWUI();
   function codeHtml(c){var ov=o.cc?o.cc.get(c):"";if(ov)return' · <s>'+esc(c.c)+'</s> <b>'+(ov.charAt(0)==="@"?Lx("zóna ","zone ")+ov.slice(1):esc(ov))+'</b> ✓';return c.c?' · '+esc(c.c):''}
   me.setActs=function(list,lab){acts=list;pos=-1;reel=false;stopAt=null;
     g("c").textContent=list.length+" akcí";
-    marks={};updSh();g("l").innerHTML=list.map(function(c,i){var l=(EVL[c.s]||{})[c.e]||"",k=o.cm?o.cm.get(c):(c.k||"");return '<div class="act" data-i="'+i+'">'+(o.share&&c.v!=null?'<input type="checkbox" class="mk" title="'+Lx("Označit klip ke sdílení","Mark clip for sharing")+'">':'')+'<span class="ev '+evCls(c)+'">'+esc(c.e)+'</span><span class="abody" style="flex:1">'+lab(c)+(l?' · '+l:'')+'<span class="acode">'+codeHtml(c)+'</span><br><span class="mut">Set '+c.set+' · stav '+esc(c.sc)+(c.v!=null?' · video '+fmt(c.v):'')+'</span>'+(k?'<div class="cmt" translate="no">💬 '+esc(k)+(o.cm?'<button type="button" class="cmx" title="Smazat poznámku" aria-label="Smazat poznámku">✕</button>':'')+'</div>':'')+(drOf(c).length?'<span class="drn">✏ '+drOf(c).length+'</span>':'')+'</span>'+(o.cm?'<button class="btn cmb">💬</button>':'')+(o.dr?'<button class="btn drb" type="button" title="Okomentovat kresbou">✏</button>':'')+(o.cc&&c.s==="A"?'<button class="btn ccb" type="button" title="'+Lx("Opravit kód skautování (jen v aplikaci)","Fix the scouting code (in the app only)")+'">🔧</button>':'')+(o.share&&c.v!=null?'<button class="btn shb" type="button" title="'+Lx("Sdílet klip hráčce","Share clip with a player")+'">↗</button>':'')+'</div>'}).join("")};
+    marks={};updSh();g("l").innerHTML=list.map(function(c,i){var l=(EVL[c.s]||{})[c.e]||"",k=o.cm?o.cm.get(c):(c.k||"");return '<div class="act" data-i="'+i+'">'+(o.share&&c.v!=null?'<input type="checkbox" class="mk" title="'+Lx("Označit klip ke sdílení","Mark clip for sharing")+'">':'')+'<span class="ev '+evCls(c)+'">'+esc(c.e)+'</span><span class="abody" style="flex:1">'+lab(c)+(l?' · '+l:'')+'<span class="acode">'+codeHtml(c)+'</span><br><span class="mut">Set '+c.set+' · stav '+esc(c.sc)+(c.v!=null?' · video '+fmt(c.v):'')+'</span>'+(k?'<div class="cmt" translate="no">💬 '+esc(k)+(o.cm?'<button type="button" class="cmx" title="Smazat poznámku" aria-label="Smazat poznámku">✕</button>':'')+'</div>':'')+(drOf(c).length?'<span class="drn">✏ '+drOf(c).length+'</span>':'')+'</span>'+(o.cm?'<button class="btn cmb">'+AI("c")+'</button>':'')+(o.dr?'<button class="btn drb" type="button" title="Okomentovat kresbou">'+AI("p")+'</button>':'')+(o.cc&&c.s==="A"?'<button class="btn ccb" type="button" title="'+Lx("Opravit kód skautování (jen v aplikaci)","Fix the scouting code (in the app only)")+'">'+AI("w")+'</button>':'')+(o.share&&c.v!=null?'<button class="btn shb" type="button" title="'+Lx("Sdílet klip hráčce","Share clip with a player")+'">'+AI("s")+'</button>':'')+'</div>'}).join("")};
   me.playOne=function(c,lab){me.setActs([c],lab);playAt(0)};
   me.stop=function(){stopAt=null;pause()};
   return me}
