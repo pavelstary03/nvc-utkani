@@ -149,6 +149,16 @@ footer{margin:18px 0 8px;text-align:center;font-size:12px;opacity:.65}
 .pw.ov .ctl2{position:absolute;left:0;right:0;bottom:0;z-index:4;background:linear-gradient(transparent,rgba(0,0,0,.78));border:0;border-radius:0;padding:34px 12px 10px;transition:opacity .25s}
 .pw.ov .ctl2{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:14px;row-gap:6px;padding-top:30px}.pw.ov .c2t{flex:1 0 100%;height:22px}.pw.ov .c2s{flex:1 1 240px;max-width:520px;width:auto}.pw.ov .c2p{display:none}.pw.ov .c2pop .ps{display:flex}.pw.ov .c2b{height:42px}.pw.ov .c2b.tr{height:46px;width:50px;font-size:18px}.pw.ov .c2b.sm{height:46px;width:48px;font-size:10px}.pw.ov .c2b.pl{height:46px;width:64px;font-size:24px}.pw.ov .c2l{color:#fff}.pw.ov .c2v{color:#fff}
 .pw.ov.hid .ctl2,.pw.ov.hid .pbadge{opacity:0;pointer-events:none}
+.c2s input[type=range],.c2t{-webkit-appearance:none;appearance:none;background:transparent;margin:0;touch-action:pan-y}
+.c2s input[type=range]{height:52px}.c2t{height:40px}
+.c2s input[type=range]::-webkit-slider-runnable-track{height:14px;border-radius:8px;background:#d5dbe4}.c2t::-webkit-slider-runnable-track{height:10px;border-radius:6px;background:#d5dbe4}
+.c2s input[type=range]::-moz-range-track{height:14px;border-radius:8px;background:#d5dbe4}.c2t::-moz-range-track{height:10px;border-radius:6px;background:#d5dbe4}
+.c2s input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:48px;height:48px;border-radius:50%;background:#fff;border:7px solid var(--blue);margin-top:-17px;box-shadow:0 2px 8px #0005}
+.c2s input[type=range]::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:#fff;border:7px solid var(--blue);box-shadow:0 2px 8px #0005}
+.c2t::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:#fff;border:6px solid var(--blue);margin-top:-11px;box-shadow:0 2px 6px #0005}
+.c2t::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:6px solid var(--blue)}
+.pw.ov .c2s input[type=range]::-webkit-slider-runnable-track,.pw.ov .c2t::-webkit-slider-runnable-track{background:#ffffff88}
+.pw.ov .c2s input[type=range]::-moz-range-track,.pw.ov .c2t::-moz-range-track{background:#ffffff88}
 .rfs .pw{flex:1 1 auto;min-height:0;margin:0}
 .rfs .pw .pv{position:absolute;inset:0;aspect-ratio:auto;max-height:none!important;width:100%!important;border-radius:0}
 .rfs.rfsd .pw{flex:none;height:min(62vh,calc((100vw - 28px)*9/16));min-height:220px}
@@ -233,7 +243,7 @@ video,.ytw{width:100%!important;max-width:100%!important;margin:0 auto 10px!impo
 .ytw iframe{width:100%!important;max-width:100%!important;border-radius:0!important}
 .cur{display:none;margin:0}
 body.rfsb{overflow:hidden}
-.rfs{position:fixed;inset:0;z-index:9000;background:#0b1220;display:flex!important;flex-direction:column;padding:10px 14px;gap:8px;overflow:hidden;margin:0!important}
+.rfs{position:fixed!important;inset:0;z-index:9000;background:#0b1220;display:flex!important;flex-direction:column;padding:10px 14px;gap:8px;overflow:hidden;margin:0!important}
 .rfs .ytw,.rfs video{flex:1 1 auto;min-height:0;width:100%!important;max-width:1700px!important;margin:0 auto!important;height:auto!important;aspect-ratio:auto!important;border:2px solid #2b4a7a;border-radius:12px!important;box-shadow:none}
 .rfs .ytw iframe{width:100%!important;height:100%!important;aspect-ratio:auto!important;max-width:none!important}
 .rfs video{object-fit:contain}
@@ -339,7 +349,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 115</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 116</footer>
 </main>
 <script>
 (function(){
@@ -857,6 +867,7 @@ async function shareClips(snaps){if(!snaps.length)return"";var pl;try{pl=await s
   catch(e){return /shared_clips|relation|404|PGRST/i.test(e.message||"")?Lx("Sdílení ještě není nastavené – spusť v Supabase skript nvc-setup-v6-sdileni.sql.","Sharing is not set up yet – run nvc-setup-v6-sdileni.sql in Supabase."):Lx("Odeslání se nezdařilo: ","Sending failed: ")+e.message}}
 function shSeen(id){try{return localStorage.getItem("nvc-sh:"+id)==="1"}catch(e){return false}}
 function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
+setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!document.querySelector(".rfs"))document.body.classList.remove("rfsb")}catch(e){}},1000);
 function NEWUI(){try{return!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){return false}}
 function Rep(el,o){var NU=NEWUI();
   var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null;
@@ -899,7 +910,7 @@ function Rep(el,o){var NU=NEWUI();
     [].forEach.call(g("l").querySelectorAll(".act"),function(x){x.classList.toggle("on",+x.dataset.i===i)});
     var e=g("l").querySelector('.act[data-i="'+i+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
     var cu=g("u");if(cu&&e)cu.textContent=(i+1)+"/"+acts.length+" · "+(e.innerText||"").replace(/\s+/g," ").trim().slice(0,160);var pbd=g("pb");if(pbd)pbd.textContent=cu.textContent;
-    if(c.v!=null&&g("AF").checked&&!fsOn)enterFs();
+    if(c.v!=null&&g("AF").checked&&!fsOn&&!reel)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
   function applySource(s){srcRef=s;S=(s&&s.v)||[];ang=0;g("o").value=S.length?S[0].off:0;g("y").hidden=!(ytp&&S.length);drawAng()}
