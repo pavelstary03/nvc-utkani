@@ -414,7 +414,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 151</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 153</footer>
 </main>
 <script>
 (function(){
@@ -974,12 +974,12 @@ function sitDef(ms){var items=[],mx=1;
   function btn(L,ttl){return 'data-vc="'+sitPush(L.map(function(x){return x.c}))+'" data-vk="A" data-vt="'+esc(ttl)+'"'}
   var tt=Lx("OBRANA","DEFENCE")+(anyS?" · "+sk.map(function(k){return Lx(k+". SET","SET "+k)}).join("+"):"")+(anyG?" · "+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].filter(function(q){return SITD[q[0]]}).map(function(q){return q[1]}).join("+"):"");
   var zs=on.filter(function(x){return x.z!=="?"&&x.z!=="S"}).length;
-  function zone(z){var L=on.filter(function(x){return x.z===z});return '<div class="sitz"><div class="sitzh" '+btn(L,tt+" · "+Lx("zóna ","zone ")+z)+'><b>'+Lx("Zóna ","Zone ")+z+'</b><span>'+(L.length||"·")+'</span></div><div class="mut" style="font-size:12px">'+(zs&&L.length?Math.round(100*L.length/zs)+" %":"")+'</div></div>'}
-  var sc='';for(var i=1;i<=Math.min(mx,5);i++)sc+='<button type="button" class="sitc" data-sitds="'+i+'" aria-pressed="'+!!SITD.sets[i]+'"><b>'+Lx(i+". SET","SET "+i)+'</b><small>'+items.filter(function(x){return x.set===i}).length+' '+Lx("útoků soupeřů","opp. attacks")+'</small></button>';
-  var gc=[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].map(function(q){return '<button type="button" class="sitc" data-sitdg="'+q[0]+'" aria-pressed="'+SITD[q[0]]+'"><b>'+q[1]+'</b><small>'+items.filter(function(x){return x.g===q[0]}).length+' '+Lx("útoků soupeřů","opp. attacks")+'</small></button>'}).join("");
+  function zone(z){var L=on.filter(function(x){return x.z===z});return '<div class="sitz"'+(L.length?'':' style="opacity:.45"')+'><div class="sitzh" '+btn(L,tt+" · "+Lx("zóna ","zone ")+z)+'><b>'+Lx("Zóna ","Zone ")+z+'</b></div></div>'}
+  var sc='';for(var i=1;i<=Math.min(mx,5);i++)sc+='<button type="button" class="sitc" data-sitds="'+i+'" aria-pressed="'+!!SITD.sets[i]+'"><b>'+Lx(i+". SET","SET "+i)+'</b></button>';
+  var gc=[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].map(function(q){return '<button type="button" class="sitc" data-sitdg="'+q[0]+'" aria-pressed="'+SITD[q[0]]+'"><b>'+q[1]+'</b></button>'}).join("");
   var un=on.filter(function(x){return x.z==="?"}),se=on.filter(function(x){return x.z==="S"});
   return '<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Útoky soupeřů proti sledovanému družstvu podle zóny, ze které útočily. Kliknutím na zónu se přehrají tyto útoky i reakce družstva (blok, obrana).","Opponents' attacks against the team by the zone they attacked from. Click a zone to play these attacks and the team's reaction (block, dig).")+'</p><div class="sitch">'+sc+'</div><div class="sitch">'+gc+'</div>'+
-   (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div><div class="situn"><span '+btn(un,tt+" · "+Lx("nerozlišené","unassigned"))+'>'+Lx("Nerozlišené: ","Unassigned: ")+un.length+'</span><span '+btn(se,tt+" · "+Lx("nahrávačka (PP)","setter (PP)"))+'>'+Lx("Nahrávačka (PP): ","Setter (PP): ")+se.length+'</span></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
+   (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div><div class="situn"><span '+btn(un,tt+" · "+Lx("nerozlišené","unassigned"))+'>'+Lx("Nerozlišené","Unassigned")+'</span><span '+btn(se,tt+" · "+Lx("nahrávačka (PP)","setter (PP)"))+'>'+Lx("Nahrávačka (PP)","Setter (PP)")+'</span></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitds]");if(b){var k=b.dataset.sitds;SITD.sets[k]=!SITD.sets[k];oppSit();return}b=e.target.closest&&e.target.closest("[data-sitdg]");if(b){SITD[b.dataset.sitdg]=!SITD[b.dataset.sitdg];oppSit()}});
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
