@@ -305,7 +305,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 112</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 113</footer>
 </main>
 <script>
 (function(){
@@ -1735,7 +1735,7 @@ var OPPG=["EX-NVC"],OPPU=["EX-NVC","1-NVC"],OPP={list:[],sum:{},full:{}},oppSel=
 function uuid4(){try{if(crypto.randomUUID)return crypto.randomUUID()}catch(e){}var b=new Uint8Array(16);try{crypto.getRandomValues(b)}catch(e){for(var i=0;i<16;i++)b[i]=Math.random()*256}b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return("0"+x.toString(16)).slice(-2)}).join("");return h.slice(0,8)+"-"+h.slice(8,12)+"-"+h.slice(12,16)+"-"+h.slice(16,20)+"-"+h.slice(20)}
 function nrm(s){return(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"")}
 function oppCtx(){if(mode==="staff")return OPPG.indexOf(ctx.grp)>=0?{season:ctx.season,grp:ctx.grp}:null;
-  if(RPK&&ctx.grp)return OPPG.indexOf(ctx.grp)>=0&&playerOpts().some(function(x){return x.season===pSeason&&x.grp===ctx.grp})?{season:pSeason,grp:ctx.grp}:null;
+  if((RPK||PVP())&&ctx.grp)return OPPG.indexOf(ctx.grp)>=0&&playerOpts().some(function(x){return x.season===pSeason&&x.grp===ctx.grp})?{season:pSeason,grp:ctx.grp}:null;
   var m=(playerM||[]).filter(function(x){return x.season===pSeason&&x.active&&OPPG.indexOf(x.grp)>=0})[0];return m?{season:pSeason,grp:m.grp}:null}
 function oppAdmOk(){return mode==="staff"&&OPPU.indexOf(ctx.grp)>=0&&canW()}
 function oppCtxU(){return mode==="staff"?(OPPU.indexOf(ctx.grp)>=0?{season:ctx.season,grp:ctx.grp}:null):oppCtx()}
