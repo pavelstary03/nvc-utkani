@@ -134,7 +134,12 @@ body.nuui .c2l{color:#1f4f9a;font-weight:800}
 .pw .pv.dual{aspect-ratio:32/9}
 .pw .pv.dual .ytw{width:50%!important;right:auto!important}.pw .pv.dual .ytw[data-side=l]{left:0!important}.pw .pv.dual .ytw[data-side=r]{left:50%!important}
 .rfs .pw .pv.dual{aspect-ratio:auto}
-.dvfs{position:absolute;top:8px;z-index:4;border:0;border-radius:9px;background:rgba(15,27,45,.78);color:#fff;font:800 13px inherit;font-family:inherit;padding:6px 10px;cursor:pointer;transition:opacity .25s}.dvfs[hidden]{display:none}.dvfs[data-dv="0"]{left:calc(50% - 8px);transform:translateX(-100%)}.dvfs[data-dv="1"]{right:8px}
+/* v136: mezera mezi videi, větší tlačítka KAM. */
+.pw .pv.dual{container-type:size;--g:8px;background:#fff}.rfs .pw .pv.dual{--g:4px;background:#000}
+.pw .pv.dual .ytw{width:calc(50% - var(--g))!important;border-radius:12px!important;overflow:hidden}
+.pw .pv.dual .ytw[data-side=l]{left:0!important}.pw .pv.dual .ytw[data-side=r]{left:calc(50% + var(--g))!important}
+.rfs .pw .pv.dual .ytw{border-radius:0!important}
+.dvfs{position:absolute;top:calc(50% - 14.06cqw + 8px);z-index:4;border:2px solid #c5cedb;border-radius:12px;background:#fff;color:var(--blue);font:800 16px inherit;font-family:inherit;height:46px;padding:0 12px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px #0003;transition:opacity .25s}.dvfs[hidden]{display:none}.dvfs svg{display:block}.dvfs[data-dv="0"]{right:calc(50% + var(--g) + 8px)}.dvfs[data-dv="1"]{right:8px}
 .pw.ov.hid .dvfs{opacity:0;pointer-events:none}
 .rfs.rfsd.nu2>.row{display:none!important}
 /* v132: připravené YouTube hned po otevření */
@@ -404,7 +409,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 135</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 136</footer>
 </main>
 <script>
 (function(){
@@ -1012,7 +1017,7 @@ function Rep(el,o){var NU=NEWUI();
     var ytw=g("y"),vd=g("v");vd.removeAttribute("controls");
     var pw=document.createElement("div");pw.className="pw";pw.id=id+"pw";var pv=document.createElement("div");pv.className="pv";
     ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pvEl=pv;pv.dataset.ph=Lx("Toto utkání zatím nemá vložený odkaz na YouTube. Vlož ho v kartě utkání (pole ZEZADU / Z BOKU).","This match has no YouTube link yet. Add it in the match card (BEHIND / SIDE fields).");ytw2=document.createElement("div");ytw2.className="ytw ytw2";ytw2.id=id+"y2";ytw2.innerHTML='<div id="'+id+'yp2"></div>';pv.appendChild(ytw2);pv.appendChild(vd);
-    [0,1].forEach(function(k){var fb=document.createElement("button");fb.type="button";fb.className="dvfs";fb.dataset.dv=k;fb.hidden=true;fb.title=Lx("Jen tato kamera na celou obrazovku","This camera only, full screen");fb.innerHTML=Lx("KAM. ","CAM. ")+(k+1)+" ⛶";fb.onclick=function(ev){ev.stopPropagation();setView(k);if(!fsOn)enterFs()};pv.appendChild(fb)});
+    [0,1].forEach(function(k){var fb=document.createElement("button");fb.type="button";fb.className="dvfs";fb.dataset.dv=k;fb.hidden=true;fb.title=Lx("Jen tato kamera na celou obrazovku","This camera only, full screen");fb.innerHTML='<span>'+Lx("KAM. ","CAM. ")+(k+1)+'</span><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg>';fb.onclick=function(ev){ev.stopPropagation();setView(k);if(!fsOn)enterFs()};pv.appendChild(fb)});
     var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
     var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
     var FSI=function(on){return '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/>'+(on?'<path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#e5231b" stroke-width="3"/>':'')+'</svg>'};window.__FSI=FSI;
