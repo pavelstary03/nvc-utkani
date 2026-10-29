@@ -140,14 +140,15 @@ footer{margin:18px 0 8px;text-align:center;font-size:12px;opacity:.65}
 .c2l{color:var(--mut);font-weight:800;font-size:12px}.c2v{min-width:46px;text-align:center;font-weight:800;font-size:18px}
 .c2s{display:flex;align-items:center;gap:8px;width:100%}.c2s input[type=range]{flex:1;min-width:0;height:36px;accent-color:var(--blue)}
 .c2t{width:100%;height:30px;accent-color:var(--blue)}
-.c2pop{position:absolute;right:8px;bottom:calc(100% - 4px);background:#fff;border:2px solid var(--blue);border-radius:12px;padding:12px 14px;box-shadow:0 8px 24px #0f1b2d44;z-index:10;display:flex;flex-direction:column;gap:10px;min-width:260px}
+.c2h{font-size:15px;color:var(--ink)}.c2x{margin:4px 0 0;font-size:12px;line-height:1.35;color:var(--mut);text-transform:none;font-weight:500}.c2o{padding-top:8px;border-top:1px solid var(--line)}
+.c2pop{position:absolute;right:8px;bottom:calc(100% - 4px);max-width:min(420px,calc(100% - 16px));max-height:70vh;overflow:auto;background:#fff;border:2px solid var(--blue);border-radius:12px;padding:12px 14px;box-shadow:0 8px 24px #0f1b2d44;z-index:10;display:flex;flex-direction:column;gap:10px;min-width:280px}
 .c2pop[hidden]{display:none}.c2pop .ps{display:none}
 @media(min-aspect-ratio:13/10) and (min-height:500px){.pw:not(.ov){grid-template-columns:minmax(0,1fr) clamp(280px,27vw,360px);align-items:start}.pw:not(.ov) .pv{max-height:calc(100vh - 150px);width:min(100%,calc((100vh - 150px)*16/9))}.pw:not(.ov) .ctl2{padding:12px}.pw:not(.ov) .c2b.tr{width:50px;height:52px;font-size:19px}.pw:not(.ov) .c2b.sm{width:50px;height:52px;font-size:11px}.pw:not(.ov) .c2b.pl{width:72px;height:52px;font-size:26px}.pw:not(.ov) .c2r{gap:6px}}
-@media(max-width:620px){.c2p{display:none!important}.c2pop .ps{display:flex}.c2b{height:42px;font-size:14px}.c2b.pl{width:66px;height:50px}.c2b.tr{width:46px;height:50px;font-size:18px}.c2b.sm{width:46px;height:50px;font-size:10px}.c2r{gap:5px}.c2pop{left:8px;right:8px;min-width:0}}
+@media(max-width:620px){.c2p{display:none!important}.c2pop .ps{display:block}.c2b{height:42px;font-size:14px}.c2b.pl{width:66px;height:50px}.c2b.tr{width:46px;height:50px;font-size:18px}.c2b.sm{width:46px;height:50px;font-size:10px}.c2r{gap:5px}.c2pop{left:8px;right:8px;min-width:0}}
 .pw.ov{display:block;position:relative}
 .pw.ov .pv{max-height:none;width:100%}
 .pw.ov .ctl2{position:absolute;left:0;right:0;bottom:0;z-index:4;background:linear-gradient(transparent,rgba(0,0,0,.78));border:0;border-radius:0;padding:34px 12px 10px;transition:opacity .25s}
-.pw.ov .ctl2{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:14px;row-gap:6px;padding-top:30px}.pw.ov .c2t{flex:1 0 100%;height:22px}.pw.ov .c2s{flex:1 1 240px;max-width:520px;width:auto}.pw.ov .c2p{display:none}.pw.ov .c2pop .ps{display:flex}.pw.ov .c2b{height:42px}.pw.ov .c2b.tr{height:46px;width:50px;font-size:18px}.pw.ov .c2b.sm{height:46px;width:48px;font-size:10px}.pw.ov .c2b.pl{height:46px;width:64px;font-size:24px}.pw.ov .c2l{color:#fff}.pw.ov .c2v{color:#fff}
+.pw.ov .ctl2{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:14px;row-gap:6px;padding-top:30px}.pw.ov .c2t{flex:1 0 100%;height:22px}.pw.ov .c2s{flex:1 1 240px;max-width:520px;width:auto}.pw.ov .c2p{display:none}.pw.ov .c2pop .ps{display:block}.pw.ov .c2b{height:42px}.pw.ov .c2b.tr{height:46px;width:50px;font-size:18px}.pw.ov .c2b.sm{height:46px;width:48px;font-size:10px}.pw.ov .c2b.pl{height:46px;width:64px;font-size:24px}.pw.ov .c2l{color:#fff}.pw.ov .c2v{color:#fff}
 .pw.ov.hid .ctl2,.pw.ov.hid .pbadge{opacity:0;pointer-events:none}
 .c2s input[type=range],.c2t{-webkit-appearance:none;appearance:none;background:transparent;margin:0;touch-action:pan-y}
 .c2s input[type=range]{height:52px}.c2t{height:40px}
@@ -349,7 +350,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 116</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 117</footer>
 </main>
 <script>
 (function(){
@@ -908,7 +909,7 @@ function Rep(el,o){var NU=NEWUI();
     if(playing)ytp.loadVideoById({videoId:to.id,startSeconds:nt});else ytp.cueVideoById({videoId:to.id,startSeconds:nt})}
   function playAt(i){if(i<0||i>=acts.length)return;pos=i;var c=acts[i];drOn=true;work=[];curStk=null;dpaused=false;drSig="";setTimeout(function(){updDt();if(drawOn)updTb()},0);
     [].forEach.call(g("l").querySelectorAll(".act"),function(x){x.classList.toggle("on",+x.dataset.i===i)});
-    var e=g("l").querySelector('.act[data-i="'+i+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
+    var e=g("l").querySelector('.act[data-i="'+i+'"]');if(NU){var L=g("l");if(e&&L){L.scrollTop+=e.getBoundingClientRect().top-L.getBoundingClientRect().top}}else if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
     var cu=g("u");if(cu&&e)cu.textContent=(i+1)+"/"+acts.length+" · "+(e.innerText||"").replace(/\s+/g," ").trim().slice(0,160);var pbd=g("pb");if(pbd)pbd.textContent=cu.textContent;
     if(c.v!=null&&g("AF").checked&&!fsOn&&!reel)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
@@ -946,10 +947,11 @@ function Rep(el,o){var NU=NEWUI();
      '<div class="c2s"><span class="c2l">'+Lx("RYCHLOST","SPEED")+'</span>'+B("sq","sm","−")+'<input type="range" min="25" max="100" step="25" data-c2="sp" aria-label="Rychlost"><button type="button" class="c2b sq" data-c2="sa">+</button><span class="c2v" data-c2="sv"></span></div>'+
      '<div class="c2r c2p"><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PŘED","BEFORE")+'</span>'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span><span class="c2r" style="flex-wrap:nowrap"><span class="c2l">'+Lx("PO","AFTER")+'</span>'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div>'+
      '<div class="c2r">'+(o.dr?B("yl","dw","✎ "+Lx("KRESLIT","DRAW")):"")+B("bl","al","▶▶ "+Lx("PŘEHRÁT VŠECHNY","PLAY ALL"))+(o.share?B("","sh","↗",Lx("Sdílet klip","Share clip")):"")+B("","fs","⛶",Lx("Celá obrazovka","Full screen"))+B("","gr","⚙",Lx("Nastavení","Settings"))+'</div>'+
-     '<div class="c2pop" hidden><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("POSUN VIDEA","VIDEO OFFSET")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","om","−")+'<span class="c2v" data-c2="ov"></span>'+B("sq","oa","+")+'</span></div>'+
-     '<div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("AUTO CELÁ OBRAZOVKA","AUTO FULL SCREEN")+'</span>'+B("","af","")+'</div>'+
-     '<div class="ps c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PŘED (s)","BEFORE (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span></div>'+
-     '<div class="ps c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PO (s)","AFTER (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div></div>';
+     '<div class="c2pop" hidden><div class="c2r" style="justify-content:space-between"><b class="c2h">⚙ '+Lx("NASTAVENÍ PŘEHRÁVAČE","PLAYER SETTINGS")+'</b>'+B("sq","gx","✕",Lx("Zavřít","Close"))+'</div>'+
+     '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("POSUN VIDEA","VIDEO OFFSET")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","om","−")+'<span class="c2v" data-c2="ov"></span>'+B("sq","oa","+")+'</span></div><p class="c2x">'+Lx("Použij, když klip začíná moc brzy nebo pozdě oproti akci. Tlačítko + začne klip později ve videu, − dříve (po půl vteřině). Hodnota se uloží k tomuto utkání a kameře.","Use it when a clip starts too early or too late compared to the action. + starts the clip later in the video, − earlier (in half-second steps). The value is saved for this match and camera.")+'</p></div>'+
+     '<div class="c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("AUTO CELÁ OBRAZOVKA","AUTO FULL SCREEN")+'</span>'+B("","af","")+'</div><p class="c2x">'+Lx("ZAP: po klepnutí na akci v seznamu se video samo otevře na celou obrazovku. VYP: video zůstane na stránce a na celou obrazovku přepneš tlačítkem ⛶. U Přehrát všechny se na celou obrazovku nepřepíná nikdy.","ON: tapping an action in the list opens the video full screen. OFF: the video stays on the page; use the ⛶ button for full screen. “Play all” never switches to full screen by itself.")+'</p></div>'+
+     '<div class="ps c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PŘED AKCÍ (s)","BEFORE ACTION (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","bm","−")+'<span class="c2v" data-c2="bv"></span>'+B("sq","ba","+")+'</span></div><p class="c2x">'+Lx("Kolik vteřin klipu je před okamžikem akce.","How many seconds of the clip come before the action.")+'</p></div>'+
+     '<div class="ps c2o"><div class="c2r" style="justify-content:space-between"><span class="c2l">'+Lx("PO AKCI (s)","AFTER ACTION (s)")+'</span><span class="c2r" style="flex-wrap:nowrap">'+B("sq","am","−")+'<span class="c2v" data-c2="av"></span>'+B("sq","aa","+")+'</span></div><p class="c2x">'+Lx("Kolik vteřin klipu je po okamžiku akce.","How many seconds of the clip come after the action.")+'</p></div></div>';
     pw.appendChild(c2);
     var q=function(x){return[].slice.call(c2.querySelectorAll('[data-c2="'+x+'"]'))};
     var lastAct=Date.now(),pop=c2.querySelector(".c2pop");
@@ -968,7 +970,7 @@ function Rep(el,o){var NU=NEWUI();
       else if(x==="bm")stepIn("b",-1,0,30);else if(x==="ba")stepIn("b",1,0,30);else if(x==="am")stepIn("a",-1,0,30);else if(x==="aa")stepIn("a",1,0,30);
       else if(x==="om")stepIn("o",-.5,-60,60);else if(x==="oa")stepIn("o",.5,-60,60);
       else if(x==="af"){g("AF").checked=!g("AF").checked;g("AF").onchange&&g("AF").onchange();lbl()}
-      else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}
+      else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}else if(x==="gx"){pop.hidden=true}
       lbl()});
     c2.addEventListener("input",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();if(b.dataset.c2==="sp")setRate(+b.value);
       else if(b.dataset.c2==="tl"&&lastR){var t=lastR[0]+(+b.value/1000)*(lastR[1]-lastR[0]);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(x){}t0=Date.now()}});
