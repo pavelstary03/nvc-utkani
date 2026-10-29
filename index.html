@@ -414,7 +414,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 148</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 149</footer>
 </main>
 <script>
 (function(){
@@ -947,7 +947,7 @@ var SITGI={X5:1,XP:1,XR:1,X9:1,X8:1,X6:1,X4:1,X0:1,XT:1,X3:1,CB:1,CF:1,CD:1,X1:1
 function sitGrp(code){return SITGI[code]?"ins":(code&&code.charAt(0)==="V")?"out":""}
 function sitServe(Rz){var cnt={M:0,Q:0};Rz.tot.forEach(function(c){if(c.s==="S"&&cnt[c.y]!==undefined)cnt[c.y]++});
   var rows=Rz.rows.map(function(q){return{q:q,r:sitRow((Object.keys(q.nums).join("/"))+" "+q.name,q.list,false)}}).filter(function(x){return x.r.n}).sort(function(a,b){return b.r.n-a.r.n});
-  return '<div class="sitch">'+["M","Q"].map(function(k){return '<button type="button" class="sitc" data-sitt="'+k+'" aria-pressed="'+(SITT===k)+'"><b>'+SITE[k][0]+'</b><small>'+SITE[k][1]+" · "+cnt[k]+' '+Lx("podání","serves")+'</small></button>'}).join("")+'</div>'+
+  return '<div class="sitch">'+["M","Q"].map(function(k){return '<button type="button" class="sitc" data-sitt="'+k+'" aria-pressed="'+(SITT===k)+'"><b>'+SITE[k][0]+'</b><small>'+cnt[k]+' '+Lx("podání","serves")+'</small></button>'}).join("")+'</div>'+
    (rows.length?'<div class="sitpl">'+sitRow(Lx("CELÝ TÝM","WHOLE TEAM"),Rz.tot,true).h+rows.map(function(x){return x.r.h}).join("")+'</div><p class="mut" style="margin:8px 0 0;font-size:12px">'+Lx("Klikni na jméno hráčky (všechna její podání tohoto typu) nebo na úsek pruhu (jen dané hodnocení) a přehrají se videa.","Click a player name (all her serves of this type) or a bar segment (only that evaluation) to play the videos.")+'</p>':'<p class="mut" style="margin:0">'+Lx("V tomto výběru nejsou žádná podání tohoto typu.","No serves of this type in this selection.")+'</p>')}
 function sitAtt(ms){var items=[];
   ms.forEach(function(m){var R=repData(m);if(!R.ok)return;var PH=dsPhase(m),T=R[m.our].pl;
