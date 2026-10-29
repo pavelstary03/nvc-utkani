@@ -137,6 +137,11 @@ body.nuui .c2l{color:#1f4f9a;font-weight:800}
 .dvfs{position:absolute;top:8px;z-index:4;border:0;border-radius:9px;background:rgba(15,27,45,.78);color:#fff;font:800 13px inherit;font-family:inherit;padding:6px 10px;cursor:pointer;transition:opacity .25s}.dvfs[hidden]{display:none}.dvfs[data-dv="0"]{left:calc(50% - 8px);transform:translateX(-100%)}.dvfs[data-dv="1"]{right:8px}
 .pw.ov.hid .dvfs{opacity:0;pointer-events:none}
 .rfs.rfsd.nu2>.row{display:none!important}
+/* v131: bílé pozadí videa, bez černých pruhů */
+body.nuui .pw .pv,body.nuui .pw .pv .ytw,body.nuui .pw .pv video,body.nuui .rfs{background:#fff!important}
+body.nuui .pw .pv.dual .ytw{height:auto!important;aspect-ratio:16/9!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
+body.nuui .rfs:not(.rfsd) .pw .pv:not(.dual) .ytw{width:min(100%,calc((100vh - 20px)*16/9))!important;height:auto!important;aspect-ratio:16/9!important;inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)}
+body.nuui .rfs .pw .pv .ytw{box-shadow:none!important;border:0!important}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -389,7 +394,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 130</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 131</footer>
 </main>
 <script>
 (function(){
