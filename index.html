@@ -414,7 +414,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 147</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 148</footer>
 </main>
 <script>
 (function(){
@@ -942,9 +942,9 @@ function sitRow(name,list,all){var ls=list.filter(function(c){return c.s==="S"&&
   var id=sitPush(ls),segs=SITC.map(function(e){var n=ls.filter(function(c){return c.e===e[0]}).length;if(!n)return"";var li=sitPush(ls);
     return '<i data-vc="'+li+'" data-vk="S:'+e[0]+'@'+SITT+'" data-vt="'+esc(name)+'" style="flex:'+n+';background:'+e[1]+';color:'+e[2]+(e[0]==="="?";box-shadow:inset 0 0 0 1px #9fb0cb":"")+'">'+(n>1?e[0]+" "+n:e[0])+'</i>'}).join("");
   return{n:ls.length,h:'<div class="sitp'+(all?" all":"")+'"><div class="ph" data-vc="'+id+'" data-vk="S@'+SITT+'" data-vt="'+esc(name)+'"><b translate="no">'+esc(name)+'</b><span>'+ls.length+'</span></div><div class="sev">'+segs+'</div></div>'}}
-var SITS="S",SITP={r:true,t:true},SITG={ins:false,out:false,mb:false};
-var SITGI={X5:1,XP:1,XR:1,X9:1,X8:1,X6:1,X4:1,X0:1,XT:1,X3:1},SITGM={CB:1,CF:1,CD:1,X1:1,XC:1,X7:1,X2:1};
-function sitGrp(code){return SITGI[code]?"ins":SITGM[code]?"mb":(code&&code.charAt(0)==="V")?"out":""}
+var SITS="S",SITP={r:true,t:true},SITG={ins:false,out:false};
+var SITGI={X5:1,XP:1,XR:1,X9:1,X8:1,X6:1,X4:1,X0:1,XT:1,X3:1,CB:1,CF:1,CD:1,X1:1,XC:1,X7:1,X2:1};
+function sitGrp(code){return SITGI[code]?"ins":(code&&code.charAt(0)==="V")?"out":""}
 function sitServe(Rz){var cnt={M:0,Q:0};Rz.tot.forEach(function(c){if(c.s==="S"&&cnt[c.y]!==undefined)cnt[c.y]++});
   var rows=Rz.rows.map(function(q){return{q:q,r:sitRow((Object.keys(q.nums).join("/"))+" "+q.name,q.list,false)}}).filter(function(x){return x.r.n}).sort(function(a,b){return b.r.n-a.r.n});
   return '<div class="sitch">'+["M","Q"].map(function(k){return '<button type="button" class="sitc" data-sitt="'+k+'" aria-pressed="'+(SITT===k)+'"><b>'+SITE[k][0]+'</b><small>'+SITE[k][1]+" · "+cnt[k]+' '+Lx("podání","serves")+'</small></button>'}).join("")+'</div>'+
@@ -953,16 +953,16 @@ function sitAtt(ms){var items=[];
   ms.forEach(function(m){var R=repData(m);if(!R.ok)return;var PH=dsPhase(m),T=R[m.our].pl;
     Object.keys(T).forEach(function(n){n=+n;if(n<=0)return;var P=T[n];if(!P.p||!P.p.key)return;var nm=P.p.n!=null?P.p.n:n;
       P.c.forEach(function(c){if(c.s!=="A")return;var ph=PH[c.i]==="r"?"r":"t",z=dsCol(m,c,ccGet(m,c.i));if(z==="X")z="S";else if(z!=="4"&&z!=="3"&&z!=="2"&&z!=="6"&&z!=="1")z="?";var ov=ccGet(m,c.i),code=(ov&&ov.charAt(0)!=="@")?ov:c.c;items.push({c:c,ph:ph,z:z,g:sitGrp(code),key:P.p.key,name:nm+" "+P.p.last+" "+P.p.first,last:P.p.last,first:P.p.first,num:nm})})})});
-  var anyG=SITG.ins||SITG.out||SITG.mb,on=items.filter(function(x){return SITP[x.ph]&&(!anyG||SITG[x.g])});
+  var anyG=SITG.ins||SITG.out,on=items.filter(function(x){return SITP[x.ph]&&(!anyG||SITG[x.g])});
   function pc(L){return L.length?Math.round(100*L.filter(function(x){return x.c.e==="#"}).length/L.length)+" %":"–"}
   function btn(L,ttl,key){return 'data-vc="'+sitPush(L.map(function(x){return x.c}))+'" data-vk="'+(key||"A")+'" data-vt="'+esc(ttl)+'"'}
   var ph=(SITP.r&&SITP.t)?Lx("PO PŘÍJMU + TRANSITION","SIDE-OUT + TRANSITION"):SITP.r?Lx("PO PŘÍJMU","SIDE-OUT"):Lx("TRANSITION","TRANSITION");
-  if(anyG)ph+=" · "+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"],["mb",Lx("ÚTOK BLOKAŘEK","MB ATTACK")]].filter(function(q){return SITG[q[0]]}).map(function(q){return q[1]}).join(" + ");
+  if(anyG)ph+=" · "+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].filter(function(q){return SITG[q[0]]}).map(function(q){return q[1]}).join(" + ");
   function zone(z){var L=on.filter(function(x){return x.z===z}),by={};L.forEach(function(x){(by[x.key]=by[x.key]||[]).push(x)});
     var rows=Object.keys(by).sort(function(a,b){return by[b].length-by[a].length}).map(function(k){var q=by[k],x=q[0];return '<div class="sitr" '+btn(q,ph+" · "+Lx("zóna ","zone ")+z+" · "+x.name)+'><span class="nm" translate="no">'+esc(x.num+" "+x.first.charAt(0)+". "+x.last)+'</span><b>'+q.length+'</b><em>'+pc(q)+'</em></div>'}).join("");
     return '<div class="sitz"><div class="sitzh" '+btn(L,ph+" · "+Lx("zóna ","zone ")+z)+'><b>'+Lx("Zóna ","Zone ")+z+'</b><span>'+(L.length||"·")+'</span></div>'+rows+'</div>'}
   var un=on.filter(function(x){return x.z==="?"}),se=on.filter(function(x){return x.z==="S"});
-  return '<div class="sitch">'+[["r",Lx("PO PŘÍJMU","SIDE-OUT")],["t","TRANSITION"]].map(function(p){var n=items.filter(function(x){return x.ph===p[0]}).length;return '<button type="button" class="sitc" data-sitph="'+p[0]+'" aria-pressed="'+SITP[p[0]]+'"><b>'+p[1]+'</b><small>'+n+' '+Lx("útoků","attacks")+'</small></button>'}).join("")+'</div><div class="sitch">'+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"],["mb",Lx("ÚTOK BLOKAŘEK","MB ATTACK")]].map(function(p){var n=items.filter(function(x){return x.g===p[0]&&SITP[x.ph]}).length;return '<button type="button" class="sitc" data-sitg="'+p[0]+'" aria-pressed="'+SITG[p[0]]+'"><b>'+p[1]+'</b><small>'+n+' '+Lx("útoků","attacks")+'</small></button>'}).join("")+'</div>'+
+  return '<div class="sitch">'+[["r",Lx("PO PŘÍJMU","SIDE-OUT")],["t","TRANSITION"]].map(function(p){var n=items.filter(function(x){return x.ph===p[0]}).length;return '<button type="button" class="sitc" data-sitph="'+p[0]+'" aria-pressed="'+SITP[p[0]]+'"><b>'+p[1]+'</b><small>'+n+' '+Lx("útoků","attacks")+'</small></button>'}).join("")+'</div><div class="sitch">'+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].map(function(p){var n=items.filter(function(x){return x.g===p[0]&&SITP[x.ph]}).length;return '<button type="button" class="sitc" data-sitg="'+p[0]+'" aria-pressed="'+SITG[p[0]]+'"><b>'+p[1]+'</b><small>'+n+' '+Lx("útoků","attacks")+'</small></button>'}).join("")+'</div>'+
    (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2"].map(zone).join("")+'<div class="sitz sitempty">'+Lx("Zóna 5<br>bez kódů","Zone 5<br>no codes")+'</div>'+["6","1"].map(zone).join("")+'</div></div><div class="situn"><span '+btn(un,ph+" · "+Lx("nerozlišené","unassigned"))+'>'+Lx("Nerozlišené: ","Unassigned: ")+un.length+'</span><span '+btn(se,ph+" · "+Lx("nahrávačka (PP)","setter (PP)"))+'>'+Lx("Nahrávačka (PP): ","Setter (PP): ")+se.length+'</span></div><p class="mut" style="margin:8px 0 0;font-size:12px">'+Lx("V zóně: útoky hráčky a % bodových. Klikni na hlavičku zóny (všechny útoky z ní) nebo na jméno (její útoky z ní).","In a zone: the player's attacks and kill %. Click a zone header (all attacks from it) or a name (her attacks from it).")+'</p>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
