@@ -295,7 +295,7 @@ body.inadm #tabs{display:none}
 
 <section id="v-adminhub" hidden><div class="admhd"><button class="btn" data-go="matches" id="hubback"></button><h2 id="hubtitle">ADMIN</h2></div><div class="hubg" id="hubgrid"></div></section>
 <section id="v-admtest" hidden><div class="admhd"><button class="btn" data-go="adminhub" id="tstback"></button><h2 id="tsttitle"></h2></div><div id="tstbox"></div></section>
-<section id="v-admin" hidden><div class="admhd"><button class="btn" data-go="adminhub" id="admback"></button><h2 id="admsech"></h2></div><div id="vasbox"></div><div id="apprbox"></div><div id="admbox"></div><p class="mut" id="admmsg" style="margin:8px 0;color:#d4313f"></p></section>
+<section id="v-admin" hidden><div class="admhd"><button class="btn" data-go="adminhub" id="admback"></button><h2 id="admsech"></h2></div><div id="apprbox"></div><div id="admbox"></div><div id="vasbox"></div><p class="mut" id="admmsg" style="margin:8px 0;color:#d4313f"></p></section>
 <section id="v-me" hidden>
 <div class="row noprint" id="oppbtnw" hidden style="margin:0 0 10px"><button class="btn pri" id="oppbtn" style="font-size:16px;padding:12px 18px">▶ SOUPEŘI – SLEDOVÁNÍ VIDEÍ</button></div>
 <div class="row noprint" id="sstbtnw" hidden style="margin:0 0 10px"></div>
@@ -305,7 +305,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 109</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 110</footer>
 </main>
 <script>
 (function(){
@@ -1562,9 +1562,9 @@ async function rosterAll(S){var out={};try{var ms=await getAll("/rest/v1/matches
 var POSTL=[["S","nahrávačka"],["OH","smečařka"],["OP","univerzálka"],["MB","blokařka"],["L","libero"]];
 function consTxt(c,em){if(!em)return '<span class="mut">chybí e-mail</span>';if(c&&c.accepted_at&&!c.withdrawn_at)return '✓ '+esc(String(c.accepted_at).slice(0,10));if(c&&c.withdrawn_at)return '✗ odvoláno';return '<span class="mut">— zatím ne</span>'}
 function fieldCk(p,g,role,flds){var r=p.rows[g.id]||{};return '<td class="l" style="white-space:normal;min-width:130px"><b translate="no" style="font-size:11px">'+esc(g.id)+'</b>'+flds.map(function(f){return '<label class="ck"><input type="checkbox" data-ck="'+f[0]+'" data-g="'+esc(g.id)+'" data-pid="'+esc(p.pid)+'" data-role="'+role+'"'+(r[f[0]]?' checked':'')+'> '+f[1]+'</label>'}).join("")+'</td>'}
-async function renderAdmin(){var box=$("admbox");$("vasbox").hidden=admSec!=="oth";$("apprbox").hidden=admSec!=="acc";admHead();
+async function renderAdmin(){var box=$("admbox");$("vasbox").hidden=admSec!=="adm";$("apprbox").hidden=admSec!=="acc";admHead();
   if(!access.admin){box.innerHTML="";return}
-  if(admSec==="oth")vasRender();if(admSec==="acc")renderAppr();if(admSec==="acc"){box.innerHTML="";return}if(!seasons.length&&!access.admin){box.innerHTML='<div class="card mut">Žádná sezóna.</div>';return}
+  if(admSec==="adm")vasRender();if(admSec==="acc")renderAppr();if(admSec==="acc"){box.innerHTML="";return}if(!seasons.length&&!access.admin){box.innerHTML='<div class="card mut">Žádná sezóna.</div>';return}
   var S=curS();if(!S&&seasons.length){admS=seasons[0].id;S=admS}
   box.innerHTML='<div class="card mut">Načítám…</div>';
   try{
