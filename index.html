@@ -382,7 +382,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 126</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 127</footer>
 </main>
 <script>
 (function(){
@@ -1695,7 +1695,7 @@ $("pseasons").addEventListener("click",function(e){var b=e.target.closest("[data
   if(mode==="player"){pGrp="";enterPlayer(pickS).catch(function(x){alert(x.message)})}else showPick(true)});
 $("pgroups").addEventListener("click",function(e){var b=e.target.closest("[data-pg]");if(!b)return;enterStaff(pickS,b.dataset.pg).catch(function(x){alert(x.message)})});
 document.addEventListener("change",function(e){if(e.target.id!=="sesel")return;if((RPK||PVP())&&mode==="player"){var sv0=e.target.value;PSEL1="";enterPlayer(sv0).then(function(){if(!PVP())ctxSave();pvAfter()}).catch(function(x){alert(x.message)});return}var sv=e.target.value,o=staffOptions().filter(function(x){return x.season===sv}),g=o.some(function(x){return x.grp===ctx.grp})?ctx.grp:(o[0]&&o[0].grp);if(g)enterStaff(sv,g).catch(function(x){alert(x.message)})});
-document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||b.dataset.gsw===ctx.grp)return;if((RPK||PVP())&&mode==="player"){rpGrp(b.dataset.gsw);return}enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-gsw]");if(!b||(b.dataset.gsw===ctx.grp&&!document.body.classList.contains("inadm")))return;if((RPK||PVP())&&mode==="player"){rpGrp(b.dataset.gsw);return}enterStaff(ctx.season,b.dataset.gsw).catch(function(x){alert(x.message)})});
 $("uctx").onclick=async function(){if(PREV){await vasExit()}try{access=await sb("POST","/rest/v1/rpc/my_access",{});staffM=access.memberships.filter(function(m){return m.role==="coach"&&m.active});playerM=access.memberships.filter(function(m){return m.role==="player"})}catch(e){}showPick(true)};
 /* --- správa (admin / správce) --- */
 var memAll=[],admPF=null;
