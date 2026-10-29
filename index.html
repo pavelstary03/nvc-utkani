@@ -77,11 +77,11 @@ tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
 .drtb.d2 .drtxt{width:100%;box-sizing:border-box;padding:10px;border:2px solid #cfd8e6;border-radius:10px;font:inherit;font-size:14px}
 .drtb.d2 .drmsg{font-size:12px;color:#1a7f37;min-height:16px}.drdet{margin-top:6px;border-top:1px solid #e1e8f3;padding-top:6px}.drdet summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;color:#1f5fbf}
 .drtb.d2 .drit{background:#f4f8ff!important;color:#14213d!important;border-radius:10px;padding:6px 8px}.drtb.d2 .btn{padding:6px 10px;font-size:13px}.drtb.d2 .drit{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0;font-size:13px}
-@media(min-aspect-ratio:13/10) and (min-height:500px){.rfs.rfsd.nu2{display:grid!important;grid-template-columns:minmax(0,1fr) clamp(300px,30vw,380px);gap:12px;align-items:start;padding:8px 12px!important;overflow:hidden!important}
+@media(min-aspect-ratio:13/10) and (min-height:500px){.rfs.rfsd.nu2{display:grid!important;grid-template-columns:minmax(0,1fr) clamp(300px,30vw,380px);gap:12px;align-items:start;align-content:start;grid-template-rows:min-content;padding:8px 12px!important;overflow:hidden!important}
  .rfs.rfsd.nu2>*{margin-bottom:0!important}
- .rfs.rfsd.nu2 .pw{grid-column:1;height:min(calc(100vh - 16px),calc((100vw - 400px)*9/16));min-height:0;width:min(100%,calc((100vh - 16px)*16/9));align-self:center;justify-self:start}
+ .rfs.rfsd.nu2 .pw{grid-column:1;grid-row:1;height:auto!important;aspect-ratio:16/9;min-height:0;width:min(100%,calc((100vh - 16px)*16/9));align-self:start;justify-self:start}
  .rfs.rfsd.nu2 .pw .pv .ytw,.rfs.rfsd.nu2 .pw .pv video{height:100%!important;min-height:0!important}
- .rfs.rfsd.nu2 .drtb.d2{grid-column:2;grid-row:1;max-height:calc(100vh - 16px);overflow-y:auto;margin:0}
+ .rfs.rfsd.nu2 .drtb.d2{grid-column:2;grid-row:1;align-self:stretch;height:0;min-height:100%;max-height:calc(100vh - 16px);overflow-y:auto;margin:0;box-sizing:border-box}
  .rfs.rfsd.nu2 .cur,.rfs.rfsd.nu2 .ctl{display:none!important}}
 @media(max-height:760px) and (min-aspect-ratio:13/10){.d2b{min-height:44px}.d2b.tr{min-height:48px}.d2g{margin:5px 0}}
 @media print{.drc,.drtb{display:none!important}}
@@ -372,7 +372,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 120</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 121</footer>
 </main>
 <script>
 (function(){
