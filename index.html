@@ -305,7 +305,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 113</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 114</footer>
 </main>
 <script>
 (function(){
@@ -1581,7 +1581,7 @@ async function renderAdmin(){var box=$("admbox");$("vasbox").hidden=admSec!=="ad
     h+=gsBar(mg);
     if(access.admin){
       h+='<div class="card" data-sec="adm"><h2>ADMINISTRÁTOŘI</h2><div class="row">'+adm.map(function(a){return '<span class="chip" translate="no">'+esc(a.email)+(a.email===access.email?'':' <a href="#" data-dadm="'+esc(a.email)+'">✕</a>')+'</span>'}).join("")+'</div><div class="row" style="margin-top:10px"><input type="text" id="nae" placeholder="e-mail administrátora"><button class="btn pri" id="naadd">PŘIDAT ADMINISTRÁTORA</button></div><p class="mut" style="margin:8px 0 0">Administrátor smí vše ve všech sezónách a skupinách.</p></div>';
-      var st=byPid("coach"),SF=[["active","aktivní"],["can_write","zápis"],["can_publish","zveřejňování"],["can_manage","správa hráček"]];
+      var st=byPid("coach"),SF=[["active","aktivní"],["can_write","zápis"],["can_publish","zveřejňování"]];
       h+='<div class="card" data-sec="grp"><h2>REALIZAČNÍ TÝM'+scTitle()+'</h2><p class="mut" style="margin:0 0 8px">'+Lx("Každá skupina má svůj vlastní realizační tým. Práva se nastavují jen pro právě vybranou skupinu. Další skupiny: jen zaškrtnutí „aktivní“, práva nastavíš po přepnutí na tu skupinu.","Each group has its own support staff. Rights are set only for the selected group. Other groups: only the “active” tick; set the rights after switching to that group.")+'</p><div class="scroll tbl"><table><thead><tr><th class="l">Jméno</th><th class="l">E-mail</th>'+gOrder().map(function(g){return '<th class="l" translate="no">'+esc(g.id)+'</th>'}).join("")+'<th></th></tr></thead><tbody>'+st.filter(inScope).map(function(p){
         return '<tr><td class="l"><input type="text" value="'+esc(p.name)+'" data-pf="name" data-pid="'+esc(p.pid)+'" data-role="coach" style="width:140px"></td><td class="l"><input type="text" value="'+esc(p.email)+'" data-pf="email" data-pid="'+esc(p.pid)+'" data-role="coach" style="width:190px"></td>'+gOrder().map(function(g){return fieldCk(p,g,"coach",g.id===admPF?SF:[SF[0]])}).join("")+'<td><button class="btn danger" data-dp="'+esc(p.pid)+'" data-role="coach">✕</button></td></tr>'}).join("")+'</tbody></table></div>'+
        '<div class="row" style="margin-top:10px"><input type="text" id="nsn" placeholder="jméno" style="min-width:140px"><input type="text" id="nse" placeholder="e-mail"><select id="nsg">'+groups.map(function(g){return '<option translate="no" value="'+esc(g.id)+'"'+(g.id===agrp()?' selected':'')+'>'+esc(g.id)+'</option>'}).join("")+'</select><button class="btn pri" id="nsaddt">PŘIDAT ČLENA TÝMU</button></div></div>'}
