@@ -142,6 +142,9 @@ body.nuui .pw .pv,body.nuui .pw .pv .ytw,body.nuui .pw .pv video,body.nuui .rfs{
 body.nuui .pw .pv.dual .ytw{height:auto!important;aspect-ratio:16/9!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
 body.nuui .rfs:not(.rfsd) .pw .pv:not(.dual) .ytw{width:min(100%,calc((100vh - 20px)*16/9))!important;height:auto!important;aspect-ratio:16/9!important;inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)}
 body.nuui .rfs .pw .pv .ytw{box-shadow:none!important;border:0!important}
+/* v132: připravené YouTube hned po otevření */
+.pbadge:empty{display:none}
+body.nuui .pw .pv .ytw:not(:has(iframe)){background:#eef1f6!important}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -394,7 +397,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 131</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 132</footer>
 </main>
 <script>
 (function(){
@@ -1160,7 +1163,7 @@ function Rep(el,o){var NU=NEWUI();
   if(g("sh"))g("sh").onclick=function(){var mk=Object.keys(marks).filter(function(k){return marks[k]}).map(function(k){return acts[+k]});shareNow(mk.length?mk:(pos>=0?[acts[pos]]:[]))};
   if(o.share&&!NU){var sb2=document.createElement("button");sb2.type="button";sb2.className="btn";sb2.setAttribute("data-dact","share");sb2.textContent="↗ "+Lx("SDÍLET KLIP","SHARE CLIP");var cb2=tb.querySelector('[data-dact="close"]');cb2.parentNode.insertBefore(sb2,cb2)}
   me.setSource=function(s){if(local){URL.revokeObjectURL(local);local=null;g("v").removeAttribute("src");g("v").hidden=true;try{g("v").load()}catch(e){}}
-    applySource(s);msg(S.length?"":"Zatím není vložen odkaz na YouTube.");stopAt=null;pause()};
+    applySource(s);msg(S.length?"":"Zatím není vložen odkaz na YouTube.");stopAt=null;pause();if(NU&&S.length){var tries=0;(function pre(){if(local||!S.length||!el.isConnected)return;if(!el.offsetParent){if(tries++<25)setTimeout(pre,400);return}ensureYt();if(dualOn()){dualLayout();ensureYt2()}})()}};
   function codeHtml(c){var ov=o.cc?o.cc.get(c):"";if(ov)return' · <s>'+esc(c.c)+'</s> <b>'+(ov.charAt(0)==="@"?Lx("zóna ","zone ")+ov.slice(1):esc(ov))+'</b> ✓';return c.c?' · '+esc(c.c):''}
   me.setActs=function(list,lab){acts=list;pos=-1;reel=false;stopAt=null;
     g("c").textContent=list.length+" akcí";
