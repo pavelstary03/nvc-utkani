@@ -130,6 +130,13 @@ body.nuui .card h3,body.nuui .mrow h3{color:#1f4f9a}
 body.nuui .c2l,body.nuui .d2len,body.nuui .d2sp2,body.nuui .d2t+*{font-size:14px}
 body.nuui .c2l{color:#1f4f9a;font-weight:800}
 .d2t{font-size:17px}
+/* v130: dvě videa vedle sebe */
+.pw .pv.dual{aspect-ratio:32/9}
+.pw .pv.dual .ytw{width:50%!important;right:auto!important}.pw .pv.dual .ytw[data-side=l]{left:0!important}.pw .pv.dual .ytw[data-side=r]{left:50%!important}
+.rfs .pw .pv.dual{aspect-ratio:auto}
+.dvfs{position:absolute;top:8px;z-index:4;border:0;border-radius:9px;background:rgba(15,27,45,.78);color:#fff;font:800 13px inherit;font-family:inherit;padding:6px 10px;cursor:pointer;transition:opacity .25s}.dvfs[hidden]{display:none}.dvfs[data-dv="0"]{left:calc(50% - 8px);transform:translateX(-100%)}.dvfs[data-dv="1"]{right:8px}
+.pw.ov.hid .dvfs{opacity:0;pointer-events:none}
+.rfs.rfsd.nu2>.row{display:none!important}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -382,7 +389,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 129</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 130</footer>
 </main>
 <script>
 (function(){
@@ -903,7 +910,7 @@ function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
 setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!document.querySelector(".rfs"))document.body.classList.remove("rfsb")}catch(e){}},1000);
 function NEWUI(){var r=false;try{r=!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){}try{document.body.classList.toggle("nuui",r)}catch(e){}return r}
 function Rep(el,o){var NU=NEWUI();
-  var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null;
+  var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null,ytp2=null,ytReady2=false,curVid2="",view="b",ytw2=null,pvEl=null,drView=null;
   el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline muted hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
    '<div class="ctl noprint"><button class="btn pri" id="'+id+'fs" type="button">'+Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN")+'</button><label class="adv">Před (s)<input type="number" id="'+id+'b" min="0" max="30" value="3" style="width:70px"></label><label class="adv">Po (s)<input type="number" id="'+id+'a" min="0" max="30" value="4" style="width:70px"></label>'+
    '<div class="rate" id="'+id+'rt"><span class="mut" style="font-weight:700;font-size:11px;text-transform:uppercase;display:block;margin-bottom:3px">Rychlost</span><span translate="no">'+[0.25,0.5,0.75,1].map(function(r){return '<button type="button" class="chip" data-rate="'+r+'" aria-pressed="'+(r===RATE)+'">'+(r*100)+'%</button>'}).join("")+'</span></div><label class="adv">Posun videa (s)<input type="number" id="'+id+'o" step="0.5" value="0" style="width:80px"></label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'r"> celá výměna</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'L"> smyčka</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'AF"> '+Lx("auto celá obrazovka","auto full screen")+'</label>'+
@@ -913,13 +920,13 @@ function Rep(el,o){var NU=NEWUI();
   try{g("L").checked=localStorage.getItem("nvc-loop")!=="0"}catch(e){g("L").checked=true}try{g("AF").checked=localStorage.getItem("nvc-autofs")!=="0"}catch(e){g("AF").checked=true}g("AF").onchange=function(){try{localStorage.setItem("nvc-autofs",this.checked?"1":"0")}catch(e){}};
    g("L").onchange=function(){try{localStorage.setItem("nvc-loop",this.checked?"1":"0")}catch(e){}};
   function msg(t){g("m").textContent=t||""}
-  function applyRate(){try{if(mode()==="yt"){if(ytp&&ytp.setPlaybackRate)ytp.setPlaybackRate(RATE)}else g("v").playbackRate=RATE}catch(e){}}
+  function applyRate(){try{if(mode()==="yt"){if(ytp&&ytp.setPlaybackRate)ytp.setPlaybackRate(RATE);p2(function(x){x.setPlaybackRate(RATE)})}else g("v").playbackRate=RATE}catch(e){}}
   function drawRate(){[].forEach.call(g("rt").querySelectorAll("[data-rate]"),function(b){b.setAttribute("aria-pressed",+b.dataset.rate===RATE)})}
   g("rt").addEventListener("click",function(e){var b=e.target.closest("[data-rate]");if(!b)return;RATE=+b.dataset.rate;try{localStorage.setItem("nvc-rate",String(RATE))}catch(x){}drawRate();applyRate()});
   function mode(){return local?"local":S.length?"yt":"none"}
   function getT(){try{return mode()==="yt"?ytp.getCurrentTime():g("v").currentTime}catch(e){return 0}}
-  function pause(){try{if(mode()==="yt"){if(ytp&&ytp.pauseVideo)ytp.pauseVideo()}else g("v").pause()}catch(e){}}
-  function drawAng(){var b=g("g");b.hidden=!(S.length>1&&mode()==="yt");b.innerHTML='<span class="mut" style="font-weight:700;font-size:12px">POHLED:</span>'+S.map(function(s,i){return '<button class="chip" data-ang="'+i+'" aria-pressed="'+(i===ang)+'">'+esc(s.name)+'</button>'}).join("")}
+  function pause(){try{if(mode()==="yt"){if(ytp&&ytp.pauseVideo)ytp.pauseVideo();p2(function(x){x.pauseVideo()})}else g("v").pause()}catch(e){}}
+  function drawAng(){var b=g("g");if(NU&&S.length>1&&mode()==="yt"){b.hidden=false;b.innerHTML='<span class="mut" style="font-weight:700;font-size:12px">'+Lx("KAMERA:","CAMERA:")+'</span>'+S.map(function(s,i){return '<button class="chip" data-view="'+i+'" aria-pressed="'+(view===i)+'">'+esc(s.name)+'</button>'}).join("")+'<button class="chip" data-view="b" aria-pressed="'+(view==="b")+'">'+Lx("OBĚ","BOTH")+'</button>';dualLayout();return}if(NU)dualLayout();b.hidden=!(S.length>1&&mode()==="yt");b.innerHTML='<span class="mut" style="font-weight:700;font-size:12px">POHLED:</span>'+S.map(function(s,i){return '<button class="chip" data-ang="'+i+'" aria-pressed="'+(i===ang)+'">'+esc(s.name)+'</button>'}).join("")}
   function offs(){return mode()==="yt"&&S[ang]?S[ang].off:(+g("o").value||0)}
   function ensureYt(){if(ytp||!S.length)return;g("y").hidden=false;msg("Načítám YouTube…");curVid=S[ang].id;
     ytReadyP().then(function(){ytp=new YT.Player(id+"yp",{videoId:curVid,playerVars:Object.assign({playsinline:1,rel:0,modestbranding:1},NU?{controls:0,disablekb:1,fs:0,iv_load_policy:3}:{}),events:{
@@ -927,18 +934,35 @@ function Rep(el,o){var NU=NEWUI();
       onReady:function(){ytReady=true;try{ytp.mute()}catch(e){}msg("");applyRate();if(pend){var c=pend;pend=null;play(c)}},
       onError:function(e){msg("Video nelze přehrát (chyba "+(e&&e.data)+"). Zkontroluj, že je video neveřejné a že je povoleno vložení.")}}})}).catch(function(){msg("YouTube se nepodařilo načíst. Zkontroluj připojení k internetu.")})}
   function range(c){var b=+g("b").value||0,a=+g("a").value||0,of=offs(),s=c.v,e=c.v;if(g("r").checked&&c.rs!=null){s=c.rs;e=c.re}return[Math.max(0,s-b+of),e+a+of]}
-  function seekP(t){try{if(mode()==="yt"){ytp.seekTo(t,true);ytp.playVideo()}else{var v=g("v");v.currentTime=t;var p=v.play();if(p&&p.catch)p.catch(function(){})}}catch(e){}}
-  function tick(){if(stopAt==null){clearInterval(tm);tm=null;return}if(dpaused)return;if(Date.now()-t0<900)return;
+  function seekP(t){try{if(mode()==="yt"){ytp.seekTo(t,true);ytp.playVideo();p2(function(x){x.seekTo(Math.max(0,d2t(t)),true);x.playVideo()})}else{var v=g("v");v.currentTime=t;var p=v.play();if(p&&p.catch)p.catch(function(){})}}catch(e){}}
+  function tick(){if(stopAt==null){clearInterval(tm);tm=null;return}drift();if(dpaused)return;if(Date.now()-t0<900)return;
     if(getT()>=stopAt){if(!reel&&g("L").checked&&lastR){seekP(lastR[0]);t0=Date.now();return}pause();stopAt=null;clearInterval(tm);tm=null;if(reel&&pos<acts.length-1)playAt(pos+1);else if(reel&&NU&&acts.length)playAt(0);else reel=false}}
   function play(c){try{if(ytp&&ytp.mute)ytp.mute();g("v").muted=true}catch(e){}if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
     if(md==="yt"){ensureYt();if(!ytReady){pend=c;return}var vid=S[ang].id;
-      if(curVid!==vid){curVid=vid;ytp.loadVideoById({videoId:vid,startSeconds:r[0]})}else{ytp.seekTo(r[0],true);ytp.playVideo()}}
+      if(curVid!==vid){curVid=vid;ytp.loadVideoById({videoId:vid,startSeconds:r[0]})}else{ytp.seekTo(r[0],true);ytp.playVideo()}playSecond(r[0])}
     else{var v=g("v");v.currentTime=r[0];var p=v.play();if(p&&p.catch)p.catch(function(){})}
     drawRate();applyRate();stopAt=r[1];t0=Date.now();if(!tm)tm=setInterval(tick,200)}
   function switchAng(i){if(i===ang||!S[i])return;var from=S[ang],to=S[i];ang=i;g("o").value=to.off;drawAng();
     if(!ytp||!ytReady)return;var t=getT(),playing=false;try{playing=ytp.getPlayerState()===1}catch(e){}
     var d=to.off-from.off,nt=Math.max(0,t+d);if(stopAt!=null)stopAt+=d;t0=Date.now();curVid=to.id;
     if(playing)ytp.loadVideoById({videoId:to.id,startSeconds:nt});else ytp.cueVideoById({videoId:to.id,startSeconds:nt})}
+  function oth(){return ang===0?1:0}
+  function dualOn(){return NU&&mode()==="yt"&&S.length>1&&view==="b"}
+  function d2t(t){return t-S[ang].off+S[oth()].off}
+  function p2(f){if(!ytp2||!ytReady2||!dualOn())return;try{f(ytp2)}catch(e){}}
+  function dualLayout(){if(!NU||!pvEl)return;var d=dualOn();pvEl.classList.toggle("dual",d);if(ytw2){ytw2.hidden=!d;ytw2.dataset.side=ang===0?"r":"l"}g("y").dataset.side=ang===0?"l":"r";[].forEach.call(pvEl.querySelectorAll(".dvfs"),function(b){b.hidden=!d})}
+  function ensureYt2(cb){if(ytp2){if(ytReady2)cb&&cb();else(ensureYt2.q=ensureYt2.q||[]).push(cb);return}if(!S.length)return;ensureYt2.q=[cb];curVid2=S[oth()].id;
+    ytReadyP().then(function(){ytp2=new YT.Player(id+"yp2",{videoId:curVid2,playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,disablekb:1,fs:0,iv_load_policy:3},events:{onReady:function(){ytReady2=true;try{ytp2.mute()}catch(e){}var q=ensureYt2.q||[];ensureYt2.q=[];q.forEach(function(f){f&&f()})},onStateChange:function(){try{ytp2.mute()}catch(e){}}}})}).catch(function(){})}
+  function playSecond(t){if(!dualOn())return;dualLayout();ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));
+    if(curVid2!==o2.id){curVid2=o2.id;ytp2.loadVideoById({videoId:o2.id,startSeconds:tt})}else{ytp2.seekTo(tt,true);ytp2.playVideo()}try{ytp2.setPlaybackRate(RATE)}catch(e){}})}
+  function drift(){if(!dualOn()||!ytp||!ytp2||!ytReady2)return;try{var e2=Math.max(0,d2t(ytp.getCurrentTime())),a2=ytp2.getCurrentTime(),s1=ytp.getPlayerState(),s2=ytp2.getPlayerState();
+    if(s1===1&&s2!==1&&s2!==3)ytp2.playVideo();else if(s1===2&&s2===1)ytp2.pauseVideo();if(s1===1&&Math.abs(a2-e2)>.4)ytp2.seekTo(e2,true)}catch(x){}}
+  function setView(v){if(!NU||S.length<2||mode()!=="yt")return;
+    if(v==="b"){view="b";dualLayout();var t=getT(),pl=false;try{pl=ytp&&ytp.getPlayerState()===1}catch(e){}
+      ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));if(curVid2!==o2.id){curVid2=o2.id;if(pl)ytp2.loadVideoById({videoId:o2.id,startSeconds:tt});else ytp2.cueVideoById({videoId:o2.id,startSeconds:tt})}else{ytp2.seekTo(tt,true);if(pl)ytp2.playVideo();else ytp2.pauseVideo()}try{ytp2.setPlaybackRate(RATE)}catch(e){}})}
+    else{v=+v;if(!S[v])return;try{if(ytp2&&ytReady2)ytp2.pauseVideo()}catch(e){}view=v;if(v!==ang)switchAng(v)}
+    drawAng();dualLayout();updTbSafe()}
+  function updTbSafe(){try{if(typeof updTb==="function"&&drawOn)updTb()}catch(e){}}
   function playAt(i){if(i<0||i>=acts.length)return;pos=i;var c=acts[i];drOn=true;work=[];curStk=null;dpaused=false;drSig="";setTimeout(function(){updDt();if(drawOn)updTb()},0);
     [].forEach.call(g("l").querySelectorAll(".act"),function(x){x.classList.toggle("on",+x.dataset.i===i)});
     var e=g("l").querySelector('.act[data-i="'+i+'"]');if(NU){var L=g("l");if(e&&L){L.scrollTop+=e.getBoundingClientRect().top-L.getBoundingClientRect().top}}else if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
@@ -946,9 +970,9 @@ function Rep(el,o){var NU=NEWUI();
     if(c.v!=null&&g("AF").checked&&!fsOn&&!reel)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
-  function applySource(s){srcRef=s;S=(s&&s.v)||[];ang=0;g("o").value=S.length?S[0].off:0;g("y").hidden=!(ytp&&S.length);drawAng()}
+  function applySource(s){srcRef=s;S=(s&&s.v)||[];if(view!=="b"&&!S[view])view="b";ang=(NU&&view!=="b")?view:0;g("o").value=S.length?S[ang].off:0;g("y").hidden=!(ytp&&S.length);drawAng()}
   function setCm(el,k){var x=el.querySelector(".cmt");if(!k){if(x)x.remove();return}if(!x){x=document.createElement("div");x.className="cmt";x.setAttribute("translate","no");el.querySelector(".abody").appendChild(x)}x.textContent="💬 "+k;if(el.querySelector(".cmb")){var bx=document.createElement("button");bx.type="button";bx.className="cmx";bx.title="Smazat poznámku";bx.textContent="✕";x.appendChild(bx)}}
-  g("g").addEventListener("click",function(e){var b=e.target.closest("[data-ang]");if(b)switchAng(+b.dataset.ang)});
+  g("g").addEventListener("click",function(e){var vb=e.target.closest("[data-view]");if(vb){setView(vb.dataset.view);return}var b=e.target.closest("[data-ang]");if(b)switchAng(+b.dataset.ang)});
   g("l").addEventListener("click",function(e){var a=e.target.closest(".act");if(!a)return;var i=+a.dataset.i;
     if(e.target.closest(".mk")){marks[i]=e.target.closest(".mk").checked;updSh();return}
     if(e.target.closest(".shb")&&o.share){shareNow([acts[i]]);return}
@@ -970,7 +994,8 @@ function Rep(el,o){var NU=NEWUI();
     var oldCtl=el.querySelector(".ctl");oldCtl.classList.add("old");g("L").checked=true;g("r").checked=false;
     var ytw=g("y"),vd=g("v");vd.removeAttribute("controls");
     var pw=document.createElement("div");pw.className="pw";pw.id=id+"pw";var pv=document.createElement("div");pv.className="pv";
-    ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pv.appendChild(vd);
+    ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pvEl=pv;ytw2=document.createElement("div");ytw2.className="ytw ytw2";ytw2.id=id+"y2";ytw2.hidden=true;ytw2.innerHTML='<div id="'+id+'yp2"></div>';pv.appendChild(ytw2);pv.appendChild(vd);
+    [0,1].forEach(function(k){var fb=document.createElement("button");fb.type="button";fb.className="dvfs";fb.dataset.dv=k;fb.hidden=true;fb.title=Lx("Jen tato kamera na celou obrazovku","This camera only, full screen");fb.innerHTML=Lx("KAM. ","CAM. ")+(k+1)+" ⛶";fb.onclick=function(ev){ev.stopPropagation();setView(k);if(!fsOn)enterFs()};pv.appendChild(fb)});
     var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
     var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
     var FSI=function(on){return '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/>'+(on?'<path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#e5231b" stroke-width="3"/>':'')+'</svg>'};window.__FSI=FSI;
@@ -992,7 +1017,7 @@ function Rep(el,o){var NU=NEWUI();
     function lbl(){q("sv").forEach(function(x){x.textContent=Math.round(RATE*100)+"%"});q("sp").forEach(function(x){x.value=Math.round(RATE*100)});q("bv").forEach(function(x){x.textContent=(+g("b").value||0)+" s"});q("av").forEach(function(x){x.textContent=(+g("a").value||0)+" s"});q("ov").forEach(function(x){x.textContent=(+g("o").value||0)+" s"});q("af").forEach(function(x){x.textContent=g("AF").checked?"✓ "+Lx("ZAP","ON"):Lx("VYP","OFF");x.classList.toggle("bl",g("AF").checked)});q("pp").forEach(function(x){x.textContent=playing()?"⏸":"▶"})}
     function setRate(p){p=Math.max(25,Math.min(100,Math.round(p/25)*25));RATE=p/100;try{localStorage.setItem("nvc-rate",String(RATE))}catch(e){}drawRate();applyRate();lbl()}
     function stepIn(id,d,mn,mx){var i=g(id),v=Math.max(mn,Math.min(mx,(+i.value||0)+d));i.value=Math.round(v*10)/10;i.dispatchEvent(new Event("change"));lbl()}
-    function seekBy(d){var t=Math.max(0,getT()+d);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(e){}t0=Date.now()}
+    function seekBy(d){var t=Math.max(0,getT()+d);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true);p2(function(x){x.seekTo(Math.max(0,d2t(t)),true)})}else g("v").currentTime=t}catch(e){}t0=Date.now()}
     function overlay(){return fsOn||(window.matchMedia&&matchMedia("(max-height:499px) and (orientation:landscape)").matches)}
     function touch(){lastAct=Date.now();pw.classList.remove("hid")}
     c2.addEventListener("click",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();var x=b.dataset.c2;
@@ -1006,7 +1031,7 @@ function Rep(el,o){var NU=NEWUI();
       else if(x==="gr"){pop.hidden=!pop.hidden;lbl()}else if(x==="gx"){pop.hidden=true}
       lbl()});
     c2.addEventListener("input",function(e){var b=e.target.closest("[data-c2]");if(!b)return;touch();if(b.dataset.c2==="sp")setRate(+b.value);
-      else if(b.dataset.c2==="tl"&&lastR){var t=lastR[0]+(+b.value/1000)*(lastR[1]-lastR[0]);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true)}else g("v").currentTime=t}catch(x){}t0=Date.now()}});
+      else if(b.dataset.c2==="tl"&&lastR){var t=lastR[0]+(+b.value/1000)*(lastR[1]-lastR[0]);try{if(mode()==="yt"){if(ytp)ytp.seekTo(t,true);p2(function(x){x.seekTo(Math.max(0,d2t(t)),true)})}else g("v").currentTime=t}catch(x){}t0=Date.now()}});
     var tpt="";tc.addEventListener("pointerdown",function(e){tpt=e.pointerType||""});
     tc.addEventListener("click",function(){var tog=function(){touch();if(playing()){dpaused=true;pause()}else if(stopAt==null&&pos>=0)playAt(pos);else resume();lbl()};
       if(tpt==="mouse"||!pw.classList.contains("ov")){tog();return}
@@ -1039,7 +1064,7 @@ function Rep(el,o){var NU=NEWUI();
   var TL=[["pen","✎ "+Lx("Pero","Pen")],["l","╱ "+Lx("Čára","Line")],["a","➜ "+Lx("Šipka","Arrow")],["c","◯ "+Lx("Kruh","Circle")],["r","▭ "+Lx("Obdélník","Rectangle")]],CL=["#ff3b30","#ffd60a","#30d158","#0a84ff","#ffffff","#000000"],WL=[[2,Lx("tenká","thin")],[4,Lx("střední","medium")],[8,Lx("tlustá","thick")]];
   var NUB=NU;if(NU){tb.classList.add("d2");var TI=[["pen","✎",Lx("Pero","Pen")],["l","╱",Lx("Čára","Line")],["a","➜",Lx("Šipka","Arrow")],["c","◯",Lx("Kruh","Circle")],["r","▭",Lx("Obdélník","Rect.")]];
    var B2=function(a,t,sub,cl){return '<button type="button" class="d2b '+(cl||"")+'" data-dact="'+a+'"><b>'+t+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</button>'};
-   tb.innerHTML='<div class="d2t"><span>✎ '+Lx("KRESLENÍ","DRAWING")+'</span><span class="d2tt">'+Lx("Nakresli do pozastaveného snímku","Draw on the paused frame")+'</span><button type="button" class="d2x" data-dact="close" aria-label="'+Lx("Zavřít","Close")+'">✕</button></div>'+
+   tb.innerHTML='<div class="d2t"><span>✎ '+Lx("KRESLENÍ","DRAWING")+'</span><span class="d2tt">'+Lx("Nakresli do pozastaveného snímku","Draw on the paused frame")+'</span><button type="button" class="d2x" data-dact="close" aria-label="'+Lx("Zavřít","Close")+'">✕</button></div><div class="d2g d2cam" hidden></div>'+
    '<div class="d2g d2tools">'+TI.map(function(t){return '<button type="button" class="d2b tl" data-dtool="'+t[0]+'"><b>'+t[1]+'</b><small>'+t[2]+'</small></button>'}).join("")+'</div><div class="d2g d2ed">'+B2("undo","↶ "+Lx("Zpět","Undo"),"","wide")+B2("clr","🗑 "+Lx("Smazat vše","Clear all"),"","wide dg")+'</div>'+
    '<div class="d2g d2sty">'+CL.map(function(c){return '<button type="button" class="drcol" data-dcol="'+c+'" style="background:'+c+'" aria-label="'+c+'"></button>'}).join("")+'</div><div class="d2g d2wd"><span class="d2sp2">'+Lx("Tloušťka","Width")+'</span>'+WL.map(function(w){return '<button type="button" class="d2w" data-dwd="'+w[0]+'" aria-label="'+w[1]+'"><i style="width:'+(w[0]*2+4)+'px;height:'+(w[0]*2+4)+'px"></i></button>'}).join("")+'</div>'+
    '<div class="d2g d2tr">'+B2("b1","◀◀","1 s","tr")+B2("b2","◀","0,1 s","tr")+'<button type="button" class="d2b tr pl pri" data-dact="play"><b>▶</b></button>'+B2("f2","▶","0,1 s","tr")+B2("f1","▶▶","1 s","tr")+'</div>'+
@@ -1078,7 +1103,7 @@ function Rep(el,o){var NU=NEWUI();
   function updDt(){var c=curAct(),b=g("dt");if(!b)return;var n=c?drOf(c).length:0;b.hidden=!n;b.textContent="✏ "+Lx("KRESBY","DRAWINGS")+": "+(drOn?Lx("ZAP","ON"):Lx("VYP","OFF"))+" ("+n+")";b.setAttribute("aria-pressed",drOn)}
   if(g("dt"))g("dt").onclick=function(){drOn=!drOn;drSig="";updDt()};
   function dmsg(t){var m=tb.querySelector(".drmsg");m.textContent=t||""}
-  function updTb(){var c=curAct();[].forEach.call(tb.querySelectorAll("[data-dtool]"),function(b){b.setAttribute("aria-pressed",b.dataset.dtool===tool)});[].forEach.call(tb.querySelectorAll("[data-dcol]"),function(b){b.classList.toggle("on",b.dataset.dcol===col)});[].forEach.call(tb.querySelectorAll("[data-dwd]"),function(b){b.setAttribute("aria-pressed",+b.dataset.dwd===wd)});
+  function updTb(){var c=curAct();var cr=tb.querySelector(".d2cam");if(cr){cr.hidden=!(S.length>1&&mode()==="yt");cr.innerHTML=cr.hidden?"":'<span class="d2sp2">'+Lx("Kreslit do kamery","Draw into camera")+'</span>'+S.map(function(x,i){return '<button type="button" class="d2b tl" data-view="'+i+'" aria-pressed="'+(i===ang)+'"><b>'+(i+1)+'</b><small>'+esc(x.name)+'</small></button>'}).join("")}[].forEach.call(tb.querySelectorAll("[data-dtool]"),function(b){b.setAttribute("aria-pressed",b.dataset.dtool===tool)});[].forEach.call(tb.querySelectorAll("[data-dcol]"),function(b){b.classList.toggle("on",b.dataset.dcol===col)});[].forEach.call(tb.querySelectorAll("[data-dwd]"),function(b){b.setAttribute("aria-pressed",+b.dataset.dwd===wd)});
     var pb=tb.querySelector('[data-dact="play"]');if(NU){pb.innerHTML="<b>"+(dpaused?"▶":"⏸")+"</b>";var dc=tb.querySelector(".drcnt");if(dc)dc.textContent="("+((c?drSaved(c).length+dfOf(c).length:0))+")"}else pb.textContent=dpaused?Lx("▶ POKRAČOVAT","▶ RESUME"):Lx("⏸ PAUZA / PŘIDAT DALŠÍ KRESBU","⏸ PAUSE / ADD ANOTHER DRAWING");
     var ti=tb.querySelector(".drtxt");if(c&&o.cm&&document.activeElement!==ti)ti.value=o.cm.get(c)||"";
     var L=tb.querySelector(".drlist"),base=c&&c.v!=null?c.v+offs():0;var sv=c?drSaved(c):[],df=c?dfOf(c):[];
@@ -1086,18 +1111,18 @@ function Rep(el,o){var NU=NEWUI();
     function item(d,i,isDf){return '<span class="drit">'+(isDf?'<b class="drdf">'+Lx("NÁVRH","DRAFT")+'</b> ':'')+(i+1)+'. '+flt(Math.max(0,base+d.d))+' '+(isDf?'<button type="button" class="btn" data-dnud="'+esc(d.id)+':-'+(NU?"0.1":"0.2")+'" title="'+Lx("o 0,2 s dřív","0.2 s earlier")+'">◀</button><button type="button" class="btn" data-dnud="'+esc(d.id)+':'+(NU?"0.1":"0.2")+'" title="'+Lx("o 0,2 s později","0.2 s later")+'">▶</button> ':'')+lenSel('data-dlen="'+esc(d.id)+'"',d.l||0)+' <button type="button" class="btn danger" data-ddel="'+esc(d.id)+'">🗑</button></span>'}
     L.innerHTML=(sv.length?'<span class="drlb">'+Lx("Odeslané hráčce:","Sent to the player:")+'</span> '+sv.map(function(d,i){return item(d,i,false)}).join(""):"")+(df.length?'<div><span class="drlb">'+Lx("Neodeslané návrhy (zatím je hráčka nevidí):","Unsent drafts (the player does not see them yet):")+'</span> '+df.map(function(d,i){return item(d,sv.length+i,true)}).join("")+'</div>':"")}
   function seekPause(t){t=Math.max(0,t);try{if(mode()==="yt"){if(ytp){ytp.seekTo(t,true);ytp.pauseVideo()}}else{var v=g("v");v.currentTime=t;v.pause()}}catch(e){}dpaused=true;drSig="";updTb()}
-  function resume(){dpaused=false;try{if(mode()==="yt"){if(ytp)ytp.playVideo()}else{var p=g("v").play();if(p&&p.catch)p.catch(function(){})}}catch(e){}t0=Date.now();if(!tm&&stopAt!=null)tm=setInterval(tick,200);updTb()}
-  function enterDraw(seek){var c=curAct();if(!c||c.v==null||!o.dr)return;drawOn=true;drOn=true;work=[];curStk=null;tb.hidden=false;if(!fsOn)enterFs();el.classList.add("rfsd");if(NU)el.classList.add("nu2");dmsg("");updDt();
+  function resume(){dpaused=false;try{if(mode()==="yt"){if(ytp)ytp.playVideo();p2(function(x){x.playVideo()})}else{var p=g("v").play();if(p&&p.catch)p.catch(function(){})}}catch(e){}t0=Date.now();if(!tm&&stopAt!=null)tm=setInterval(tick,200);updTb()}
+  function enterDraw(seek){var c=curAct();if(!c||c.v==null||!o.dr)return;if(NU&&dualOn()){drView="b";setView(ang)}drawOn=true;drOn=true;work=[];curStk=null;tb.hidden=false;if(!fsOn)enterFs();el.classList.add("rfsd");if(NU)el.classList.add("nu2");dmsg("");updDt();
     if(seek){var n=0;dpaused=true;(function tryS(){if(!drawOn)return;if(mode()==="yt"&&!ytReady){if(n++<60)setTimeout(tryS,300);return}setTimeout(function(){if(drawOn)seekPause(c.v+offs())},900)})()}
     else{pause();dpaused=true}updTb()}
-  function exitDraw(){el.classList.remove("rfsd","nu2");drawOn=false;dpaused=false;work=[];curStk=null;tb.hidden=true;drSig="";updDt()}
+  function exitDraw(){if(NU&&drView==="b"){drView=null;setView("b")}el.classList.remove("rfsd","nu2");drawOn=false;dpaused=false;work=[];curStk=null;tb.hidden=true;drSig="";updDt()}
   function norm(e){var r=cv.getBoundingClientRect();return[Math.max(0,Math.min(1000,Math.round((e.clientX-r.left)/r.width*1000))),Math.max(0,Math.min(1000,Math.round((e.clientY-r.top)/r.height*1000)))]}
   cv.addEventListener("pointerdown",function(e){if(!drawOn||!dpaused)return;if(e.pointerType==="pen")penSeen=true;else if(penSeen&&e.pointerType==="touch")return;e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}var q=norm(e);curStk={k:tool==="pen"?"p":tool,c:col,w:wd,p:tool==="pen"?[q]:[q,q],id:e.pointerId};drSig=""});
   cv.addEventListener("pointermove",function(e){if(!curStk||e.pointerId!==curStk.id)return;e.preventDefault();var q=norm(e);if(curStk.k==="p"){var l=curStk.p[curStk.p.length-1];if(Math.abs(q[0]-l[0])+Math.abs(q[1]-l[1])>=2)curStk.p.push(q)}else curStk.p[1]=q;drSig=""});
   function endStk(e){if(!curStk||e.pointerId!==curStk.id)return;var s=curStk;curStk=null;delete s.id;if(s.k!=="p"&&Math.abs(s.p[0][0]-s.p[1][0])+Math.abs(s.p[0][1]-s.p[1][1])<6){drSig="";return}work.push(s);drSig="";var cc=curAct();if(cc&&dpaused&&drawOn)autoAdd(cc)}
   cv.addEventListener("pointerup",endStk);cv.addEventListener("pointercancel",endStk);
   tb.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var c=curAct();
-    if(b.dataset.dtool){tool=b.dataset.dtool;updTb();return}if(b.dataset.dcol){col=b.dataset.dcol;updTb();return}if(b.dataset.dwd){wd=+b.dataset.dwd;updTb();return}
+    if(b.dataset.view!=null){setView(b.dataset.view);updTb();return}if(b.dataset.dtool){tool=b.dataset.dtool;updTb();return}if(b.dataset.dcol){col=b.dataset.dcol;updTb();return}if(b.dataset.dwd){wd=+b.dataset.dwd;updTb();return}
     if(b.dataset.ddel){if(c&&dfOf(c).some(function(d){return d.id===b.dataset.ddel})){drafts.set(c,dfOf(c).filter(function(d){return d.id!==b.dataset.ddel}));drSig="";updTb();updDt();refreshRow();dmsg(Lx("Návrh smazán.","Draft deleted."));return}if(c&&o.dr){o.dr.set(c,drSaved(c).filter(function(d){return d.id!==b.dataset.ddel}));drSig="";updTb();updDt();refreshRow();dmsg(Lx("Kresba smazána.","Drawing deleted."))}return}
     if(b.dataset.dnud){var pr=b.dataset.dnud.split(":"),dl=+pr[1];if(c)drafts.set(c,dfOf(c).map(function(d){if(d.id!==pr[0])return d;var n=Object.assign({},d);n.d=Math.round((d.d+dl)*100)/100;return n}));drSig="";updTb();return}
     var a=b.dataset.dact;if(!a)return;
@@ -1123,7 +1148,8 @@ function Rep(el,o){var NU=NEWUI();
   function refreshRow(){var ar=g("l").querySelector('.act[data-i="'+pos+'"]'),c=curAct();if(!ar||!c)return;var n=drOf(c).length,x=ar.querySelector(".drn");if(!n){if(x)x.remove();return}if(!x){x=document.createElement("span");x.className="drn";ar.querySelector(".abody").appendChild(x)}x.textContent="✏ "+n}
   if(g("dw"))g("dw").onclick=function(){if(pos<0&&acts.length)playAt(0);enterDraw(false)};
   var marks={};
-  function snapOf(c){var src=c.src||srcRef||{v:[]};return{s:c.s,y:c.y,e:c.e,c:c.c,set:c.set,sc:c.sc,v:c.v,rs:c.rs,re:c.re,k:(o.cm?o.cm.get(c):c.k)||"",dr:drSaved(c),src:JSON.parse(JSON.stringify(src)),rl:c.rl||(o.label?o.label(c):""),own:c.own||(o.owner?o.owner(c):"")}}
+  function camSrc(src){var r=JSON.parse(JSON.stringify(src));try{if(NU&&view!=="b"&&S[ang]&&r.v&&r.v.length>1){var k=r.v.filter(function(x){return x.id===S[ang].id});if(k.length)r.v=k}}catch(e){}return r}
+  function snapOf(c){var src=c.src||srcRef||{v:[]};return{s:c.s,y:c.y,e:c.e,c:c.c,set:c.set,sc:c.sc,v:c.v,rs:c.rs,re:c.re,k:(o.cm?o.cm.get(c):c.k)||"",dr:drSaved(c),src:camSrc(src),rl:c.rl||(o.label?o.label(c):""),own:c.own||(o.owner?o.owner(c):"")}}
   function updSh(){var b=g("sh");if(!b)return;var n=Object.keys(marks).filter(function(k){return marks[k]}).length;b.textContent="↗ "+(n?Lx("SDÍLET OZNAČENÉ","SHARE MARKED")+" ("+n+")":Lx("SDÍLET KLIP","SHARE CLIP"))}
   async function shareNow(list){list=list.filter(function(c){return c&&c.v!=null});if(!list.length){msg(Lx("Vyber akci s videem.","Choose an action with video."));return}msg(Lx("Připravuji sdílení…","Preparing…"));var t=await o.share(list.map(snapOf));msg(t||"")}
   if(g("sh"))g("sh").onclick=function(){var mk=Object.keys(marks).filter(function(k){return marks[k]}).map(function(k){return acts[+k]});shareNow(mk.length?mk:(pos>=0?[acts[pos]]:[]))};
