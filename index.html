@@ -382,7 +382,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 127</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 128</footer>
 </main>
 <script>
 (function(){
@@ -904,7 +904,7 @@ setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!documen
 function NEWUI(){var r=false;try{r=!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){}try{document.body.classList.toggle("nuui",r)}catch(e){}return r}
 function Rep(el,o){var NU=NEWUI();
   var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null;
-  el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
+  el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline muted hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
    '<div class="ctl noprint"><button class="btn pri" id="'+id+'fs" type="button">'+Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN")+'</button><label class="adv">Před (s)<input type="number" id="'+id+'b" min="0" max="30" value="3" style="width:70px"></label><label class="adv">Po (s)<input type="number" id="'+id+'a" min="0" max="30" value="4" style="width:70px"></label>'+
    '<div class="rate" id="'+id+'rt"><span class="mut" style="font-weight:700;font-size:11px;text-transform:uppercase;display:block;margin-bottom:3px">Rychlost</span><span translate="no">'+[0.25,0.5,0.75,1].map(function(r){return '<button type="button" class="chip" data-rate="'+r+'" aria-pressed="'+(r===RATE)+'">'+(r*100)+'%</button>'}).join("")+'</span></div><label class="adv">Posun videa (s)<input type="number" id="'+id+'o" step="0.5" value="0" style="width:80px"></label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'r"> celá výměna</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'L"> smyčka</label><label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="'+id+'AF"> '+Lx("auto celá obrazovka","auto full screen")+'</label>'+
    '<button class="btn" id="'+id+'p">◀ PŘEDCHOZÍ</button><button class="btn" id="'+id+'n">DALŠÍ ▶</button><button class="btn pri" id="'+id+'all">PŘEHRÁT VŠECHNY</button>'+(o.local?'<input type="file" id="'+id+'f" accept="video/*" hidden><button class="btn" id="'+id+'fb">VIDEO ZE SOUBORU</button>':'')+(o.dr?'<button class="btn" id="'+id+'dw" type="button">✏ '+Lx("OKOMENTOVAT / KRESLIT","COMMENT / DRAW")+'</button>':'')+'<button class="btn" id="'+id+'dt" type="button" hidden></button>'+(o.share?'<button class="btn pri" id="'+id+'sh" type="button">↗ '+Lx("SDÍLET KLIP","SHARE CLIP")+'</button>':'')+'</div>'+
@@ -923,14 +923,14 @@ function Rep(el,o){var NU=NEWUI();
   function offs(){return mode()==="yt"&&S[ang]?S[ang].off:(+g("o").value||0)}
   function ensureYt(){if(ytp||!S.length)return;g("y").hidden=false;msg("Načítám YouTube…");curVid=S[ang].id;
     ytReadyP().then(function(){ytp=new YT.Player(id+"yp",{videoId:curVid,playerVars:Object.assign({playsinline:1,rel:0,modestbranding:1},NU?{controls:0,disablekb:1,fs:0,iv_load_policy:3}:{}),events:{
-      onStateChange:function(ev){if(ev&&ev.data===1)applyRate()},
-      onReady:function(){ytReady=true;msg("");applyRate();if(pend){var c=pend;pend=null;play(c)}},
+      onStateChange:function(ev){try{ytp.mute()}catch(e){}if(ev&&ev.data===1)applyRate()},
+      onReady:function(){ytReady=true;try{ytp.mute()}catch(e){}msg("");applyRate();if(pend){var c=pend;pend=null;play(c)}},
       onError:function(e){msg("Video nelze přehrát (chyba "+(e&&e.data)+"). Zkontroluj, že je video neveřejné a že je povoleno vložení.")}}})}).catch(function(){msg("YouTube se nepodařilo načíst. Zkontroluj připojení k internetu.")})}
   function range(c){var b=+g("b").value||0,a=+g("a").value||0,of=offs(),s=c.v,e=c.v;if(g("r").checked&&c.rs!=null){s=c.rs;e=c.re}return[Math.max(0,s-b+of),e+a+of]}
   function seekP(t){try{if(mode()==="yt"){ytp.seekTo(t,true);ytp.playVideo()}else{var v=g("v");v.currentTime=t;var p=v.play();if(p&&p.catch)p.catch(function(){})}}catch(e){}}
   function tick(){if(stopAt==null){clearInterval(tm);tm=null;return}if(dpaused)return;if(Date.now()-t0<900)return;
     if(getT()>=stopAt){if(!reel&&g("L").checked&&lastR){seekP(lastR[0]);t0=Date.now();return}pause();stopAt=null;clearInterval(tm);tm=null;if(reel&&pos<acts.length-1)playAt(pos+1);else if(reel&&NU&&acts.length)playAt(0);else reel=false}}
-  function play(c){if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
+  function play(c){try{if(ytp&&ytp.mute)ytp.mute();g("v").muted=true}catch(e){}if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
     if(md==="yt"){ensureYt();if(!ytReady){pend=c;return}var vid=S[ang].id;
       if(curVid!==vid){curVid=vid;ytp.loadVideoById({videoId:vid,startSeconds:r[0]})}else{ytp.seekTo(r[0],true);ytp.playVideo()}}
     else{var v=g("v");v.currentTime=r[0];var p=v.play();if(p&&p.catch)p.catch(function(){})}
