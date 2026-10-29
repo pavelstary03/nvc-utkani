@@ -123,6 +123,13 @@ textarea{width:100%;min-height:90px}
 .acts{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
 .act{display:flex;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;align-items:center;font-size:13px}
 .act .btn .ai{display:block}.act .btn:has(.ai){color:var(--blue)}.act .btn:has(.ai){border:2px solid #c5cedb!important;background:#fff!important;width:56px;height:52px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12px}
+/* v126: sjednocené nadpisy v testovacím režimu */
+body.nuui .card h2{font-size:17px;font-weight:800;letter-spacing:.3px;color:#1f4f9a}
+body.nuui .admhd h2{font-size:18px}
+body.nuui .card h3,body.nuui .mrow h3{color:#1f4f9a}
+body.nuui .c2l,body.nuui .d2len,body.nuui .d2sp2,body.nuui .d2t+*{font-size:14px}
+body.nuui .c2l{color:#1f4f9a;font-weight:800}
+.d2t{font-size:17px}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -375,7 +382,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 125</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 126</footer>
 </main>
 <script>
 (function(){
@@ -894,7 +901,7 @@ async function shareClips(snaps){if(!snaps.length)return"";var pl;try{pl=await s
 function shSeen(id){try{return localStorage.getItem("nvc-sh:"+id)==="1"}catch(e){return false}}
 function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
 setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!document.querySelector(".rfs"))document.body.classList.remove("rfsb")}catch(e){}},1000);
-function NEWUI(){try{return!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){return false}}
+function NEWUI(){var r=false;try{r=!!(access&&access.admin&&localStorage.getItem("nvc-newui")==="1")}catch(e){}try{document.body.classList.toggle("nuui",r)}catch(e){}return r}
 function Rep(el,o){var NU=NEWUI();
   var id="r"+(++repN),me={},acts=[],pos=-1,stopAt=null,reel=false,S=[],ang=0,ytp=null,ytReady=false,curVid="",pend=null,local=null,tm=null,t0=0,srcRef=null,lastR=null;
   el.innerHTML='<div class="row noprint" id="'+id+'g" hidden style="margin:0 0 8px"></div><div class="ytw" id="'+id+'y" hidden><div id="'+id+'yp"></div></div><video id="'+id+'v" controls playsinline hidden></video><p class="mut" id="'+id+'m" style="margin:6px 0"></p><p class="cur" id="'+id+'u"></p><div class="fslot noprint"></div>'+
@@ -1265,7 +1272,7 @@ function PlayerView(host,editable,onFb){
   return me}
 /* ---------- aplikace ---------- */
 var matches=[],cur=null,notes={},VIEWS=["matches","match","players","me","login","pick","admin","adminhub","admtest","consent","opp","oppadm","pml","up1","wl","sst"];
-function show(v){document.body.classList.toggle("inadm",v==="admin"||v==="adminhub"||v==="admtest");VIEWS.forEach(function(x){$("v-"+x).hidden=x!==v});gbandUpd(v);[].forEach.call(document.querySelectorAll(".tab"),function(t){t.setAttribute("aria-selected",t.dataset.go===v||(v==="match"&&t.dataset.go==="matches"))});window.scrollTo(0,0);if(v==="matches"&&ctx&&ctx.grp){try{renderList()}catch(e){}}if(v==="players")renderPlayers();if(v==="admin")renderAdmin();if(v==="adminhub")renderHub();if(v==="admtest")renderTst();if(v==="opp")renderOpp();if(v==="oppadm")renderOppAdm();if(v==="up1")renderList();if(v==="wl")renderWl();if(v==="sst")renderSst()}
+function show(v){NEWUI();document.body.classList.toggle("inadm",v==="admin"||v==="adminhub"||v==="admtest");VIEWS.forEach(function(x){$("v-"+x).hidden=x!==v});gbandUpd(v);[].forEach.call(document.querySelectorAll(".tab"),function(t){t.setAttribute("aria-selected",t.dataset.go===v||(v==="match"&&t.dataset.go==="matches"))});window.scrollTo(0,0);if(v==="matches"&&ctx&&ctx.grp){try{renderList()}catch(e){}}if(v==="players")renderPlayers();if(v==="admin")renderAdmin();if(v==="adminhub")renderHub();if(v==="admtest")renderTst();if(v==="opp")renderOpp();if(v==="oppadm")renderOppAdm();if(v==="up1")renderList();if(v==="wl")renderWl();if(v==="sst")renderSst()}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){if(PT())pvGo(b.dataset.go);else show(b.dataset.go)}});
 function sortM(a,b){var d=function(m){var p=m.date.split("/");return p[2]+p[0]+p[1]+m.time};return d(a)<d(b)?-1:1}
 function mTitle(m){return m.teams[0].name+" "+m.teams[0].sets+" : "+m.teams[1].sets+" "+m.teams[1].name}
