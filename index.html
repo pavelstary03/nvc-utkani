@@ -412,7 +412,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 141</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 142</footer>
 </main>
 <script>
 (function(){
@@ -550,7 +550,7 @@ function ytId(u){u=(u||"").trim();if(!u)return"";if(/^[\w-]{11}$/.test(u))return
 var REPC=new WeakMap();
 /* v138: klik na číslo v tabulce statistiky -> video (testovací režim) */
 var CMAP=new WeakMap(),VCR=[];
-function VCON(){try{return localStorage.getItem("nvc-vclick")==="1"}catch(e){return false}}
+function VCON(){try{return localStorage.getItem("nvc-vclick")!=="0"}catch(e){return true}}
 function vcId(list){if(!VCON())return -1;VCR.push(list||[]);return VCR.length-1}
 function vca(id,key,n){return id>=0&&n?' data-vc="'+id+'" data-vk="'+key+'"':''}
 function sideBlank(){return{pl:{},sets:{},sIn:{1:0,2:0,3:0,4:0,5:0,6:0},sSO:{1:0,2:0,3:0,4:0,5:0,6:0},sTR:{1:0,2:0,3:0,4:0,5:0,6:0},kor:{pos:{t:0,b:0,e:0,p:0},neg:{t:0,b:0,e:0,p:0}},aod:{t:0,b:0,e:0,p:0},so:0,bp:0}}
@@ -1834,7 +1834,7 @@ function admHead(){$("admback").textContent="← "+Lx("ZPĚT","BACK");var t={adm
   if(!t&&admSec.indexOf("g:")===0)t=Lx("SPRÁVA ","MANAGE ")+admSec.slice(2);var h=$("admsech");h.textContent=t||"";if(admSec.indexOf("g:")===0||admSec==="oth")h.textContent+=" · "+seasonName(curS())}
 function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tsttitle").textContent=Lx("TESTOVACÍ REŽIM","TEST MODE");var on=NEWUI();
   $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Je zapnutý pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout (např. pro porovnání se starým vzhledem). Projeví se po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). It is on for all users. Here you can turn it off on this device only (e.g. to compare with the old look). It applies after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
-  var vo=VCON();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VIDEA Z TABULKY STATISTIKY","VIDEOS FROM STATISTICS TABLE")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na růžově podbarvené číslo v tabulkách (utkání, hráčka, sezóna, soupeři) přehraje příslušné akce. Zatím jen na tomto zařízení. Projeví se po překreslení tabulky.","Click a pink-shaded number in the tables (match, player, season, opponents) to play the matching actions. This device only for now. Applies after the table is redrawn.")+'</p><button class="btn '+(vo?"":"pri")+'" id="tstvc">'+(vo?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  var vo=VCON();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VIDEA Z TABULKY STATISTIKY","VIDEOS FROM STATISTICS TABLE")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na růžově podbarvené číslo v tabulkách (utkání, hráčka, sezóna, soupeři) přehraje příslušné akce. Je zapnuto pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout. Projeví se po překreslení tabulky.","Click a pink-shaded number in the tables (match, player, season, opponents) to play the matching actions. It is on for all users. Here you can turn it off on this device only. Applies after the table is redrawn.")+'</p><button class="btn '+(vo?"":"pri")+'" id="tstvc">'+(vo?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   $("tstvc").onclick=function(){try{localStorage.setItem("nvc-vclick",vo?"0":"1")}catch(e){}renderTst()};
   $("tstnu").onclick=function(){try{localStorage.setItem("nvc-newui",on?"0":"1")}catch(e){}renderTst()}}
 
