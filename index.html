@@ -144,6 +144,14 @@ body.nuui .pw .pv .ytw:not(:has(iframe)){background:#eef1f6!important}
 .pw .pv .ytw2{width:50%!important;right:auto!important;left:50%!important;visibility:hidden;pointer-events:none}.pw .pv .ytw2.on{visibility:visible;pointer-events:auto}
 .pw .pv.dual .ytw{height:auto!important;aspect-ratio:16/9!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
 .pw .pv.noyt::after{content:attr(data-ph);position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:#eef1f6;color:#4a5b75;font-weight:700;font-size:16px;line-height:1.4}
+/* v135: dvě videa – lišta pod videi na dva řádky */
+.pw.dbar:not(.ov){display:block!important}
+.pw.dbar:not(.ov) .pv{width:100%!important;max-height:none!important}
+.pw.dbar:not(.ov) .ctl2{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:10px;padding:12px 14px}
+.pw.dbar:not(.ov) .c2t{flex:1 0 100%;width:100%}
+.pw.dbar:not(.ov) .c2s{flex:0 1 400px;width:auto}
+.pw.dbar:not(.ov) .c2p{flex:0 1 auto;display:flex;gap:16px}
+.pw.dbar:not(.ov) .c2pop{left:14px;right:14px}
 .act:hover{background:#eef3fb}.act.on{background:#dfeafb}
 .act .ev{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex:none}
 .ev.g{background:#1a9a4f}.ev.y{background:#d9a400}.ev.r{background:#d4313f}.ev.n{background:#7b8798}
@@ -396,7 +404,7 @@ body.inadm #tabs{display:none}
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 134</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 135</footer>
 </main>
 <script>
 (function(){
@@ -957,7 +965,7 @@ function Rep(el,o){var NU=NEWUI();
   function dualOn(){return NU&&mode()==="yt"&&S.length>1&&view==="b"}
   function d2t(t){return t-S[ang].off+S[oth()].off}
   function p2(f){if(!ytp2||!ytReady2||!dualOn())return;try{f(ytp2)}catch(e){}}
-  function dualLayout(){if(!NU||!pvEl)return;var d=dualOn();pvEl.classList.toggle("dual",d);if(ytw2){ytw2.classList.toggle("on",d);ytw2.dataset.side=ang===0?"r":"l"}phUpd();g("y").dataset.side=ang===0?"l":"r";[].forEach.call(pvEl.querySelectorAll(".dvfs"),function(b){b.hidden=!d})}
+  function dualLayout(){if(!NU||!pvEl)return;var d=dualOn();pvEl.classList.toggle("dual",d);if(pvEl.parentNode)pvEl.parentNode.classList.toggle("dbar",d&&!fsOn);if(ytw2){ytw2.classList.toggle("on",d);ytw2.dataset.side=ang===0?"r":"l"}phUpd();g("y").dataset.side=ang===0?"l":"r";[].forEach.call(pvEl.querySelectorAll(".dvfs"),function(b){b.hidden=!d})}
   function ensureYt2(cb){if(ytp2){if(ytReady2)cb&&cb();else(ensureYt2.q=ensureYt2.q||[]).push(cb);return}if(!S.length)return;ensureYt2.q=[cb];curVid2=S[oth()].id;
     ytReadyP().then(function(){ytp2=new YT.Player(id+"yp2",{videoId:curVid2,playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,disablekb:1,fs:0,iv_load_policy:3},events:{onReady:function(){ytReady2=true;try{ytp2.mute()}catch(e){}var q=ensureYt2.q||[];ensureYt2.q=[];q.forEach(function(f){f&&f()})},onStateChange:function(){try{ytp2.mute()}catch(e){}}}})}).catch(function(){})}
   function playSecond(t){if(!dualOn())return;dualLayout();ensureYt2(function(){if(!dualOn())return;var o2=S[oth()],tt=Math.max(0,d2t(t));
@@ -1054,9 +1062,9 @@ function Rep(el,o){var NU=NEWUI();
   var AIP={c:'<path d="M4 5h16v11H9l-5 4z"/>',p:'<path d="M4 20l1-5L16 4l4 4L9 19zM14 6l4 4"/>',w:'<path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>',s:'<path d="M7 17L17 7M9 7h8v8"/>'};
   function AI(k){return NU?'<svg class="ai" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'+AIP[k]+'</svg>':({c:"💬",p:"✏",w:"🔧",s:"↗"})[k]}
   function c2fs(on){if(!NU||!window.__FSI)return;[].forEach.call(el.querySelectorAll('[data-c2="fs"]'),function(x){x.innerHTML=window.__FSI(on)})}
-  function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");c2fs(true);
+  function enterFs(){if(fsOn)return;fsOn=true;el.classList.add("rfs");document.body.classList.add("rfsb");g("fs").textContent=Lx("✕ ZAVŘÍT","✕ CLOSE");c2fs(true);dualLayout();
     try{var q=el.requestFullscreen||el.webkitRequestFullscreen;if(q){fsApi=true;var pr=q.call(el);if(pr&&pr.catch)pr.catch(function(){fsApi=false})}}catch(e){fsApi=false}}
-  function exitFs(){if(!fsOn)return;fsOn=false;el.classList.remove("rfs");document.body.classList.remove("rfsb");g("fs").textContent=Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN");c2fs(false);
+  function exitFs(){if(!fsOn)return;fsOn=false;el.classList.remove("rfs");document.body.classList.remove("rfsb");g("fs").textContent=Lx("⛶ CELÁ OBRAZOVKA","⛶ FULL SCREEN");c2fs(false);dualLayout();
     try{if(fsApi&&(document.fullscreenElement||document.webkitFullscreenElement))(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}fsApi=false}
   g("fs").onclick=function(){fsOn?exitFs():enterFs()};
   document.addEventListener("fullscreenchange",function(){if(!el.isConnected)return;if(fsOn&&fsApi&&!document.fullscreenElement)exitFs()});
