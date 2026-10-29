@@ -414,7 +414,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 153</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 155</footer>
 </main>
 <script>
 (function(){
@@ -981,10 +981,20 @@ function sitDef(ms){var items=[],mx=1;
   return '<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Útoky soupeřů proti sledovanému družstvu podle zóny, ze které útočily. Kliknutím na zónu se přehrají tyto útoky i reakce družstva (blok, obrana).","Opponents' attacks against the team by the zone they attacked from. Click a zone to play these attacks and the team's reaction (block, dig).")+'</p><div class="sitch">'+sc+'</div><div class="sitch">'+gc+'</div>'+
    (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div><div class="situn"><span '+btn(un,tt+" · "+Lx("nerozlišené","unassigned"))+'>'+Lx("Nerozlišené","Unassigned")+'</span><span '+btn(se,tt+" · "+Lx("nahrávačka (PP)","setter (PP)"))+'>'+Lx("Nahrávačka (PP)","Setter (PP)")+'</span></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitds]");if(b){var k=b.dataset.sitds;SITD.sets[k]=!SITD.sets[k];oppSit();return}b=e.target.closest&&e.target.closest("[data-sitdg]");if(b){SITD[b.dataset.sitdg]=!SITD[b.dataset.sitdg];oppSit()}});
+function sitRec(Rz){var MINR=5,rows=Rz.rows.map(function(q){var L=q.list.filter(function(c){return c.s==="R"}),n=L.length,cn={};DEV.forEach(function(e){cn[e]=L.filter(function(c){return c.e===e}).length});
+    return{q:q,L:L,n:n,cn:cn,pos:n?(cn["#"]+cn["+"])/n:0,exc:n?cn["#"]/n:0}}).filter(function(x){return x.n});
+  rows.sort(function(a,b){var am=a.n<MINR,bm=b.n<MINR;if(am!==bm)return am?1:-1;return(a.pos-b.pos)||(a.exc-b.exc)||(b.n-a.n)});
+  function cell(L,key,ttl,v,cls){return '<td'+(v?' data-vc="'+sitPush(L)+'" data-vk="'+key+'" data-vt="'+esc(ttl)+'"':'')+(cls?' class="'+cls+'"':'')+'>'+(v||'<span class="dot">.</span>')+'</td>'}
+  function pc(x){return Math.round(100*x)+" %"}
+  var h='<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Hráčky seřazené od nejhorší: podle podílu pozitivního příjmu (# a +), při shodě podle perfektního (#). Hráčky s méně než "+MINR+" příjmy jsou až na konci. Kliknutím na číslo se přehrají tyto příjmy.","Players sorted from the weakest: by positive reception share (# and +), then by perfect (#). Players with fewer than "+MINR+" receptions are last. Click a number to play those receptions.")+'</p>'+
+   '<div class="scroll"><table class="a1 dt sitrt"><thead><tr><th class="l">#</th><th colspan="2" class="l">'+Lx("Hráčka","Player")+'</th><th class="sp">'+Lx("Celk","Tot")+'</th>'+DEV.map(function(e){return '<th>'+e+'</th>'}).join("")+'<th class="sp">Pos %</th><th>Exc %</th></tr></thead><tbody>'+
+   rows.map(function(x,ix){var q=x.q,nm=Object.keys(q.nums).join("/")+" "+q.name;
+     return '<tr'+(x.n<MINR?' style="opacity:.6"':ix===0?' style="background:#dbe6f7"':'')+'><td class="l"><b>'+(x.n<MINR?"–":(ix+1)+".")+'</b></td><td class="l n">'+esc(Object.keys(q.nums).join("/"))+'</td><td class="l nm" translate="no">'+esc(q.name)+(ix===0&&x.n>=MINR?' <span class="gtag">'+Lx("NEJSLABŠÍ PŘÍJEM","WEAKEST RECEIVER")+'</span>':'')+'</td>'+cell(x.L,"R",nm,x.n,"sp b")+DEV.map(function(e){return cell(x.L.filter(function(c){return c.e===e}),"R:"+e,nm,x.cn[e],e==="#"?"evg":e==="="?"evr":"")}).join("")+'<td class="sp b">'+pc(x.pos)+'</td><td class="b">'+pc(x.exc)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  return rows.length?h:'<p class="mut" style="margin:0">'+Lx("Žádné příjmy.","No receptions.")+'</p>'}
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
   var Rz=oppRoster(ms);if(!Rz.ok){box.hidden=true;return}
-  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span></div>'+(SITS==="A"?sitAtt(ms):SITS==="D"?sitDef(ms):sitServe(Rz))}
+  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span><span data-sits="R" class="'+(SITS==="R"?"on":"")+'">'+Lx("PŘÍJEM","SERVE RECEIVE")+'</span></div>'+(SITS==="A"?sitAtt(ms):SITS==="D"?sitDef(ms):SITS==="R"?sitRec(Rz):sitServe(Rz))}
 document.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest("[data-sitg]");if(g){SITG[g.dataset.sitg]=!SITG[g.dataset.sitg];oppSit();return}var b=e.target.closest&&e.target.closest("[data-sits]");if(b){SITS=b.dataset.sits;oppSit();return}b=e.target.closest&&e.target.closest("[data-sitph]");if(!b)return;var k=b.dataset.sitph;SITP[k]=!SITP[k];if(!SITP.r&&!SITP.t)SITP[k==="r"?"t":"r"]=true;oppSit()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitt]");if(!b)return;SITT=b.dataset.sitt;oppSit()});
 function a1legend(){return STATM==="e"?eLegend():STATM==="d"?dLegend()+a1legendS():a1legendS()}
