@@ -415,7 +415,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 158</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 159</footer>
 </main>
 <script>
 (function(){
@@ -988,7 +988,12 @@ function sitDef(ms){var items=[],mx=1;
   return '<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Útoky soupeřů proti sledovanému družstvu podle zóny, ze které útočily. Kliknutím na zónu se přehrají tyto útoky i reakce družstva (blok, obrana).","Opponents' attacks against the team by the zone they attacked from. Click a zone to play these attacks and the team's reaction (block, dig).")+'</p><div class="sitch">'+sc+'</div><div class="sitch">'+gc+'</div><div class="sitch">'+rc+'</div>'+
    (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitds]");if(b){var k=b.dataset.sitds;SITD.sets[k]=!SITD.sets[k];oppSit();return}b=e.target.closest&&e.target.closest("[data-sitdg]");if(b){SITD[b.dataset.sitdg]=!SITD[b.dataset.sitdg];oppSit()}});
-function sitRec(Rz){var MINR=5,rows=Rz.rows.map(function(q){var L=q.list.filter(function(c){return c.s==="R"}),n=L.length,cn={};DEV.forEach(function(e){cn[e]=L.filter(function(c){return c.e===e}).length});
+function sitMB(q){if(q.L)return false;var a=0,z3=0,r=0,r25=0;
+  q.list.forEach(function(c){var m=CMAP.get(c);if(!m||!m.contacts)return;
+    if(c.s==="A"){var z=dsCol(m,c,ccGet(m,c.i));if(z&&z!=="O"){a++;if(z==="3")z3++}}
+    var ru=(m.rl||[])[c.ru];if(!ru)return;var sz=c.t==="H"?ru.hs:ru.as,lu=c.t==="H"?ru.hl:ru.al;if(!sz||!lu)return;var j=lu.map(Number).indexOf(+c.p);if(j<0)return;r++;var off=((j+1-sz)%6+6)%6;if(off===2||off===5)r25++});
+  return a>=5&&z3/a>=.5&&r>=5&&r25/r>=.6}
+function sitRec(Rz){var MINR=5,mbs=[];Rz={rows:Rz.rows.filter(function(q){if(sitMB(q)){mbs.push(Object.keys(q.nums).join("/")+" "+q.name);return false}return true})};var rows=Rz.rows.map(function(q){var L=q.list.filter(function(c){return c.s==="R"}),n=L.length,cn={};DEV.forEach(function(e){cn[e]=L.filter(function(c){return c.e===e}).length});
     return{q:q,L:L,n:n,cn:cn,pos:n?(cn["#"]+cn["+"])/n:0,exc:n?cn["#"]/n:0}}).filter(function(x){return x.n});
   rows.sort(function(a,b){var am=a.n<MINR,bm=b.n<MINR;if(am!==bm)return am?1:-1;return(a.pos-b.pos)||(a.exc-b.exc)||(b.n-a.n)});
   function cell(L,key,ttl,v,cls){return '<td'+(v?' data-vc="'+sitPush(L)+'" data-vk="'+key+'" data-vt="'+esc(ttl)+'"':'')+(cls?' class="'+cls+'"':'')+'>'+(v||'<span class="dot">.</span>')+'</td>'}
@@ -997,6 +1002,7 @@ function sitRec(Rz){var MINR=5,rows=Rz.rows.map(function(q){var L=q.list.filter(
    '<div class="scroll"><table class="a1 dt sitrt"><thead><tr><th class="l">#</th><th colspan="2" class="l">'+Lx("Hráčka","Player")+'</th><th class="sp">'+Lx("Celk","Tot")+'</th>'+DEV.map(function(e){return '<th>'+e+'</th>'}).join("")+'<th class="sp">Pos %</th><th>Exc %</th></tr></thead><tbody>'+
    rows.map(function(x,ix){var q=x.q,nm=Object.keys(q.nums).join("/")+" "+q.name;
      return '<tr'+(x.n<MINR?' style="opacity:.6"':ix===0?' style="background:#dbe6f7"':'')+'><td class="l"><b>'+(x.n<MINR?"–":(ix+1)+".")+'</b></td><td class="l n">'+esc(Object.keys(q.nums).join("/"))+'</td><td class="l nm" translate="no">'+esc(q.name)+(ix===0&&x.n>=MINR?' <span class="gtag">'+Lx("NEJSLABŠÍ PŘÍJEM","WEAKEST RECEIVER")+'</span>':'')+'</td>'+cell(x.L,"R",nm,x.n,"sp b")+DEV.map(function(e){return cell(x.L.filter(function(c){return c.e===e}),"R:"+e,nm,x.cn[e],e==="#"?"evg":e==="="?"evr":"")}).join("")+'<td class="sp b">'+pc(x.pos)+'</td><td class="b">'+pc(x.exc)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  if(mbs.length)h+='<p class="mut" style="margin:8px 0 0;font-size:12px" translate="no">'+Lx("Nezahrnuto (prostřední blokařky): ","Excluded (middle blockers): ")+esc(mbs.join(", "))+'</p>';
   return rows.length?h:'<p class="mut" style="margin:0">'+Lx("Žádné příjmy.","No receptions.")+'</p>'}
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
