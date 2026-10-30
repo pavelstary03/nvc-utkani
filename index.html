@@ -17,8 +17,10 @@ main{max-width:1280px;margin:0 auto;padding:16px}
 .cv{height:64px;width:64px;border-radius:50%;justify-self:end}
 h1{margin:0;font-size:clamp(20px,4.5vw,32px);font-weight:800;text-align:center;letter-spacing:.5px}
 .tabs{display:flex;gap:10px;margin:0 0 14px}
-.tab{flex:1;padding:14px;border:2px solid var(--line);background:var(--card);border-radius:12px;font:700 14px inherit;font-family:inherit;color:var(--ink);cursor:pointer}
-.tab[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tab{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px 8px 12px;border:2px solid var(--line);background:var(--card);border-radius:14px;font-family:inherit;font-weight:800;font-size:15px;line-height:1.15;letter-spacing:.01em;text-align:center;color:var(--ink);cursor:pointer;box-shadow:0 2px 0 #cfd9ea}
+.tab[hidden]{display:none}.tab svg{width:38px;height:38px;color:var(--blue);flex:none}.tab span{display:block}.tab .bo{stroke:#1f4e8c;stroke-width:1.5}.tab .bs{stroke:#1f4e8c}
+.tab[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 2px 0 #163a69}.tab[aria-selected=true] svg{color:#fff}.tab[aria-selected=true] .bo{stroke:#fff}
+@media(max-width:1100px){.tab{font-size:12.5px;padding:10px 4px}.tab svg{width:30px;height:30px}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
 .card h2{margin:0 0 10px;font-size:16px;letter-spacing:.3px}
 .btn{padding:10px 14px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:700 14px inherit;font-family:inherit;cursor:pointer}
@@ -415,7 +417,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 163</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 164</footer>
 </main>
 <script>
 (function(){
@@ -2341,10 +2343,11 @@ function statRedraw(){try{if(!$("v-match").hidden&&cur)renderTables(cur);else if
 document.addEventListener("click",function(e){var b=e.target.closest("[data-ss]");if(!b)return;SEAS=b.dataset.ss==="4"?"4":"a";try{localStorage.setItem("nvc-seas",SEAS)}catch(x){}statRedraw()});
 /* popisky záložek podle skupiny */
 var APPN=0;
+var TABIC={tabopa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>',tabpl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2.4"/><path d="M5.5 17c.8-2.4 5.2-2.4 6 0M14 9h5M14 13h5"/></svg>',tabss:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>',tabwl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h4l3-8 4 15 3-7h4"/></svg>',tabopp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c.5-4 3-6 6-6s5.5 2 6 6M15 14.5c3 0 5 1.6 6 5.5"/></svg>',tabadmin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>',tabm:'<svg viewBox="2 2 20 20" fill="none" stroke-linecap="round" stroke-linejoin="round"><defs><clipPath id="bc"><circle cx="12" cy="12" r="9"/></clipPath></defs><circle cx="12" cy="12" r="9" fill="#fff" class="bo"/><g clip-path="url(#bc)" stroke-width="2.3" class="bs" fill="none"><path d="M2.5 10.2C7.5 11.6 11.5 12.2 13.6 11"/><path d="M13.6 11C13.8 8 15.5 6.3 19 4.5"/><path d="M13.6 11C16 13.5 16.7 17 15.4 21.5"/></g><circle cx="12" cy="12" r="9" class="bo" fill="none"/></svg>'};
 function tabLbl(){var g=((mode==="staff"||PT())&&ctx&&ctx.grp)||"",ex=OPPG.indexOf(g)>=0,exu=OPPU.indexOf(g)>=0;
-  var set=function(id,t){var b=$(id);if(b&&b._lb!==t){b._lb=t;b.innerHTML=esc(t).replace("\n","<br>")}};
-  var ta=$("tabopa");if(ta)ta.dataset.go=exu?"oppadm":"up1";
-  set("tabopa","NAHRÁVÁNÍ UTKÁNÍ "+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA HRÁČKY","PLAYER CARD")+"\n"+g);set("tabopp","SOUPEŘI V EX-Z");
+  var set=function(id,t){var b=$(id);if(b&&b._lb!==t){b._lb=t;b.innerHTML=(TABIC[id]||"")+"<span>"+esc(t).replace("\n","<br>")+"</span>"}};
+  var tw=$("tabwl");if(tw&&!tw.querySelector("svg"))tw.innerHTML=TABIC.tabwl+"<span>"+tw.innerHTML+"</span>";var ta=$("tabopa");if(ta)ta.dataset.go=exu?"oppadm":"up1";
+  set("tabopa","NAHRÁVÁNÍ\nUTKÁNÍ "+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA\nHRÁČKY "+g,"PLAYER CARD\n"+g));set("tabopp","SOUPEŘI V EX-Z");
   set("tabadmin","SPRÁVA "+g+(APPN?" ("+APPN+")":""))}
 async function syncOppOff(m,k,v){if(OPPU.indexOf(m.grp)<0||!canW())return;try{await oppLoadList();var key=upKey(m.id);for(var oid in OPP.sum){var rs=OPP.sum[oid];for(var i=0;i<rs.length;i++)if(upKey(rs[i].id)===key){var p={};p[k===0?"off":"off2"]=v;await sb("PATCH","/rest/v1/opp_matches?id=eq."+enc(rs[i].id),p,"return=minimal")}}}catch(e){}}
 /* ---------- v20: náhled „Zobrazení“ pro administrátora ---------- */
