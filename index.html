@@ -418,7 +418,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 169</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 170</footer>
 </main>
 <script>
 (function(){
@@ -2349,7 +2349,7 @@ function tabLbl(){var g=((mode==="staff"||PT())&&ctx&&ctx.grp)||"",ex=OPPG.index
   var tn=$("tabs");if(tn){var gi=groups.map(function(q){return q.id}).indexOf(g);tn.dataset.gc=gi>=0?gi%2:0}
   var set=function(id,t){var b=$(id);if(b&&b._lb!==t){b._lb=t;b.innerHTML=(TABIC[id]||"")+"<span>"+esc(t).replace("\n","<br>")+"</span>"}};
   var tw=$("tabwl");if(tw&&!tw.querySelector("svg"))tw.innerHTML=TABIC.tabwl+"<span>"+tw.innerHTML+"</span>";var ta=$("tabopa");if(ta)ta.dataset.go=exu?"oppadm":"up1";
-  set("tabopa","NAHRÁVÁNÍ\nUTKÁNÍ "+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA\nHRÁČKY "+g,"PLAYER CARD\n"+g));set("tabopp","SOUPEŘI V EX-Z");
+  set("tabopa",Lx("NAHRÁVÁNÍ\nUTKÁNÍ ","UPLOAD OF\nMATCHES ")+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA\nHRÁČKY "+g,"PLAYER CARD\n"+g));set("tabopp","SOUPEŘI V EX-Z");
   set("tabadmin","SPRÁVA "+g+(APPN?" ("+APPN+")":""))}
 async function syncOppOff(m,k,v){if(OPPU.indexOf(m.grp)<0||!canW())return;try{await oppLoadList();var key=upKey(m.id);for(var oid in OPP.sum){var rs=OPP.sum[oid];for(var i=0;i<rs.length;i++)if(upKey(rs[i].id)===key){var p={};p[k===0?"off":"off2"]=v;await sb("PATCH","/rest/v1/opp_matches?id=eq."+enc(rs[i].id),p,"return=minimal")}}}catch(e){}}
 /* ---------- v20: náhled „Zobrazení“ pro administrátora ---------- */
