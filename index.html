@@ -415,7 +415,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 159</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 161</footer>
 </main>
 <script>
 (function(){
@@ -987,6 +987,27 @@ function sitDef(ms){var items=[],mx=1;
   var rc=[["fr",Lx("Obrana s přední nahrávačkou","Defence with Front Row Setter")],["bk",Lx("Obrana se zadní nahrávačkou","Defence with Back Row Setter")]].map(function(q){return '<button type="button" class="sitc" data-sitdg="'+q[0]+'" aria-pressed="'+SITD[q[0]]+'"><b>'+q[1]+'</b></button>'}).join("");
   return '<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Útoky soupeřů proti sledovanému družstvu podle zóny, ze které útočily. Kliknutím na zónu se přehrají tyto útoky i reakce družstva (blok, obrana).","Opponents' attacks against the team by the zone they attacked from. Click a zone to play these attacks and the team's reaction (block, dig).")+'</p><div class="sitch">'+sc+'</div><div class="sitch">'+gc+'</div><div class="sitch">'+rc+'</div>'+
    (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
+var SITM={sets:{},ins:false,out:false,mb:{}};
+function sitMBb(ms,Rz){var items=[],mx=1,mbn={},mbl=[];
+  Rz.rows.forEach(function(q){if(sitMB(q)){mbn[q.key]=Object.keys(q.nums).join("/")+" "+q.name;mbl.push(q)}});
+  var nmap=new WeakMap();function mbnum(m,n){var M=nmap.get(m);if(!M){M={};var T=repData(m)[m.our].pl;Object.keys(T).forEach(function(x){var P=T[x];if(P&&P.p&&P.p.key&&mbn[P.p.key])M[+x]=P.p.key});nmap.set(m,M)}return M[n]||""}
+
+  ms.forEach(function(m){var R=repData(m);if(!R.ok)return;mx=Math.max(mx,m.sets.length);
+    m.contacts.forEach(function(c){if(c.s!=="A"||c.t===m.our||!c.p)return;var q=(m.rl||[])[c.ru]||{},sz=+(m.our==="H"?q.hs:q.as)||0,row="",ov=ccGet(m,c.i),code=(ov&&ov.charAt(0)!=="@")?ov:c.c,z=D5[code]||dsCol(m,c,ov);if(z==="X")z="S";else if("123456".indexOf(z)<0||z.length!==1)z="?";
+      var mbf={},lu=m.our==="H"?q.hl:q.al;if(lu)lu.forEach(function(pn,j){var kk=mbnum(m,+pn);if(kk&&j+1>=2&&j+1<=4)mbf[kk]=1});items.push({c:c,z:z,g:sitGrp(code),set:c.set,row:row,mbf:mbf})})});
+  var sk=Object.keys(SITM.sets).filter(function(k){return SITM.sets[k]}),anyS=sk.length>0,anyG=SITM.ins||SITM.out;var mbk=Object.keys(SITM.mb).filter(function(k){return SITM.mb[k]});
+  var on=items.filter(function(x){return(!anyS||SITM.sets[x.set])&&(!anyG||SITM[x.g])&&(!mbk.length||mbk.some(function(k){return x.mbf[k]}))});
+  function btn(L,ttl){return 'data-vc="'+sitPush(L.map(function(x){return x.c}))+'" data-vk="A" data-vt="'+esc(ttl)+'"'}
+  var tt=Lx("MB BLOKOVÁNÍ","MB BLOCKING")+(anyS?" · "+sk.map(function(k){return Lx(k+". SET","SET "+k)}).join("+"):"")+(anyG?" · "+[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].filter(function(q){return SITM[q[0]]}).map(function(q){return q[1]}).join("+"):"")+(mbk.length?" · MB "+mbk.map(function(k){return mbn[k]}).join("+"):"");
+  var zs=on.filter(function(x){return x.z!=="?"&&x.z!=="S"}).length;
+  function zone(z){var L=on.filter(function(x){return x.z===z});return '<div class="sitz"'+(L.length?'':' style="opacity:.45"')+'><div class="sitzh" '+btn(L,tt+" · "+Lx("zóna ","zone ")+z)+'><b>'+Lx("Zóna ","Zone ")+z+'</b></div><div class="sitcnt">'+L.length+'<small> '+Lx(L.length===1?"útok":L.length>1&&L.length<5?"útoky":"útoků",L.length===1?"attack":"attacks")+'</small></div></div>'}
+  var sc='<button type="button" class="sitc" data-sitmall="1" aria-pressed="'+!anyS+'"><b>'+Lx("CELÉ UTKÁNÍ","WHOLE MATCH")+'</b></button>';for(var i=1;i<=Math.min(mx,5);i++)sc+='<button type="button" class="sitc" data-sitms="'+i+'" aria-pressed="'+!!SITM.sets[i]+'"><b>'+Lx(i+". SET","SET "+i)+'</b></button>';
+  var gc=[["ins","IN-SYSTEM"],["out","OUT-OF-SYSTEM"]].map(function(q){return '<button type="button" class="sitc" data-sitmg="'+q[0]+'" aria-pressed="'+SITM[q[0]]+'"><b>'+q[1]+'</b></button>'}).join("");
+  var un=on.filter(function(x){return x.z==="?"}),se=on.filter(function(x){return x.z==="S"});
+  var rc=mbl.map(function(q){return '<button type="button" class="sitc" data-sitmb="'+esc(q.key)+'" aria-pressed="'+!!SITM.mb[q.key]+'" translate="no"><b>'+esc(Object.keys(q.nums).join('/'))+' '+esc(q.name)+'</b></button>'}).join("");
+  return '<p class="mut" style="margin:0 0 8px;font-size:13px">'+Lx("Útoky soupeřů proti sledovanému družstvu podle zóny, ze které útočily. Vybraná blokařka je zrovna na síti (zóny IV, III, II). Kliknutím na zónu se přehrají tyto útoky i reakce družstva (blok, obrana).","Opponents' attacks against the team by the zone they attacked from. The selected middle blocker is on the net (zones IV, III, II). Click a zone to play these attacks and the team's reaction (block, dig).")+'</p><div class="sitch">'+sc+'</div><div class="sitch">'+gc+'</div><div class="sitch">'+rc+'</div>'+
+   (items.length?'<div class="sitcourt"><div class="sitnet">'+Lx("SÍŤ","NET")+'</div><div class="sitg">'+["4","3","2","5","6","1"].map(zone).join("")+'</div></div>':'<p class="mut" style="margin:0">'+Lx("Žádné útoky.","No attacks.")+'</p>')}
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-sitms],[data-sitmg],[data-sitmb],[data-sitmall]");if(!t)return;if(t.dataset.sitmall){SITM.sets={}}else if(t.dataset.sitms){SITM.sets[t.dataset.sitms]=!SITM.sets[t.dataset.sitms]}else if(t.dataset.sitmg){SITM[t.dataset.sitmg]=!SITM[t.dataset.sitmg]}else{var k=t.dataset.sitmb,w=!SITM.mb[k];SITM.mb={};if(w)SITM.mb[k]=true}oppSit()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitds]");if(b){var k=b.dataset.sitds;SITD.sets[k]=!SITD.sets[k];oppSit();return}b=e.target.closest&&e.target.closest("[data-sitdg]");if(b){SITD[b.dataset.sitdg]=!SITD[b.dataset.sitdg];oppSit()}});
 function sitMB(q){if(q.L)return false;var a=0,z3=0,r=0,r25=0;
   q.list.forEach(function(c){var m=CMAP.get(c);if(!m||!m.contacts)return;
@@ -1007,7 +1028,7 @@ function sitRec(Rz){var MINR=5,mbs=[];Rz={rows:Rz.rows.filter(function(q){if(sit
 function oppSit(){var box=$("oppsit");if(!box)return;if(!sitOn()){box.hidden=true;return}
   var all=OPP.full[oppSel]||[],ms=all.filter(oppInSel);if(!ms.length){box.hidden=true;return}box.hidden=false;
   var Rz=oppRoster(ms);if(!Rz.ok){box.hidden=true;return}
-  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span><span data-sits="R" class="'+(SITS==="R"?"on":"")+'">'+Lx("PŘÍJEM","SERVE RECEIVE")+'</span></div>'+(SITS==="A"?sitSetBar(ms)+sitAtt(ms):SITS==="D"?sitDef(ms):SITS==="R"?sitRec(Rz):sitSetBar(ms)+sitServe(sitFiltRz(Rz)))}
+  box.innerHTML='<h2>'+Lx("HERNÍ ČINNOSTI A SITUACE","GAME ACTIONS AND SITUATIONS")+'</h2><div class="sitsec"><span data-sits="S" class="'+(SITS==="S"?"on":"")+'">'+Lx("PODÁNÍ","SERVE")+'</span><span data-sits="A" class="'+(SITS==="A"?"on":"")+'">'+Lx("ÚTOK","ATTACK")+'</span><span data-sits="D" class="'+(SITS==="D"?"on":"")+'">'+Lx("OBRANA","DEFENCE")+'</span><span data-sits="R" class="'+(SITS==="R"?"on":"")+'">'+Lx("PŘÍJEM","SERVE RECEIVE")+'</span><<span data-sits="B" class="'+(SITS==="B"?"on":"")+'">'+Lx("MB BLOKOVÁNÍ","MB BLOCKING")+'</span></div>'+(SITS==="A"?sitSetBar(ms)+sitAtt(ms):SITS==="D"?sitDef(ms):SITS==="R"?sitRec(Rz):SITS==="B"?sitMBb(ms,Rz):sitSetBar(ms)+sitServe(sitFiltRz(Rz)))}
 document.addEventListener("click",function(e){var sa=e.target.closest&&e.target.closest("[data-sitsall]");if(sa){SITSET={};SITD.sets={};oppSit();return}var ss=e.target.closest&&e.target.closest("[data-sitss]");if(ss){SITSET[ss.dataset.sitss]=!SITSET[ss.dataset.sitss];oppSit();return}var g=e.target.closest&&e.target.closest("[data-sitg]");if(g){SITG[g.dataset.sitg]=!SITG[g.dataset.sitg];oppSit();return}var b=e.target.closest&&e.target.closest("[data-sits]");if(b){SITS=b.dataset.sits;oppSit();return}b=e.target.closest&&e.target.closest("[data-sitph]");if(!b)return;var k=b.dataset.sitph;SITP[k]=!SITP[k];if(!SITP.r&&!SITP.t)SITP[k==="r"?"t":"r"]=true;oppSit()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-sitt]");if(!b)return;SITT=b.dataset.sitt;oppSit()});
 function a1legend(){return STATM==="e"?eLegend():STATM==="d"?dLegend()+a1legendS():a1legendS()}
