@@ -325,7 +325,7 @@ body.rfsb{overflow:hidden}
 
 .a1 td .efr{color:#c62d3a;font-weight:700}.a1.eff td{font-size:13px}.a1.eff tr.etop td{border-top:0;border-bottom:2px solid #222;background:#eef3fa}.a1.eff tbody tr:not(.tot) td:not(.l):not(.sp):not(.b){font-weight:400}
 
-.otile{flex:0 1 auto!important;padding:12px 18px!important;font-size:17px!important}.otile[aria-pressed="true"]{background:#16335f;color:#fff}.otile small{font-weight:600;opacity:.8}
+.otile{flex:0 1 auto!important;padding:12px 18px!important;font-size:17px!important}.otile.g0[aria-pressed="true"]{background:#16335f;color:#fff}.otile.g1[aria-pressed="true"]{background:#0f7b6c;color:#fff}.otile small{font-weight:600;opacity:.8}
 .msel{display:flex;flex-direction:column;gap:3px;min-width:230px}.msel summary{cursor:pointer;padding:9px 12px;border:2px solid var(--line);border-radius:10px;background:#fff;font-weight:600}.mselb{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px 10px;display:grid;gap:6px;margin-top:4px}
 .mly{margin:-2px 0 14px;padding:0 4px}.mrow{margin:0}.ob{border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0;background:#fff}
 body.pvp #mesea,body.pvp #megrp,body.pvp #oppbtnw,body.pvp #sstbtnw,body.pvp #sstback{display:none!important}body.pvp #v-match .card:has(#our),body.pvp #v-match .card:has(#pub){display:none}.wlt{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}.wlt th,.wlt td{border:1px solid var(--line);padding:4px 6px;text-align:center;white-space:nowrap;font-size:13px}.wlt th{background:var(--bg)}.wlt td.n,.wlt th.n{text-align:left;position:sticky;left:0;background:var(--card);z-index:1}.wlt th.n{background:var(--bg)}.wlh{min-width:34px;font-size:12px}.wled{cursor:pointer}.wlov{outline:2px solid #f2c200;outline-offset:-2px}.wlmh{font-size:11px;min-width:90px;max-width:150px;white-space:normal;vertical-align:top}.wltag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:9px;color:#fff;margin-left:4px;background:var(--blue)}.wl-g0{background:#16335f}.wl-g1{background:#0f7b6c}.wl-rep{background:#e8710a}.wl-klub{background:#7b8794}.wlseg{display:inline-flex;gap:6px;flex-wrap:wrap;margin:0 10px 8px 0}.wlgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}.wlbox{border:1px solid var(--line);border-radius:10px;padding:10px}.wltg{text-align:left!important;white-space:normal!important}.wltg .wltag{margin:1px 2px 1px 0}.wlin{width:56px;padding:4px}.wlbar{display:inline-block;height:8px;background:var(--blue);border-radius:4px;vertical-align:middle;margin-left:6px}.wlsb{display:inline-block;min-width:34px;padding:2px 6px;margin:1px;border:1px solid var(--line);border-radius:6px;font-size:12px}
@@ -418,7 +418,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 167</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 168</footer>
 </main>
 <script>
 (function(){
@@ -2149,7 +2149,7 @@ function oppMerge(ms){var by={},info=[];
   return info}
 async function oppLoadFull(id){var rs=await getAll("/rest/v1/opp_matches?select=*&opp_id=eq."+enc(id)+"&order=id");
   OPP.full[id]=rs.map(function(r){var m=r.data;m.id=r.id;m.opp_id=r.opp_id;m.season=r.season;m.grp=r.grp;m.yt=r.yt||"";m.off=r.off||0;m.yt2=r.yt2||"";m.off2=r.off2||0;m.our=r.our||"H";ensureRally(m);return m}).sort(sortM);OPP.merged=OPP.merged||{};try{OPP.merged[id]=oppMerge(OPP.full[id])}catch(e){OPP.merged[id]=[]}return OPP.full[id]}
-function oppTiles(attr,sel){return OPP.list.length?OPP.list.map(function(o){var n=(OPP.sum[o.id]||[]).length;return '<button class="gtile g0 otile" translate="no" '+attr+'="'+esc(o.id)+'" aria-pressed="'+(o.id===sel)+'">'+esc(o.name)+' <small>('+n+')</small></button>'}).join(""):'<span class="mut">'+Lx("Zatím žádní soupeři.","No opponents yet.")+'</span>'}
+function oppTiles(attr,sel){var tn=$("tabs"),gc=tn&&tn.dataset.gc==="1"?1:0;return OPP.list.length?OPP.list.map(function(o){var n=(OPP.sum[o.id]||[]).length;return '<button class="gtile g'+gc+' otile" translate="no" '+attr+'="'+esc(o.id)+'" aria-pressed="'+(o.id===sel)+'">'+esc(o.name)+' <small>('+n+')</small></button>'}).join(""):'<span class="mut">'+Lx("Zatím žádní soupeři.","No opponents yet.")+'</span>'}
 function oppPlayers(ms){var o={};ms.forEach(function(m){var sd=m.our,seen={};m.contacts.forEach(function(c){if(c.t===sd&&c.p)seen[c.p]=1});Object.keys(seen).forEach(function(n){var p=m.players[sd][n];if(!p)return;var q=o[p.key]||(o[p.key]={key:p.key,last:p.last,first:p.first,nums:{}});q.nums[p.n!=null?p.n:n]=1})});
   return Object.keys(o).map(function(k){return o[k]}).sort(function(a,b){return a.last<b.last?-1:a.last>b.last?1:0})}
 function oppMt(m){return cd(m.date)+" · "+m.teams[0].name+" "+m.teams[0].sets+":"+m.teams[1].sets+" "+m.teams[1].name}
