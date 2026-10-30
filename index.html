@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 178</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 181</footer>
 </main>
 <script>
 (function(){
@@ -1981,6 +1981,94 @@ document.addEventListener("change",async function(e){var sel=e.target.closest&&e
   try{if(r&&r.src==="dvw"&&id.indexOf("m|")===0){var k="mt:"+id.slice(2);notes[k]=v;var q=id.slice(2).split("|");await mtNote(k,v,q[0],q[1],id.slice(2))}
     await sb("PATCH","/rest/v1/workload?id=eq."+enc(id),{cat:v},"return=minimal");if(r)r.cat=v;if(msg)msg.textContent=Lx("✓ Uloženo.","✓ Saved.")}
   catch(x){if(msg)msg.textContent=Lx("Uložení se nezdařilo: ","Save failed: ")+x.message}});
+/* ---------- v179: ZÁLOHA (ZIP v ZIPu + offline HTML) ---------- */
+function BK(){try{return localStorage.getItem("nvc-backup")!=="0"}catch(e){return true}}
+var BKT=["seasons","groups","admins","memberships","matches","player_data","notes","opponents","opp_matches","workload","approvals","consents"];
+var CRC=(function(){var t=[],c,n,k;for(n=0;n<256;n++){c=n;for(k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function b64of(buf){var u=new Uint8Array(buf),o="",i;for(i=0;i<u.length;i+=32768)o+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(o)}
+function b64u8(b){var o=atob(b),u=new Uint8Array(o.length);for(var i=0;i<o.length;i++)u[i]=o.charCodeAt(i);return u}
+function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function u8(x){return typeof x==="string"?new TextEncoder().encode(x):x}
+function zipMake(files){var d=new Date(),dt=((d.getFullYear()-1980)<<9|(d.getMonth()+1)<<5|d.getDate())&0xFFFF,tm=(d.getHours()<<11|d.getMinutes()<<5|(d.getSeconds()>>1))&0xFFFF,parts=[],cen=[],off=0;
+  function w16(a,v){a.push(v&255,(v>>8)&255)}function w32(a,v){a.push(v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255)}
+  files.forEach(function(f){var nm=u8(f.name),b=u8(f.data),c=crc32(b),h=[];
+    w32(h,0x04034b50);w16(h,20);w16(h,0x0800);w16(h,0);w16(h,tm);w16(h,dt);w32(h,c);w32(h,b.length);w32(h,b.length);w16(h,nm.length);w16(h,0);
+    parts.push(new Uint8Array(h),nm,b);
+    var e=[];w32(e,0x02014b50);w16(e,20);w16(e,20);w16(e,0x0800);w16(e,0);w16(e,tm);w16(e,dt);w32(e,c);w32(e,b.length);w32(e,b.length);w16(e,nm.length);w16(e,0);w16(e,0);w16(e,0);w16(e,0);w32(e,0);w32(e,off);
+    cen.push(new Uint8Array(e),nm);off+=h.length+nm.length+b.length});
+  var cs=0;cen.forEach(function(x){cs+=x.length});var en=[];w32(en,0x06054b50);w16(en,0);w16(en,0);w16(en,files.length);w16(en,files.length);w32(en,cs);w32(en,off);w16(en,0);
+  return new Blob(parts.concat(cen,[new Uint8Array(en)]),{type:"application/zip"})}
+async function blobU8(b){return new Uint8Array(await b.arrayBuffer())}
+function csvOf(rows){var cols=[];rows.forEach(function(r){Object.keys(r).forEach(function(k){if(cols.indexOf(k)<0)cols.push(k)})});
+  function q(v){if(v==null)return"";if(typeof v==="object")v=JSON.stringify(v);v=String(v);if(v.length>30000)v=v.slice(0,30000)+"…(zkráceno, celé v JSON)";return/[;"\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+  return"\ufeff"+[cols.map(q).join(";")].concat(rows.map(function(r){return cols.map(function(c){return q(r[c])}).join(";")})).join("\r\n")}
+function bkViewer(DATA,info){var j=JSON.stringify({info:info,data:DATA}).replace(/</g,"\\u003c").replace(/\u2028/g,"\\u2028").replace(/\u2029/g,"\\u2029");
+  return '<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NVC utkání – offline záloha</title><style>body{font:14px system-ui,sans-serif;margin:0;background:#f2f4f8;color:#14233c}header{background:#16335f;color:#fff;padding:14px 18px}h1{margin:0;font-size:18px}.mut{color:#5b6b85}header .mut{color:#c9d4e8}nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px}nav button{border:1px solid #c5cfe0;background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}nav button[aria-pressed=true]{background:#16335f;color:#fff}main{padding:0 18px 24px}input{padding:8px 10px;border:1px solid #c5cfe0;border-radius:8px;width:min(420px,100%);margin-bottom:10px}.w{overflow:auto;background:#fff;border:1px solid #d8dfec;border-radius:10px}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid #e6ebf4;padding:5px 8px;text-align:left;vertical-align:top;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}th{position:sticky;top:0;background:#eef2f9}</style></head><body><header><h1>NVC utkání – offline záloha</h1><div class="mut" id="inf"></div></header><nav id="nv"></nav><main><input id="q" placeholder="Hledat v tabulce…"><div class="mut" id="cnt" style="margin-bottom:6px"></div><div class="w"><table id="tb"></table></div></main><script>var D='+j+';var cur=null;function E(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;"}[c]})}function V(v){if(v==null)return"";if(typeof v=="object")v=JSON.stringify(v);return String(v)}document.getElementById("inf").textContent="Záloha "+D.info.date+" · verze "+D.info.ver+" · "+D.info.by;var nv=document.getElementById("nv");Object.keys(D.data).forEach(function(k){var b=document.createElement("button");b.textContent=k+" ("+D.data[k].length+")";b.onclick=function(){cur=k;draw()};b.dataset.k=k;nv.appendChild(b)});document.getElementById("q").oninput=function(){draw()};function draw(){if(!cur)cur=Object.keys(D.data)[0];[].forEach.call(nv.children,function(b){b.setAttribute("aria-pressed",b.dataset.k===cur)});var q=document.getElementById("q").value.toLowerCase(),rows=D.data[cur],cols=[];rows.forEach(function(r){Object.keys(r).forEach(function(c){if(cols.indexOf(c)<0)cols.push(c)})});var f=rows.filter(function(r){return!q||cols.some(function(c){return V(r[c]).toLowerCase().indexOf(q)>=0})});document.getElementById("cnt").textContent=f.length+" / "+rows.length+" záznamů"+(f.length>500?" (zobrazeno prvních 500)":"");document.getElementById("tb").innerHTML="<tr>"+cols.map(function(c){return"<th>"+E(c)+"</th>"}).join("")+"</tr>"+f.slice(0,500).map(function(r){return"<tr>"+cols.map(function(c){var t=V(r[c]);return"<td title=\\""+E(t.slice(0,300))+"\\">"+E(t.slice(0,160))+"</td>"}).join("")+"</tr>"}).join("")}draw();<\/script></body></html>'}
+async function bkRun(btn){var msg=$("bkmsg"),D={},cnt={},info,names=[];btn.disabled=true;
+  try{for(var i=0;i<BKT.length;i++){var t=BKT[i];msg.textContent=Lx("Stahuji tabulku ","Downloading table ")+t+" ("+(i+1)+"/"+BKT.length+")…";
+      try{D[t]=await getAll("/rest/v1/"+t+"?select=*")}catch(e){D[t]=[];names.push(t+": "+e.message)}cnt[t]=D[t].length}
+    var dv=[];try{dv=await getAll("/rest/v1/dvw_files?select=*")}catch(e){dv=[]}
+    cnt.dvw_files=dv.length;D.dvw_files=dv.map(function(x){return{id:x.id,season:x.season,grp:x.grp,name:x.name,size:x.size,created_at:x.created_at}});
+    var d=new Date(),ds=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2),ver=((document.body.innerText.match(/VERZE\s+(\d+)/)||[])[1]||"?");
+    info={date:d.toISOString(),ver:ver,by:(typeof user!=="undefined"&&user&&user.email)||"admin",counts:cnt,errors:names};
+    msg.textContent=Lx("Balím…","Packing…");
+    var app="";try{var r=await fetch(location.href.split("#")[0]);if(r.ok)app=await r.text()}catch(e){}
+    if(!app||app.indexOf("VERZE")<0)app="<!-- Nepodařilo se načíst původní soubor aplikace; toto je aktuální stav stránky. -->\n<!doctype html>\n"+document.documentElement.outerHTML;
+    var inner=[{name:"INFO.txt",data:"Záloha NVC utkání\r\nDatum: "+info.date+"\r\nVerze aplikace: "+ver+"\r\nPočty záznamů: "+JSON.stringify(cnt)+(names.length?"\r\nChyby: "+names.join("; "):"")+"\r\n\r\nSložky: json = úplná data, csv = pro Excel (středník, UTF-8), aplikace = kód, dvw = původní soubory dvw nahrané od verze 180.\r\nPoznámka: dvw nahrané dříve se neukládaly, tato utkání jsou v tabulce matches v rozebrané podobě.\r\n"},{name:"aplikace/nvc-utkani-v"+ver+".html",data:app}];
+    var used={};dv.forEach(function(x){var n=String(x.name||"soubor.dvw").replace(/[\\/:*?"<>|]/g,"_");if(used[n]){n=x.id.replace(/[\\/:*?"<>|]/g,"_")+"_"+n}used[n]=1;inner.push({name:"dvw/"+n,data:b64u8(x.b64)})});
+    inner.push({name:"json/_info.json",data:JSON.stringify(info)});BKT.concat(["dvw_files"]).forEach(function(t){inner.push({name:"json/"+t+".json",data:JSON.stringify(D[t],null,1)});inner.push({name:"csv/"+t+".csv",data:csvOf(D[t])})});
+    var innerU8=await blobU8(zipMake(inner));
+    var outer=zipMake([{name:"data-zaloha-"+ds+".zip",data:innerU8},{name:"NVC-offline-"+ds+".html",data:bkViewer(D,info)},{name:"CTI-ME.txt",data:"Obsah: data-zaloha-*.zip = všechna data (JSON, CSV) a aktuální kód aplikace; NVC-offline-*.html = offline prohlížeč dat, otevři dvojklikem v prohlížeči (bez internetu).\r\n"}]);
+    var a=document.createElement("a");a.href=URL.createObjectURL(outer);a.download="NVC-zaloha-"+ds+".zip";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},4000);
+    msg.textContent=Lx("✓ Záloha stažena","✓ Backup downloaded")+" ("+Object.keys(cnt).map(function(k){return k+" "+cnt[k]}).join(", ")+")"+(names.length?" · "+Lx("Chyby: ","Errors: ")+names.join("; "):"")}
+  catch(e){msg.textContent=Lx("Záloha se nezdařila: ","Backup failed: ")+e.message}
+  btn.disabled=false}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#bkgo");if(b)bkRun(b)});
+/* ---------- v181: OBNOVA ZE ZÁLOHY ---------- */
+var RS={files:null,data:null,cur:null};
+var RSK={seasons:["id"],groups:["id"],admins:["email"],memberships:["season","grp","role","pid"],opponents:["id"],matches:["id"],player_data:["match_id","player_key"],opp_matches:["id"],notes:["k"],workload:["id"],approvals:["email"],consents:["email"],dvw_files:["id"]};
+var RSO=["seasons","groups","admins","memberships","opponents","matches","player_data","opp_matches","notes","workload","approvals","consents","dvw_files"];
+async function zipRead(buf){var u=new Uint8Array(buf),dv=new DataView(buf),e=u.length-22;
+  while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw new Error(Lx("Toto není ZIP soubor.","This is not a ZIP file."));
+  var n=dv.getUint16(e+10,true),p=dv.getUint32(e+16,true),out={};
+  for(var i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)throw new Error("ZIP");
+    var meth=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),el=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=new TextDecoder().decode(u.subarray(p+46,p+46+nl));
+    var ln=dv.getUint16(lo+26,true),le=dv.getUint16(lo+28,true),st=lo+30+ln+le,raw=u.subarray(st,st+cs),data;
+    if(meth===0)data=raw;else if(meth===8){var ds=new DecompressionStream("deflate-raw"),w=ds.writable.getWriter();w.write(raw);w.close();data=new Uint8Array(await new Response(ds.readable).arrayBuffer())}else throw new Error("ZIP method "+meth);
+    out[name]=data;p+=46+nl+el+cl}
+  return out}
+function rsKey(t,r){return RSK[t].map(function(k){return r[k]}).join("\u0001")}
+async function rsLoad(file){var msg=$("rsmsg"),box=$("rsprev");box.innerHTML="";RS.data=null;
+  try{msg.textContent=Lx("Čtu zálohu…","Reading backup…");var f=await zipRead(await file.arrayBuffer());
+    var names=Object.keys(f),inner=names.filter(function(n){return/^data-zaloha-.*\.zip$/.test(n)})[0];
+    if(inner)f=await zipRead(f[inner].buffer.slice(f[inner].byteOffset,f[inner].byteOffset+f[inner].byteLength));
+    var D={},bad=[];
+    try{D._i=JSON.parse(new TextDecoder().decode(f["json/_info.json"]))}catch(e){}
+    RSO.forEach(function(t){var x=f["json/"+t+".json"];if(!x)return;try{D[t]=JSON.parse(new TextDecoder().decode(x))}catch(e){bad.push(t)}});
+    if(!Object.keys(D).filter(function(k){return k!=="_i"}).length)throw new Error(Lx("V souboru nejsou data zálohy (složka json).","No backup data (json folder) in the file."));
+    if(D.dvw_files){var used={};D.dvw_files.forEach(function(r){var n=String(r.name||"soubor.dvw").replace(/[\\/:*?"<>|]/g,"_"),a=f["dvw/"+String(r.id).replace(/[\\/:*?"<>|]/g,"_")+"_"+n]||f["dvw/"+n];if(a){r.b64=b64of(a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength))}});D.dvw_files=D.dvw_files.filter(function(r){return r.b64})}
+    msg.textContent=Lx("Porovnávám s databází…","Comparing with the database…");
+    var rows=[],tot=0,TD={};
+    for(var i=0;i<RSO.length;i++){var t=RSO[i];if(!D[t])continue;var cur={};
+      if(t!=="dvw_files"){try{(await getAll("/rest/v1/"+t+"?select=*")).forEach(function(r){cur[rsKey(t,r)]=r})}catch(e){}}
+      else{try{(await getAll("/rest/v1/dvw_files?select=id,name,size")).forEach(function(r){cur[rsKey(t,r)]=r})}catch(e){}}
+      var nw=0,ow=0,same=0;TD[t]=[];D[t].forEach(function(r){var c=cur[rsKey(t,r)];if(!c){nw++;TD[t].push(r)}else if(t==="dvw_files")same++;else{var ok=Object.keys(r).every(function(k){return k==="updated_at"||k==="created_at"||(k==="id"&&t==="memberships")||JSON.stringify(c[k])===JSON.stringify(r[k])});if(ok)same++;else{ow++;TD[t].push(r)}}});
+      tot+=nw+ow;rows.push({t:t,n:D[t].length,nw:nw,ow:ow,same:same})}
+    RS.data=TD;
+    box.innerHTML='<p style="margin:8px 0">'+Lx("Záloha ze dne ","Backup from ")+esc((D._i&&D._i.date)||"")+'</p><div class="scroll"><table class="wlt"><thead><tr><th>'+Lx("Tabulka","Table")+'</th><th>'+Lx("V záloze","In backup")+'</th><th>'+Lx("Přidá se","Will be added")+'</th><th>'+Lx("Přepíše se","Will be overwritten")+'</th><th>'+Lx("Beze změny","Unchanged")+'</th></tr></thead><tbody>'+rows.map(function(r){return'<tr><td>'+esc(r.t)+'</td><td>'+r.n+'</td><td>'+r.nw+'</td><td'+(r.ow?' style="font-weight:800;color:#b3261e"':'')+'>'+r.ow+'</td><td>'+r.same+'</td></tr>'}).join("")+'</tbody></table></div><p class="mut" style="margin:8px 0;font-size:12px">'+Lx("Obnova nic nemaže: záznamy ze zálohy se přidají nebo přepíšou podle jejich identifikátoru. Co je v databázi navíc, zůstane.","Restore deletes nothing: backup records are added or overwrite records with the same identifier. Anything extra in the database stays.")+'</p><label style="display:flex;gap:8px;align-items:center;margin:6px 0"><input type="checkbox" id="rsok"> <b>'+Lx("Rozumím, přepíšou se záznamy označené výše.","I understand the records marked above will be overwritten.")+'</b></label><button class="btn pri" id="rsgo" disabled>'+Lx("OBNOVIT DATA","RESTORE DATA")+' ('+tot+')</button>';
+    msg.textContent=bad.length?Lx("Nečitelné: ","Unreadable: ")+bad.join(", "):""}
+  catch(e){msg.textContent=Lx("Obnovu nelze připravit: ","Cannot prepare restore: ")+e.message}}
+async function rsRun(){var msg=$("rsmsg"),D=RS.data,btn=$("rsgo");if(!D||!$("rsok").checked)return;
+  if(!confirm(Lx("Opravdu obnovit data ze zálohy? Záznamy se stejným identifikátorem se přepíšou.","Really restore data from the backup? Records with the same identifier will be overwritten.")))return;
+  btn.disabled=true;var err=[],done=0;
+  for(var i=0;i<RSO.length;i++){var t=RSO[i],R=D[t];if(!R||!R.length)continue;
+    var big=/^(matches|opp_matches|player_data|dvw_files|workload)$/.test(t),sz=big?5:200,oc=RSK[t].join(",");
+    for(var o=0;o<R.length;o+=sz){msg.textContent=Lx("Obnovuji ","Restoring ")+t+" "+Math.min(o+sz,R.length)+"/"+R.length+"…";
+      var part=R.slice(o,o+sz).map(function(r){r=Object.assign({},r);if(t==="memberships")delete r.id;return r});
+      try{await sb("POST","/rest/v1/"+t+"?on_conflict="+oc,part,"resolution=merge-duplicates,return=minimal");done+=part.length}catch(e){err.push(t+": "+e.message);break}}}
+  msg.textContent=(err.length?Lx("Hotovo s chybami: ","Done with errors: ")+err.join("; "):Lx("✓ Obnoveno ","✓ Restored ")+done+Lx(" záznamů. Obnov stránku (F5).",' records. Reload the page (F5).'));btn.disabled=false}
+document.addEventListener("change",function(e){if(e.target&&e.target.id==="rsfile"){var f=e.target.files[0];e.target.value="";if(f)rsLoad(f)}if(e.target&&e.target.id==="rsok"){var b=$("rsgo");if(b)b.disabled=!e.target.checked}});
+document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("#rsgo"))rsRun()});
 async function renderAdmin(){var box=$("admbox");$("vasbox").hidden=admSec!=="adm";$("apprbox").hidden=admSec!=="acc";admHead();
   if(!access.admin){box.innerHTML="";return}
   if(admSec==="adm")vasRender();if(admSec==="acc")renderAppr();if(admSec==="acc"){box.innerHTML="";return}if(!seasons.length&&!access.admin){box.innerHTML='<div class="card mut">Žádná sezóna.</div>';return}
@@ -2001,6 +2089,7 @@ async function renderAdmin(){var box=$("admbox");$("vasbox").hidden=admSec!=="ad
     if(access.admin){
       h+='<div class="card" data-sec="adm"><h2>ADMINISTRÁTOŘI</h2><div class="row">'+adm.map(function(a){return '<span class="chip" translate="no">'+esc(a.email)+(a.email===access.email?'':' <a href="#" data-dadm="'+esc(a.email)+'">✕</a>')+'</span>'}).join("")+'</div><div class="row" style="margin-top:10px"><input type="text" id="nae" placeholder="e-mail administrátora"><button class="btn pri" id="naadd">PŘIDAT ADMINISTRÁTORA</button></div><p class="mut" style="margin:8px 0 0">Administrátor smí vše ve všech sezónách a skupinách.</p></div>';
       if(MT())h+='<div class="card" data-sec="adm" id="mtbox"><h2>'+Lx("TYPY UTKÁNÍ (VYTÍŽENÍ)","MATCH TYPES (WORKLOAD)")+'</h2><div id="mtbody" class="mut">'+Lx("Načítám…","Loading…")+'</div></div>';
+      if(BK())h+='<div class="card" data-sec="adm" id="bkbox"><h2>'+Lx("ZÁLOHA","BACKUP")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Stáhne jeden ZIP: uvnitř je ZIP s daty (JSON, CSV), aktuálním kódem aplikace a soubory dvw a offline HTML pro prohlížení dat bez internetu. Obsahuje i původní soubory dvw nahrané od verze 180; dříve nahraná utkání jsou v rozebrané podobě.","Downloads one ZIP: inside is a ZIP with data (JSON, CSV) and the current app code, plus an offline HTML for browsing the data without internet. It includes original .dvw files uploaded since version 180; earlier matches are in parsed form.")+'</p><button class="btn pri" id="bkgo">'+Lx("STÁHNOUT ZÁLOHU","DOWNLOAD BACKUP")+'</button><p class="mut" id="bkmsg" style="margin:8px 0 0;font-size:12px"></p><hr style="border:0;border-top:1px solid #d8dfec;margin:14px 0"><h3 style="margin:0 0 6px;font-size:14px">'+Lx("OBNOVA ZE ZÁLOHY","RESTORE FROM BACKUP")+'</h3><p class="mut" style="margin:0 0 8px">'+Lx("Vyber soubor NVC-zaloha-….zip. Nejdřív se ukáže náhled změn, nic se nemaže.","Choose the NVC-zaloha-….zip file. A preview of changes is shown first; nothing is deleted.")+'</p><label class="btn" style="display:inline-block;cursor:pointer">'+Lx("VYBRAT ZÁLOHU (ZIP)","CHOOSE BACKUP (ZIP)")+'<input type="file" id="rsfile" accept=".zip" hidden></label><p class="mut" id="rsmsg" style="margin:8px 0 0;font-size:12px"></p><div id="rsprev"></div></div>';
       var st=byPid("coach"),SF=[["active","aktivní"],["can_write","zápis"],["can_publish","zveřejňování"]];
       h+='<div class="card" data-sec="grp"><h2>REALIZAČNÍ TÝM'+scTitle()+'</h2><p class="mut" style="margin:0 0 8px">'+Lx("Každá skupina má svůj vlastní realizační tým. Práva se nastavují jen pro právě vybranou skupinu. Další skupiny: jen zaškrtnutí „aktivní“, práva nastavíš po přepnutí na tu skupinu.","Each group has its own support staff. Rights are set only for the selected group. Other groups: only the “active” tick; set the rights after switching to that group.")+'</p><div class="scroll tbl"><table><thead><tr><th class="l">Jméno</th><th class="l">E-mail</th>'+gOrder().map(function(g){return '<th class="l" translate="no">'+esc(g.id)+'</th>'}).join("")+'<th></th></tr></thead><tbody>'+st.filter(inScope).map(function(p){
         return '<tr><td class="l"><input type="text" value="'+esc(p.name)+'" data-pf="name" data-pid="'+esc(p.pid)+'" data-role="coach" style="width:140px"></td><td class="l"><input type="text" value="'+esc(p.email)+'" data-pf="email" data-pid="'+esc(p.pid)+'" data-role="coach" style="width:190px"></td>'+gOrder().map(function(g){return fieldCk(p,g,"coach",g.id===admPF?SF:[SF[0]])}).join("")+'<td><button class="btn danger" data-dp="'+esc(p.pid)+'" data-role="coach">✕</button></td></tr>'}).join("")+'</tbody></table></div>'+
@@ -2036,6 +2125,8 @@ function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tstti
   $("tstbox").innerHTML='<div class="card"><h2>'+Lx("NOVÝ PŘEHRÁVAČ AKCÍ A VIDEA","NEW ACTION AND VIDEO PLAYER")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nové ovládání videa (⏮ ◀◀ ▶ ▶▶ ⏭, posuvník rychlosti, ⚙, přizpůsobení zařízení). Je zapnutý pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout (např. pro porovnání se starým vzhledem). Projeví se po novém otevření stránky.","New video controls (⏮ ◀◀ ▶ ▶▶ ⏭, speed slider, ⚙, adapts to the device). It is on for all users. Here you can turn it off on this device only (e.g. to compare with the old look). It applies after reopening the page.")+'</p><button class="btn '+(on?"":"pri")+'" id="tstnu">'+(on?Lx("VYPNOUT NOVÝ PŘEHRÁVAČ","TURN OFF THE NEW PLAYER"):Lx("ZAPNOUT NOVÝ PŘEHRÁVAČ","TURN ON THE NEW PLAYER"))+'</button> <span class="mut">'+(on?Lx("Nyní zapnuto.","Currently on."):Lx("Nyní vypnuto.","Currently off."))+'</span></div>';
   var vo=VCON();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VIDEA Z TABULKY STATISTIKY","VIDEOS FROM STATISTICS TABLE")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na růžově podbarvené číslo v tabulkách (utkání, hráčka, sezóna, soupeři) přehraje příslušné akce. Je zapnuto pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout. Projeví se po překreslení tabulky.","Click a pink-shaded number in the tables (match, player, season, opponents) to play the matching actions. It is on for all users. Here you can turn it off on this device only. Applies after the table is redrawn.")+'</p><button class="btn '+(vo?"":"pri")+'" id="tstvc">'+(vo?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   var si=sitOn();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("HERNÍ ČINNOSTI A SITUACE (SOUPEŘI)","GAME ACTIONS AND SITUATIONS (OPPONENTS)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Karta HERNÍ ČINNOSTI A SITUACE v SOUPEŘI V EX-Z: podání, útok, obrana, příjem, MB blokování a distribuce nahrávek s přehráváním videí. Je zapnuto pro všechny uživatele, tady ho můžeš jen na tomto zařízení vypnout.","Adds a card to the EX-Z opponents with the opponents' serves by type (float M / top spin Q) and video playback. It is on for all users; here you can turn it off on this device only.")+'</p><button class="btn '+(si?"":"pri")+'" id="tstsit">'+(si?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  var bk=BK();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("ZÁLOHA (ADMIN)","BACKUP (ADMIN)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Karta ZÁLOHA v ADMIN, ADMINS A SEZÓNA: stažení ZIPu se všemi daty a kódem. Jen na tomto zařízení.","BACKUP card in ADMIN, ADMINS AND SEASON: downloads a ZIP with all data and code. This device only.")+'</p><button class="btn '+(bk?"":"pri")+'" id="tstbk">'+(bk?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  $("tstbk").onclick=function(){try{localStorage.setItem("nvc-backup",bk?"0":"1")}catch(e){}renderTst()};
   var mt=MT();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("TYP UTKÁNÍ (SOUTĚŽNÍ / PŘÁTELSKÁ) VE VYTÍŽENÍ","MATCH TYPE (COMPETITIVE / FRIENDLY) IN WORKLOAD")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Při nahrávání dvw a ručním zadání lze zvolit soutěžní (1-Z, EX-Z) nebo přátelské (1-NVC, EX-NVC) utkání. Nové filtry a štítky ve vytížení; zpětné změny v ADMIN, ADMINS A SEZÓNA. Jen na tomto zařízení.","When uploading dvw files and entering matches manually you can choose competitive (1-Z, EX-Z) or friendly (1-NVC, EX-NVC). New filters and tags in workload; later changes in ADMIN, ADMINS AND SEASON. This device only.")+'</p><button class="btn '+(mt?"":"pri")+'" id="tstmt">'+(mt?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   $("tstmt").onclick=function(){try{localStorage.setItem("nvc-mtype",mt?"0":"1")}catch(e){}renderTst()};
   var t2=T2();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VYLEPŠENÍ PRO MOBIL A TABLET (v171–172)","MOBILE AND TABLET IMPROVEMENTS (v171–172)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Posuvné záložky na mobilu, pevné pomlčky v názvech, úpravy karet situací a distribuce pro úzké displeje, větší klikací políčka a vyšší řádky tabulek na dotykových zařízeních, stín u tabulek širších než displej, pevné filtry v jednom řádku a anglické názvy typů podání. Je zapnuto pro všechny uživatele, tady ho můžeš jen na tomto zařízení vypnout. Projeví se po novém otevření stránky.","Scrollable tabs on phones, non-breaking hyphens in names, narrow-screen fixes of the situations and distribution cards, larger tap targets and taller table rows on touch devices, a shadow on tables wider than the screen, single-row scrollable filters and English serve-type names. It is on for all users; here you can turn it off on this device only. Applies after reopening the page.")+'</p><button class="btn '+(t2?"":"pri")+'" id="tst172">'+(t2?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
@@ -2320,14 +2411,15 @@ async function upPutO(c,op,key,data,lk,side){var d=JSON.parse(JSON.stringify(dat
   await sb("POST","/rest/v1/opp_matches?on_conflict=id",{id:"opp|"+op.id+"|"+key,opp_id:op.id,season:c.season,grp:c.grp,data:d,yt:lk.yt||"",off:+lk.off||0,yt2:lk.yt2||"",off2:+lk.off2||0,our:side},"resolution=merge-duplicates,return=minimal")}
 async function upCommit(){var c=oppCtxU(),E={};upEntries().forEach(function(e){E[e.key]=e});
   for(var i=0;i<UP.pend.length;i++)if(!upCnt(UP.pend[i].tg)){oamsg(Lx("U každého souboru zaškrtni aspoň jedno družstvo.","Tick at least one team for every file."),1);return}
-  var ok=0,bad=[];oamsg(Lx("Ukládám…","Saving…"));
+  var ok=0,bad=[],noarch=0;oamsg(Lx("Ukládám…","Saving…"));
   for(i=0;i<UP.pend.length;i++){var p=UP.pend[i],m=p.m,key=upKey(m.id),ex=E[key],sd=upSides(m,p.tg),lk=ex?upLk(ex):{yt:"",off:0,yt2:"",off2:0};
     try{var data=upMk(m);
       if(p.tg.n){var old=matches.filter(function(x){return x.id===m.id})[0];var mk="mt:"+c.season+"|"+c.grp+"|"+key,mv=p.mt||"C";await upPutN(c,key,data,lk,sd.n,old?old.published:false);if(MT()){notes[mk]=mv;try{await mtNote(mk,mv,c.season,c.grp,c.season+"|"+c.grp+"|"+key)}catch(e){}try{await sb("PATCH","/rest/v1/workload?id=eq."+enc("m|"+c.season+"|"+c.grp+"|"+key),{cat:mv},"return=minimal")}catch(e){}WL.ok=false;}}
       var ids=Object.keys(p.tg.o).filter(function(k){return p.tg.o[k]});
       for(var j=0;j<ids.length;j++){var op=OPP.list.filter(function(o){return o.id===ids[j]})[0];if(op)await upPutO(c,op,key,data,lk,sd.o[ids[j]])}
+      if(p.b64){try{await sb("POST","/rest/v1/dvw_files?on_conflict=id",{id:c.season+"|"+c.grp+"|"+key,season:c.season,grp:c.grp,name:p.name,size:Math.round(p.b64.length*3/4),b64:p.b64},"resolution=merge-duplicates,return=minimal")}catch(e){noarch++}}
       ok++}catch(x){bad.push(p.name+": "+x.message)}}
-  UP.pend=[];await renderOppAdm();oamsg(Lx("Uloženo utkání: ","Matches saved: ")+ok+(bad.length?" · "+Lx("chyba: ","error: ")+bad.join("; "):""),bad.length>0)}
+  UP.pend=[];await renderOppAdm();oamsg(Lx("Uloženo utkání: ","Matches saved: ")+ok+(noarch?" · "+Lx("originál dvw se neuložil do archivu (spusť SQL nvc-setup-v10)","original dvw not archived (run SQL nvc-setup-v10)"):"")+(bad.length?" · "+Lx("chyba: ","error: ")+bad.join("; "):""),bad.length>0)}
 async function upToggle(key,tgt){var c=oppCtxU(),e=UP.ents.filter(function(x){return x.key===key})[0];if(!e)return;
   var row=e.rows.filter(function(r){return(r.kind==="n"?"n":r.opp)===tgt})[0];
   if(row){if(e.rows.length<2){oamsg(Lx("Utkání musí patřit aspoň jednomu družstvu. Pro odstranění použij SMAZAT UTKÁNÍ.","A match must belong to at least one team. To remove it use DELETE MATCH."),1);return}
@@ -2360,9 +2452,9 @@ $("v-oppadm").addEventListener("click",async function(e){var t=e.target,c=oppCtx
   }catch(x){oamsg(Lx("Operace se nezdařila: ","The operation failed: ")+x.message,1)}});
 $("v-oppadm").addEventListener("change",async function(e){if(e.target.id!=="oafile")return;var fs=[].slice.call(e.target.files||[]);e.target.value="";if(!fs.length||!oppAdmOk())return;
   var E={},bad=[];upEntries().forEach(function(x){E[x.key]=x});
-  for(var i=0;i<fs.length;i++){try{var m=parseDvw(await fs[i].arrayBuffer(),fs[i].name),key=upKey(m.id),ex=E[key],tg;
+  for(var i=0;i<fs.length;i++){try{var ab=await fs[i].arrayBuffer(),m=parseDvw(ab,fs[i].name),key=upKey(m.id),ex=E[key],tg;
       if(ex){tg={n:false,o:{}};ex.rows.forEach(function(r){if(r.kind==="n")tg.n=true;else tg.o[r.opp]=true})}else tg=upGuess(m);
-      UP.pend=UP.pend.filter(function(p){return upKey(p.m.id)!==key});UP.pend.push({name:fs[i].name,m:m,tg:tg})}catch(x){bad.push(fs[i].name+" ("+x.message+")")}}
+      UP.pend=UP.pend.filter(function(p){return upKey(p.m.id)!==key});UP.pend.push({name:fs[i].name,m:m,tg:tg,b64:b64of(ab)})}catch(x){bad.push(fs[i].name+" ("+x.message+")")}}
   var pe=$("uppend");if(pe)pe.innerHTML=upPendHtml();oamsg(bad.length?Lx("Nerozpoznáno: ","Not recognised: ")+bad.join(", "):"",bad.length>0)});
 document.addEventListener("click",function(e){if(e.target.closest("#oppbtn"))show("opp")});
 /* ---------- v18: statistiky – nejnovější nahoře, poslední 4 utkání / celá sezóna ---------- */
