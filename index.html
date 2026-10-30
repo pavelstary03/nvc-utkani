@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 177</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 178</footer>
 </main>
 <script>
 (function(){
@@ -1761,7 +1761,7 @@ function wlPlayers(){var U={};
 function wlVal(r,k,i){var ov=r.ov&&r.ov[k];if(ov&&ov[i]!=null)return ov[i];var p=r.data&&r.data.pl&&r.data.pl[k];return p?p.sh[i]:undefined}
 function wlListed(r,k){return !!((r.data&&r.data.pl&&r.data.pl[k])||(r.ov&&r.ov[k]))}
 function wlSort(a,b){return (a.mdate||"")<(b.mdate||"")?-1:(a.mdate||"")>(b.mdate||"")?1:(a.title||"").localeCompare(b.title||"","cs")}
-function MT(){try{return localStorage.getItem("nvc-mtype")==="1"}catch(e){return false}}
+function MT(){try{return localStorage.getItem("nvc-mtype")!=="0"}catch(e){return true}}
 function wlTy(r){if(r.kind!=="nvc")return"";return r.cat==="F"?"F":r.cat==="C"?"C":(r.src==="manual"?"F":"C")}
 function wlZ(g){return g==="1-NVC"?"1-Z":g==="EX-NVC"?"EX-Z":(g||"NVC")}
 function wlLbl(r){return r.kind==="nvc"?(MT()&&wlTy(r)==="C"?wlZ(r.grp):(r.grp||"NVC")):r.kind==="rep"?(!r.cat?"RD":/^U\d+$/.test(r.cat)?"RD"+r.cat:(r.cat==="RD žen"?Lx("RD žen","RD women"):r.cat)):(r.cat||Lx("klub","club"))}
