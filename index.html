@@ -118,7 +118,7 @@ tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
 .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;align-items:start}
 select,input[type=number],input[type=text],textarea{font:inherit;padding:8px;border:2px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
 input[type=text]{flex:1;min-width:220px}
-textarea{width:100%;min-height:90px}
+textarea{width:100%;min-height:90px}textarea[data-fb],#mcomment{overflow-y:hidden;resize:vertical}
 .rd{white-space:pre-wrap;background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 .filters label,.ctl label{display:flex;flex-direction:column;font-size:11px;color:var(--mut);font-weight:700;gap:3px;text-transform:uppercase}
@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 190</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 191</footer>
 </main>
 <script>
 (function(){
@@ -893,6 +893,14 @@ async function reconcile(force){if(!canW())return 0;var n=0;
     for(var k in bad){await sb("DELETE","/rest/v1/player_data?player_key=eq."+enc(k)+"&season=eq."+enc(ctx.season)+"&grp=eq."+enc(ctx.grp),undefined,"return=minimal");n++}
     for(var i=0;i<arr.length;i+=100)await sb("POST","/rest/v1/player_data?on_conflict=match_id,player_key",arr.slice(i,i+100),"resolution=merge-duplicates,return=minimal");n+=arr.length}catch(e){}
   return n}
+/* ---------- v191: textová pole hodnocení se roztáhnou podle textu ---------- */
+(function(){function grow(t){if(!t.offsetParent)return;t.style.height="auto";t.style.height=(t.scrollHeight+4)+"px"}
+  function all(){[].forEach.call(document.querySelectorAll("textarea[data-fb],#mcomment"),grow)}
+  var T=null;function later(){clearTimeout(T);T=setTimeout(all,40)}
+  document.addEventListener("input",function(e){var t=e.target;if(t&&t.matches&&t.matches("textarea[data-fb],#mcomment"))grow(t)});
+  window.addEventListener("resize",later);
+  try{new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden","readonly"]})}catch(e){}
+  setInterval(all,1500);later()})();
 /* ---------- v9: stručná / podrobná statistika ---------- */
 var STATM="s";try{STATM=(function(v){return v==="d"||v==="e"?v:"s"})(localStorage.getItem("nvc-statm"))}catch(e){}
 function statBar(){return '<div class="row noprint statbar"><button class="chip" data-sm="s" aria-pressed="'+(STATM==="s")+'">'+Lx("Stručná statistika","Short statistics")+'</button><button class="chip" data-sm="d" aria-pressed="'+(STATM==="d")+'">'+Lx("Podrobná statistika","Detailed statistics")+'</button><button class="chip" data-sm="e" aria-pressed="'+(STATM==="e")+'">'+Lx("Statistika efektivity","Efficiency statistics")+'</button>'+(VCON()?'<span class="mut vchint">'+Lx("Kliknutím na příslušná políčka spustíš video vybraných akcí.","Click the relevant cells to play the video of the selected actions.")+'</span>':'')+'</div>'}
