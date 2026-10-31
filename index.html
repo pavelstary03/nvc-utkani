@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 189</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 190</footer>
 </main>
 <script>
 (function(){
@@ -1442,7 +1442,11 @@ function kpSpark(d,v,s,labs){var W=420,H=112,mx0=52,sp=(W-2*mx0)/3,pt=12,pb=36,n
   if(x!=null)g+='<circle cx="'+X(i)+'" cy="'+Y(x)+'" r="'+(l?4.5:2.8)+'" fill="'+KPB+'" '+(l?'stroke="#fff" stroke-width="2"':'opacity=".55"')+'/>';
   g+='<text x="'+X(i)+'" y="'+(H-20)+'" text-anchor="middle" font-size="10.5" fill="#5b6b82" font-weight="'+(l?800:500)+'">'+esc(lb.d)+'</text><text x="'+X(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="10.5" fill="#0d2b52" font-weight="'+(l?800:500)+'" translate="no"><title>'+esc(lb.n)+'</title>'+esc(nm)+'</text>'});
  return '<div class="ksc"><svg viewBox="0 0 '+TW+' '+H+'" style="width:'+(TW/W*100)+'%;height:auto;display:block">'+g+'</svg></div>'}
-function kpGrid(rows){var tm=kpTeam(rows),last=rows.slice(-4),labs=rows.map(function(r){return{d:cd(r.date).replace(/\.\d+$/,".").replace(/ \d{4}$/,""),n:kpName(r)}});
+function kpSrc(rows){var r0=rows[0];if(!r0||typeof matches==="undefined")return rows;
+ try{var L=[];matches.forEach(function(m){if(m.season!==r0.season||m.grp!==r0.grp||!m.contacts||!m.contacts.length)return;var t=teamOf(m);if(t&&t.length)L.push({team:t})});
+  /* záloha: jen když se podařilo načíst aspoň tolik utkání, kolik hráčka odehrála */
+  return L.length>=rows.length?L:rows}catch(e){return rows}}
+function kpGrid(rows){var tm=kpTeam(kpSrc(rows)),last=rows.slice(-4),labs=rows.map(function(r){return{d:cd(r.date).replace(/\.\d+$/,".").replace(/ \d{4}$/,""),n:kpName(r)}});
  return '<div class="kg">'+KP.map(function(d){var vals=rows.map(function(r){return d.pct?d.p(r.s):d.v(r)}),s=kpAvg(d,rows),a4=kpAvg(d,last),dl=(a4!=null&&s!=null)?a4-s:null,uu=d.pct?"%":"";
   var hero='<div class="khero"><div><div class="klbl">'+Lx("POSLEDNÍ 4 UTKÁNÍ Ø","LAST 4 MATCHES AVG")+'</div><div class="kbig">'+kpF(a4,d)+(d.pct&&a4!=null?'<small>%</small>':'')+'</div></div><div class="ksea"><div class="klbl">'+Lx("SEZÓNA Ø","SEASON AVG")+'</div><b>'+kpF(s,d)+(d.pct&&s!=null?'%':'')+'</b>'+(dl!=null?'<span class="kdl">'+(dl>=0?'▲ ':'▼ ')+kpF(Math.abs(dl),{dec:d.dec})+'</span>':'')+'</div></div>';
   var tiles='<div class="kfour">'+[0,1,2,3].map(function(i){var j=last.length-4+i;if(j<0)return '<div><b>&nbsp;</b><span>&nbsp;</span></div>';var x=vals[rows.length-last.length+j];return '<div><b>'+kpF(x,d)+(x!=null&&d.pct?'%':'')+'</b><span>'+(i===3?Lx("poslední","latest"):"−"+(3-i)+" "+Lx("utk.","m."))+'</span></div>'}).join("")+'</div>';
