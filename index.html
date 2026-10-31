@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 191</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 192</footer>
 </main>
 <script>
 (function(){
@@ -1496,6 +1496,8 @@ function PlayerView(host,editable,onFb){
     var h='<div class="card"><h2>SEZÓNA CELKEM</h2>'+statBar()+a1Season(rows,data.name)+dirDetails(allA,Math.max.apply(null,seasPick(rows).map(function(r){return(r.sets||[]).length}).concat([1])),"S")+sdSeason(seasPick(rows),allSd)+'</div>';
     rows.forEach(function(r){if(r.grp==='EX-NVC'&&r.season&&EXN[r.season]===undefined)exLoad(r.season).then(function(ok){if(ok&&data)draw()})});
     h+=kpGrid(rows);
+    var clips=[];rows.slice().reverse().forEach(function(r){r.acts.forEach(function(c){if(c.k||(c.dr&&c.dr.length)){clips.push({dr:c.dr,i:c.i,s:c.s,y:c.y,e:c.e,c:c.c,set:c.set,sc:c.sc,v:c.v,rs:c.rs,re:c.re,k:c.k,src:r.src,rl:cd(r.date)+" · "+r.opp})}})});
+    if(clips.length)h+='<div class="card"><h2>TRENÉR KOMENTOVAL '+(editable?'TYTO AKCE (vidí je jen tato hráčka)':'TVOJE AKCE')+' ('+clips.length+')</h2><div data-clrep></div></div>';
     var cmR=editable?[]:rows.filter(function(r){return r.nc}),cmN=cmR.filter(function(r){return!r.seen}),cmT=cmR.reduce(function(a,r){return a+r.nc},0);
      if(cmR.length){var cmL=(cmN.length?cmN:cmR).slice(-1)[0];h='<div class="card cmb"><div><b>💬 '+(cmN.length?Lx("Trenér ti okomentoval video","Your coach commented on a video")+' <span class="nb">'+Lx("NOVÉ","NEW")+'</span>':Lx("Trenér okomentoval tvoje akce","Your coach commented on your actions"))+'</b><div class="mut">'+cmT+' '+Lx(cmT===1?"komentář":cmT<5?"komentáře":"komentářů",cmT===1?"comment":"comments")+' '+Lx(cmR.length===1?"v 1 utkání":"v "+cmR.length+" utkáních",cmR.length===1?"in 1 match":"in "+cmR.length+" matches")+'</div></div><button class="btn cm" data-cm="'+rows.indexOf(cmL)+'">'+Lx("PROHLÉDNI SI OKOMENTOVANÉ VIDEO","VIEW THE COMMENTED VIDEO")+'</button></div>'+h}
      h+='<div class="card"><h2>UTKÁNÍ A HODNOCENÍ TRENÉRA</h2>'+rows.slice().reverse().map(function(r){var s=r.s,i=rows.indexOf(r);
@@ -1504,8 +1506,6 @@ function PlayerView(host,editable,onFb){
        '<div class="lb">Společné hodnocení utkání</div><div class="rd">'+(r.common?esc(r.common):'<span class="mut">—</span>')+'</div>'+
        '<div class="lb">Individuální hodnocení'+(editable?' (vidí jen tato hráčka)':'')+'</div>'+(editable?'<textarea data-fb="'+i+'" placeholder="Individuální zpětná vazba k tomuto utkání…"'+(r.fbSaved&&!r.fbEdit?' readonly':'')+'>'+esc(r.fb)+'</textarea>'+fbBtns(i,r):'<div class="rd" translate="no">'+(r.fb?esc(r.fb):'<span class="mut">—</span>')+'</div>')+
        '<div class="row noprint" style="margin-top:8px">'+(!editable&&r.nc?'<button class="btn cm'+(r.seen?' seen':'')+'" data-cm="'+i+'">💬 '+Lx("Prohlédni si okomentované video","View the commented video")+' ('+r.nc+')'+(r.seen?'':' <span class="nb">'+Lx("NOVÉ","NEW")+'</span>')+'</button>':'')+'<button class="btn pri" data-act="'+i+'">'+(editable?'MOJE VIDEO':'PŘEHRÁT MOJE AKCE')+'</button></div></div>'}).join("")+'</div>';
-    var clips=[];rows.slice().reverse().forEach(function(r){r.acts.forEach(function(c){if(c.k||(c.dr&&c.dr.length)){clips.push({dr:c.dr,i:c.i,s:c.s,y:c.y,e:c.e,c:c.c,set:c.set,sc:c.sc,v:c.v,rs:c.rs,re:c.re,k:c.k,src:r.src,rl:cd(r.date)+" · "+r.opp})}})});
-    if(clips.length)h+='<div class="card"><h2>TRENÉR KOMENTOVAL '+(editable?'TYTO AKCE (vidí je jen tato hráčka)':'TVOJE AKCE')+' ('+clips.length+')</h2><div data-clrep></div></div>';
     h+='<div class="card" data-rp hidden><h2 data-rt>AKCE</h2><div class="filters"><label>Herní činnost<select data-fs>'+SKOPT+'</select></label><label>Hodnocení<select data-fe>'+EVOPT+'</select></label><label>Set<select data-fz></select></label></div><div data-rep></div></div>';
     if(shared.length)h='<div class="card"><h2 data-shh></h2><div data-shrep></div></div>'+h;
     host.innerHTML=h;[].forEach.call(host.querySelectorAll('.ksc'),function(e){e.scrollLeft=e.scrollWidth});shDraw();shHdr();rep=Rep(host.querySelector("[data-rep]"),{local:editable,cm:editable&&onFb?{get:function(c){return c.k||""},set:function(c,v){c.k=v;if(cur)onFb.ac(cur.id,c.i,v)}}:null,dr:editable&&onFb&&onFb.dr?{set:function(c,arr){c.dr=arr;if(cur)onFb.dr(cur.id,c.i,arr)}}:null,share:editable&&onFb?shareClips:null,label:function(){return cur?cd(cur.date)+" · "+cur.opp:""},owner:function(){return data.name},onOff:function(k,v){if(cur&&onFb&&onFb.off)onFb.off(cur,k,v)}});
