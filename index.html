@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 188</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 189</footer>
 </main>
 <script>
 (function(){
@@ -1736,7 +1736,7 @@ function wlNorm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").
 function wlIso(d){var p=(d||"").split("/");return p.length===3?p[2]+"-"+p[0]+"-"+p[1]:""}
 function wlCz(iso){var p=(iso||"").split("-");return p.length===3?(+p[2])+". "+(+p[1])+". "+p[0]:""}
 function wlSeasonTxt(s){var y=parseInt(String(s||"").slice(0,4),10);if(!y)return"";return Lx("Platí pro celou sezónu "+seasonName(s)+": počítá se od 1. 7. "+y+" do 30. 6. "+(y+1)+".","Applies to the whole season "+seasonName(s)+": from 1 Jul "+y+" to 30 Jun "+(y+1)+".")}
-function LB(){try{return localStorage.getItem("nvc-libero")==="1"}catch(e){return false}}
+function LB(){try{return localStorage.getItem("nvc-libero")!=="0"}catch(e){return true}}
 function wlLib(m,side){var ns=m.sets.length,libs=Object.keys(m.players[side]).filter(function(n){return m.players[side][n].role==="L"}),out={};
   libs.forEach(function(n){out[n]=[]});
   for(var s=1;s<=ns;s++){var act={},na=0;
