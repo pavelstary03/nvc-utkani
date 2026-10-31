@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 187</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 188</footer>
 </main>
 <script>
 (function(){
@@ -1764,10 +1764,13 @@ async function wlLoad(season){var rows=mode==="player"&&!PVP()?(await sb("POST",
 function wlPlayers(){var U={};
   function get(k){return U[k]||(U[k]={key:k,name:"",grps:{}})}
   WL.mem.forEach(function(m){if(!m.player_key)return;var u=get(m.player_key);if(m.grp)u.grps[m.grp]=1;if(!u.name)u.name=m.name||""});
-  WL.rows.forEach(function(r){var pl=(r.data&&r.data.pl)||{};Object.keys(pl).forEach(function(k){var u=get(k);if(pl[k].name)u.name=pl[k].name;u.nr=(u.nr||0)+1;if(pl[k].lb)u.nl=(u.nl||0)+1;if(r.kind==="nvc"&&r.grp)u.grps[r.grp]=1})});
+  WL.rows.forEach(function(r){var pl=(r.data&&r.data.pl)||{};Object.keys(pl).forEach(function(k){var u=get(k);if(pl[k].name)u.name=pl[k].name;u.nr=(u.nr||0)+1;if(pl[k].lb||(LB()&&wlNullAll(pl[k])))u.nl=(u.nl||0)+1;if(r.kind==="nvc"&&r.grp)u.grps[r.grp]=1})});
   Object.keys(U).forEach(function(k){if(!U[k].name){var p=k.split("|");U[k].name=((p[0]||"")+" "+(p[1]||"")).replace(/(^| )(\S)/g,function(a,b,c){return b+c.toUpperCase()})}});
   return Object.keys(U).map(function(k){return U[k]}).sort(function(a,b){return a.name.localeCompare(b.name,"cs")})}
-function wlVal(r,k,i){var ov=r.ov&&r.ov[k];if(ov&&ov[i]!=null)return ov[i];var p=r.data&&r.data.pl&&r.data.pl[k];return p?(p.lb&&!LB()?null:p.sh[i]):undefined}
+function wlVal(r,k,i){var ov=r.ov&&r.ov[k];if(ov&&ov[i]!=null)return ov[i];var p=r.data&&r.data.pl&&r.data.pl[k];if(!p)return undefined;if(p.lb)return LB()?p.sh[i]:null;
+  if(p.sh[i]==null&&LB()&&wlNullAll(p)){var pl=r.data.pl,k=0;Object.keys(pl).forEach(function(q){if(wlNullAll(pl[q]))k++});return k?Math.round(100/k)/100:null}
+  return p.sh[i]}
+function wlNullAll(p){return !!(p&&p.sh&&p.sh.length&&p.sh.every(function(v){return v==null}))}
 function wlListed(r,k){return !!((r.data&&r.data.pl&&r.data.pl[k])||(r.ov&&r.ov[k]))}
 function wlTm(r){var t=(r.data&&r.data.tm)||"";if(!t&&r.id&&r.id.indexOf("m|")===0){var m=matches.filter(function(x){return x.id===r.id.slice(2)})[0];t=(m&&m.time)||""}
   var q=String(t).match(/(\d{1,2})\D(\d{2})/);return q?("0"+q[1]).slice(-2)+":"+q[2]:""}
