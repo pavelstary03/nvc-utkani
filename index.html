@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 182</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 183</footer>
 </main>
 <script>
 (function(){
@@ -496,7 +496,7 @@ function queueSync(mid,key){var q=syncQ[mid]||(syncQ[mid]={all:false,keys:{}});i
 async function flushSync(){syncT=null;var q=syncQ;syncQ={};
   try{for(var mid in q){var m=matches.filter(function(x){return x.id===mid})[0];if(!m)continue;
     if(!m.published){await sb("DELETE","/rest/v1/player_data?match_id=eq."+enc(mid),undefined,"return=minimal");continue}
-    var keys={};if(q[mid].all){m.contacts.forEach(function(c){if(c.t===m.our&&c.p){var p=m.players[m.our][c.p];if(p)keys[p.key]=1}});await sb("DELETE","/rest/v1/player_data?match_id=eq."+enc(mid),undefined,"return=minimal")}else keys=q[mid].keys;
+    var keys={};if(q[mid].all){keys=playedKeys(m);await sb("DELETE","/rest/v1/player_data?match_id=eq."+enc(mid),undefined,"return=minimal")}else keys=q[mid].keys;
     var arr=[];Object.keys(keys).forEach(function(k){var r=rowFor(m,k,1);if(r&&hasConsent(k))arr.push({match_id:mid,player_key:k,season:m.season,grp:m.grp,data:r.row})});
     if(arr.length)await sb("POST","/rest/v1/player_data?on_conflict=match_id,player_key",arr,"resolution=merge-duplicates,return=minimal")}
     syncSt("✓ Uloženo")}catch(e){syncSt("✗ Chyba ukládání: "+e.message+" (zkus znovu)",1)}}
@@ -888,7 +888,7 @@ async function loadMeta(){POSTS={};PEMAIL={};CONSENT={};
 async function reconcile(force){if(!canW())return 0;var n=0;
   try{var have=await getAll("/rest/v1/player_data?select=match_id,player_key,tm:data->team&season=eq."+enc(ctx.season)+"&grp=eq."+enc(ctx.grp)),hs={},arr=[],bad={};
     have.forEach(function(r){if(r.tm!=null)hs[r.match_id+"|"+r.player_key]=1;if(!hasConsent(r.player_key))bad[r.player_key]=1});
-    matches.forEach(function(m){if(!m.published)return;var keys={};m.contacts.forEach(function(c){if(c.t===m.our&&c.p){var p=m.players[m.our][c.p];if(p)keys[p.key]=1}});
+    matches.forEach(function(m){if(!m.published)return;var keys=playedKeys(m);
       Object.keys(keys).forEach(function(k){if(!hasConsent(k))return;if(force||!hs[m.id+"|"+k]){var r=rowFor(m,k,1);if(r)arr.push({match_id:m.id,player_key:k,season:m.season,grp:m.grp,data:r.row})}})});
     for(var k in bad){await sb("DELETE","/rest/v1/player_data?player_key=eq."+enc(k)+"&season=eq."+enc(ctx.season)+"&grp=eq."+enc(ctx.grp),undefined,"return=minimal");n++}
     for(var i=0;i<arr.length;i+=100)await sb("POST","/rest/v1/player_data?on_conflict=match_id,player_key",arr.slice(i,i+100),"resolution=merge-duplicates,return=minimal");n+=arr.length}catch(e){}
@@ -1640,11 +1640,13 @@ function renderActs(){var m=cur,sd=$("fteam").value,p=+$("fplayer").value||0,sk=
   mrep.setActs(m.contacts.filter(function(c){return c.t===sd&&(!p||c.p===p)&&(!sk||c.s===sk)&&(!ev||c.e===ev)&&(!st||c.set===st)&&(!cm||notes["ac:"+m.id+":"+c.i])}),function(c){return '<b>'+esc(SK[c.s])+'</b> · #'+c.p+' '+esc(pname(m,c.t,c.p))})}
 /* --- hráčky (trenér) --- */
 var pv=null;
-function seasonPlayers(){var o={};matches.forEach(function(m){var seen={};m.contacts.forEach(function(c){if(c.t===m.our&&c.p)seen[c.p]=1});Object.keys(seen).forEach(function(n){var p=m.players[m.our][n];if(!p)return;o[p.key]={key:p.key,last:p.last,first:p.first}})});
+function playedNums(m){var o={},sd=m.our;(m.rl||[]).forEach(function(q){if(!q)return;var lu=sd==="H"?q.hl:q.al;if(lu)lu.forEach(function(n){if(+n)o[+n]=1})});m.contacts.forEach(function(c){if(c.t===sd&&c.p)o[c.p]=1});return o}
+function playedKeys(m){var k={},P=playedNums(m);Object.keys(P).forEach(function(n){var p=m.players[m.our][n];if(p)k[p.key]=1});return k}
+function seasonPlayers(){var o={};matches.forEach(function(m){var seen=playedNums(m);Object.keys(seen).forEach(function(n){var p=m.players[m.our][n];if(!p)return;o[p.key]={key:p.key,last:p.last,first:p.first}})});
   return Object.keys(o).map(function(k){return o[k]}).sort(function(a,b){return a.last<b.last?-1:1})}
 function teamOf(m){var R=repData(m);if(!R.ok)return[];var T=R[m.our].pl,o=[];Object.keys(T).forEach(function(n){var P=T[n];if(!P.p||!P.p.key||+n<=0)return;var s=stat(P.c);o.push({k:P.p.key,n:P.p.last+" "+P.p.first,L:P.p.role==="L"?1:0,pts:P.pts||0,wl:P.wl||0,rt:s.R.t,rp:s.R.pos,re:s.R.exc,at:s.A.t,ap:s.A.p,ae:s.A.e,ab:s.A.b,st:s.S.t,sp:s.S.p,se:s.S.e,bp:s.B.p})});return o}
 function rowFor(m,key,forP){var ns=Object.keys(m.players[m.our]).filter(function(n){return m.players[m.our][n].key===key});if(!ns.length)return null;
-  var n=+ns[0],pl=m.players[m.our][n],cs=m.contacts.filter(function(c){return c.t===m.our&&c.p===n});if(!cs.length)return null;
+  var n=+ns[0],pl=m.players[m.our][n],cs=m.contacts.filter(function(c){return c.t===m.our&&c.p===n});if(!cs.length&&!playedNums(m)[n])return null;
   var sl=sdOf(m,n,key);
   return{name:pl.last+" "+pl.first,row:{id:m.id,season:m.season,grp:m.grp,name:pl.last+" "+pl.first,date:m.date,time:m.time,opp:m.teams[m.our==="H"?1:0].name,title:mTitle(m),comp:m.comp,phase:m.phase,sets:m.sets.map(function(s){return s.fin}),yt:m.yt||"",off:m.off||0,yt2:m.yt2||"",off2:m.off2||0,
     common:notes["mc:"+m.id]||"",fb:(forP&&!notes["fp:"+m.id+":"+key])?"":(notes["fb:"+m.id+":"+key]||""),fbp:notes["fp:"+m.id+":"+key]?1:0,
