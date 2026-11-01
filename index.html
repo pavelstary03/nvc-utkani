@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 197</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 198</footer>
 </main>
 <script>
 (function(){
@@ -1496,7 +1496,7 @@ function cmSig(r){var n=0,h=0;r.acts.forEach(function(c){if(c.dr&&c.dr.length){h
 function cmSeen(key,r){try{return localStorage.getItem("nvc-cm:"+key+":"+r.id)===r.sig}catch(e){return false}}
 function cmMark(key,r){try{localStorage.setItem("nvc-cm:"+key+":"+r.id,r.sig)}catch(e){}}
 function fbBtns(i,r){var sv=!!r.fbSaved,ed=!sv||r.fbEdit;return '<div class="row noprint" data-fbb="'+i+'" style="margin-top:6px"><button class="btn pri" data-fbact="save" data-i="'+i+'"'+(ed?'':' hidden')+'>'+Lx("ULOŽIT","SAVE")+'</button><button class="btn" data-fbact="upd" data-i="'+i+'"'+(ed?' hidden':'')+'>'+Lx("AKTUALIZOVAT","UPDATE")+'</button><button class="btn danger" data-fbact="del" data-i="'+i+'"'+(sv?'':' disabled')+'>'+Lx("SMAZAT","DELETE")+'</button><label class="fbp" style="margin-left:auto;display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" data-fbp="'+i+'" style="width:20px;height:20px"'+(r.fbp?' checked':'')+'> '+Lx("Zveřejnit hráčce","Publish to the player")+'</label><span class="mut" data-fbs="'+i+'"></span></div><div class="mut" data-fbn="'+i+'"'+(r.fbp?' hidden':'')+' style="font-size:12px;margin-top:4px">'+Lx("Hráčka toto hodnocení zatím nevidí – zaškrtni „Zveřejnit hráčce“.","The player cannot see this evaluation yet – tick “Publish to the player”.")+'</div>'}
-function CPF(){try{return localStorage.getItem("nvc-cmplay")==="1"}catch(e){return false}}var CMS={};function CMF(){try{return localStorage.getItem("nvc-cmfolder")==="1"}catch(e){return false}}
+function CPF(){try{return localStorage.getItem("nvc-cmplay")!=="0"}catch(e){return true}}var CMS={};function CMF(){try{return localStorage.getItem("nvc-cmfolder")==="1"}catch(e){return false}}
 async function cmsLoad(season,key){CMS={};if(!CMF())return;try{(await getAll("/rest/v1/cm_state?select=*&season=eq."+enc(season)+(key?"&player_key=eq."+enc(key):""))).forEach(function(x){CMS[x.match_id+"|"+x.act+"|"+x.player_key]=x})}catch(e){}}
 function PlayerView(host,editable,onFb){
   var me={},data=null,rows=[],rep=null,repC=null,repS=null,shared=[],cur=null,onlyC=false,onlyAct=null,pk="";
