@@ -118,7 +118,7 @@ tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
 .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;align-items:start}
 select,input[type=number],input[type=text],textarea{font:inherit;padding:8px;border:2px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
 input[type=text]{flex:1;min-width:220px}
-textarea{width:100%;min-height:90px}textarea[data-fb],#mcomment{overflow-y:hidden;resize:vertical}
+textarea{width:100%;min-height:90px}textarea[data-fb],textarea[data-mcm],#mcomment{overflow-y:hidden;resize:vertical}
 .rd{white-space:pre-wrap;background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 .filters label,.ctl label{display:flex;flex-direction:column;font-size:11px;color:var(--mut);font-weight:700;gap:3px;text-transform:uppercase}
@@ -434,7 +434,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 193</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 194</footer>
 </main>
 <script>
 (function(){
@@ -895,9 +895,9 @@ async function reconcile(force){if(!canW())return 0;var n=0;
   return n}
 /* ---------- v191: textová pole hodnocení se roztáhnou podle textu ---------- */
 (function(){function grow(t){if(!t.offsetParent)return;t.style.height="auto";t.style.height=(t.scrollHeight+4)+"px"}
-  function all(){[].forEach.call(document.querySelectorAll("textarea[data-fb],#mcomment"),grow)}
+  function all(){[].forEach.call(document.querySelectorAll("textarea[data-fb],textarea[data-mcm],#mcomment"),grow)}
   var T=null;function later(){clearTimeout(T);T=setTimeout(all,40)}
-  document.addEventListener("input",function(e){var t=e.target;if(t&&t.matches&&t.matches("textarea[data-fb],#mcomment"))grow(t)});
+  document.addEventListener("input",function(e){var t=e.target;if(t&&t.matches&&t.matches("textarea[data-fb],textarea[data-mcm],#mcomment"))grow(t)});
   window.addEventListener("resize",later);
   try{new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden","readonly"]})}catch(e){}
   setInterval(all,1500);later()})();
@@ -1491,12 +1491,18 @@ function PlayerView(host,editable,onFb){
   function cmfInner(){var nw=[],sn=[];rows.slice().reverse().forEach(function(r){r.acts.forEach(function(c){if(!cmIs(c))return;var st=cmSt(r,c);if(st==="new")nw.push(cmItem(r,c,"new"));else if(st==="seen")sn.push(cmItem(r,c,"seen"))})});
     return '<h2>'+Lx("KOMENTÁŘE TRENÉRA","COACH COMMENTS")+' ('+nw.length+' '+Lx("nových","new")+')</h2>'+(nw.length?nw.join(""):'<p class="mut" style="margin:0">'+Lx("Žádné nové komentáře.","No new comments.")+'</p>')+(sn.length?'<details class="cmseen" style="margin-top:12px"'+(me.open?' open':'')+'><summary style="cursor:pointer;font-weight:800">'+Lx("Shlédnuté komentáře","Viewed comments")+' ('+sn.length+')</summary><div style="margin-top:8px">'+sn.join("")+'</div></details>':'')}
   function cmfDraw(){var el=host.querySelector("#cmfold");if(el){var o=el.querySelector("details");me.open=!!(o&&o.open);el.innerHTML=cmfInner()}}
+  function mcBtns(i,r){var sv=!!r.mcSaved,ed=!sv||r.mcEdit;return '<div class="row noprint" data-mcb="'+i+'" style="margin-top:6px"><button class="btn pri" data-mcact="save" data-i="'+i+'"'+(ed?'':' hidden')+'>'+Lx("ULOŽIT","SAVE")+'</button><button class="btn" data-mcact="upd" data-i="'+i+'"'+(ed?' hidden':'')+'>'+Lx("AKTUALIZOVAT","UPDATE")+'</button><button class="btn danger" data-mcact="del" data-i="'+i+'"'+(sv?'':' disabled')+'>'+Lx("SMAZAT","DELETE")+'</button><span class="mut" data-mcs="'+i+'" style="align-self:center"></span></div>'}
+  function mcSt(i){var r=rows[i],ta=host.querySelector('[data-mcm="'+i+'"]'),bx=host.querySelector('[data-mcb="'+i+'"]');if(!r||!ta||!bx)return;var sv=!!r.mcSaved,ed=!sv||r.mcEdit;ta.readOnly=!ed;bx.querySelector('[data-mcact="save"]').hidden=!ed;bx.querySelector('[data-mcact="upd"]').hidden=ed;bx.querySelector('[data-mcact="del"]').disabled=!sv&&!ta.value}
+  async function mcAct(b){var i=+b.dataset.i,r=rows[i],ta=host.querySelector('[data-mcm="'+i+'"]'),st=host.querySelector('[data-mcs="'+i+'"]'),a=b.dataset.mcact;if(!r||!ta||!onFb||!onFb.mc)return;
+    if(a==="upd"){r.mcEdit=true;mcSt(i);ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);st.textContent="";return}
+    if(a==="save"){var v=ta.value.trim();if(!v){st.textContent=Lx("Text je prázdný.","The text is empty.");return}ta.value=v;try{await onFb.mc(r,v);r.common=v;r.mcSaved=v;r.mcEdit=false;st.textContent=Lx("✓ Uloženo","✓ Saved")}catch(e){st.textContent=Lx("Uložení se nezdařilo.","Saving failed.")}mcSt(i);return}
+    if(a==="del"){if(!(r.mcSaved||ta.value))return;if(!(await askYN(Lx("Opravdu smazat?","Really delete?"),Lx("Smazat společné hodnocení utkání?","Delete the shared match evaluation?"))))return;try{await onFb.mc(r,"");r.common="";r.mcSaved="";r.mcEdit=false;ta.value="";st.textContent=Lx("Smazáno.","Deleted.")}catch(e){st.textContent=Lx("Smazání se nezdařilo.","Delete failed.")}mcSt(i)}}
   function fbSt(i){var r=rows[i],ta=host.querySelector('[data-fb="'+i+'"]'),bx=host.querySelector('[data-fbb="'+i+'"]');if(!r||!ta||!bx)return;var sv=!!r.fbSaved,ed=!sv||r.fbEdit;ta.readOnly=!ed;bx.querySelector('[data-fbact="save"]').hidden=!ed;bx.querySelector('[data-fbact="upd"]').hidden=ed;bx.querySelector('[data-fbact="del"]').disabled=!sv&&!ta.value}
   async function fbAct(b){var i=+b.dataset.i,r=rows[i],ta=host.querySelector('[data-fb="'+i+'"]'),st=host.querySelector('[data-fbs="'+i+'"]'),a=b.dataset.fbact;if(!r||!ta||!onFb)return;
     if(a==="upd"){r.fbEdit=true;fbSt(i);ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);st.textContent="";return}
     if(a==="save"){var v=ta.value.trim();if(!v){st.textContent=Lx("Text je prázdný.","The text is empty.");return}r.fb=v;ta.value=v;try{await onFb.fb(r,data.key);r.fbSaved=v;r.fbEdit=false;st.textContent=Lx("✓ Uloženo","✓ Saved")}catch(e){st.textContent=Lx("Uložení se nezdařilo.","Saving failed.")}fbSt(i);return}
     if(a==="del"){if(!(r.fbSaved||ta.value))return;if(!(await askYN(Lx("Opravdu smazat?","Really delete?"),Lx("Smazat individuální hodnocení?","Delete the individual evaluation?"))))return;r.fb="";ta.value="";try{await onFb.fb(r,data.key);r.fbSaved="";r.fbEdit=false;st.textContent=Lx("Smazáno.","Deleted.")}catch(e){st.textContent=Lx("Smazání se nezdařilo.","Delete failed.")}fbSt(i)}}
-  me.show=function(d){data=d;pk=d.pk||"";shared=d.shared||[];rows=d.rows.map(function(r){r.s=stat(r.acts);r.src=srcOf(r);r.acts.forEach(function(c){CMAP.set(c,r)});r.nc=r.acts.filter(function(c){return c.k||(c.dr&&c.dr.length)}).length;r.sig=cmSig(r);r.seen=!editable&&cmSeen(d.key||"me",r);if(CMF()&&!editable)r.seen=cmAllSeen(r);r.fbSaved=r.fb||"";r.fbEdit=false;return r});draw()};
+  me.show=function(d){data=d;pk=d.pk||"";shared=d.shared||[];rows=d.rows.map(function(r){r.s=stat(r.acts);r.src=srcOf(r);r.acts.forEach(function(c){CMAP.set(c,r)});r.nc=r.acts.filter(function(c){return c.k||(c.dr&&c.dr.length)}).length;r.sig=cmSig(r);r.seen=!editable&&cmSeen(d.key||"me",r);if(CMF()&&!editable)r.seen=cmAllSeen(r);r.fbSaved=r.fb||"";r.fbEdit=false;r.mcSaved=r.common||"";r.mcEdit=false;return r});draw()};
   function kp(v,l){return '<div class="kp"><b>'+v+'</b><span>'+l+'</span></div>'}
   function draw(){
     if(rep){rep.stop();rep=null}if(repC){repC.stop();repC=null}if(repS){repS.stop();repS=null}
@@ -1515,7 +1521,7 @@ function PlayerView(host,editable,onFb){
      h+='<div class="card"><h2>UTKÁNÍ A HODNOCENÍ TRENÉRA</h2>'+rows.slice().reverse().map(function(r){var s=r.s,i=rows.indexOf(r);
       return '<div class="mrow"><h3>'+esc(cd(r.date))+' · '+esc(r.title)+(r.grp?' <span class="gtag" translate="no">'+esc(r.grp)+'</span>':'')+'</h3><div class="mut">'+esc(r.comp)+' · '+esc(r.sets.join(", "))+'</div>'+
        '<div style="margin:8px 0">'+a1Match(r)+dirDetails(r.acts,(r.sets||[]).length,"M"+r.id)+sdMatch(r)+'</div>'+
-       '<div class="lb">Společné hodnocení utkání</div><div class="rd">'+(r.common?esc(r.common):'<span class="mut">—</span>')+'</div>'+
+       '<div class="lb">Společné hodnocení utkání</div>'+(editable&&onFb&&onFb.mc?'<textarea data-mcm="'+i+'" placeholder="'+Lx("Společné hodnocení pro všechny hráčky…","Shared evaluation for all players…")+'"'+(r.mcSaved&&!r.mcEdit?' readonly':'')+'>'+esc(r.common||"")+'</textarea>'+mcBtns(i,r):'<div class="rd">'+(r.common?esc(r.common):'<span class="mut">—</span>')+'</div>')+
        '<div class="lb">Individuální hodnocení'+(editable?' (vidí jen tato hráčka)':'')+'</div>'+(editable?'<textarea data-fb="'+i+'" placeholder="Individuální zpětná vazba k tomuto utkání…"'+(r.fbSaved&&!r.fbEdit?' readonly':'')+'>'+esc(r.fb)+'</textarea>'+fbBtns(i,r):'<div class="rd" translate="no">'+(r.fb?esc(r.fb):'<span class="mut">—</span>')+'</div>')+
        '<div class="row noprint" style="margin-top:8px">'+(!editable&&r.nc?'<button class="btn cm'+(r.seen?' seen':'')+'" data-cm="'+i+'">💬 '+Lx("Prohlédni si okomentované video","View the commented video")+' ('+r.nc+')'+(r.seen?'':' <span class="nb">'+Lx("NOVÉ","NEW")+'</span>')+'</button>':'')+'<button class="btn pri" data-act="'+i+'">'+(editable?'MOJE VIDEO':'PŘEHRÁT MOJE AKCE')+'</button></div></div>'}).join("")+'</div>';
     h+='<div class="card" data-rp hidden><h2 data-rt>AKCE</h2><div class="filters"><label>Herní činnost<select data-fs>'+SKOPT+'</select></label><label>Hodnocení<select data-fe>'+EVOPT+'</select></label><label>Set<select data-fz></select></label></div><div data-rep></div></div>';
@@ -1526,7 +1532,7 @@ function PlayerView(host,editable,onFb){
     host.querySelectorAll("[data-fs],[data-fe],[data-fz]").forEach(function(s){s.onchange=refilter});
     function refilter(){if(!cur)return;var sk=host.querySelector("[data-fs]").value,ev=host.querySelector("[data-fe]").value,st=+host.querySelector("[data-fz]").value||0;
       rep.setActs(cur.acts.filter(function(c){return(!sk||c.s===sk)&&(!ev||c.e===ev)&&(!st||c.set===st)&&(!onlyC||c.k||(c.dr&&c.dr.length))&&(onlyAct==null||c.i===onlyAct)}),function(c){return '<b>'+esc(SK[c.s])+'</b>'})}
-    host.onclick=async function(e){var fa=e.target.closest("[data-fbact]");if(fa){fbAct(fa);return}
+    host.onclick=async function(e){var fa=e.target.closest("[data-fbact]");if(fa){fbAct(fa);return}var ma=e.target.closest("[data-mcact]");if(ma){mcAct(ma);return}
       var dd=e.target.closest("[data-cmd]");if(dd){var pp=dd.dataset.cmd.split("|"),rr=rows[+pp[0]],cc=rr&&rr.acts.filter(function(x){return x.i===+pp[1]})[0];if(rr&&cc&&(await askYN(Lx("Smazat ze seznamu?","Remove from the list?"),Lx("Komentář zmizí jen z tvého seznamu, trenér ho dál vidí.","The comment disappears only from your list; the coach still sees it.")))){cmPut(rr,cc,"del");cmfDraw()}return}var b=e.target.closest("[data-act],[data-cm]");if(!b)return;var oc=b.dataset.cm!==undefined;cur=rows[+(oc?b.dataset.cm:b.dataset.act)];onlyC=oc;onlyAct=(oc&&b.dataset.cma!==undefined)?+b.dataset.cma:null;if(oc&&!editable&&CMF()){cur.acts.forEach(function(c){if(cmIs(c)&&(onlyAct==null||c.i===onlyAct)&&cmSt(cur,c)==="new")cmPut(cur,c,"seen")});cur.seen=cmAllSeen(cur);setTimeout(cmfDraw,300)}if(oc&&!editable&&!CMF()){cmMark(data.key||"me",cur);b.classList.add("seen");[].forEach.call(b.querySelectorAll(".nb"),function(x){x.remove()})}
       rp.hidden=false;host.querySelector("[data-rt]").textContent="AKCE – "+cd(cur.date)+" · "+cur.opp;
       var sets={};cur.acts.forEach(function(c){sets[c.set]=1});host.querySelector("[data-fz]").innerHTML='<option value="">Všechny</option>'+Object.keys(sets).map(function(k){return '<option value="'+k+'">'+k+'</option>'}).join("");
@@ -1534,7 +1540,7 @@ function PlayerView(host,editable,onFb){
       rep.setSource(cur.src);refilter();rp.scrollIntoView({behavior:"smooth"})};
     host.onchange=async function(e){var t=e.target.closest("[data-fbp]");if(!t||!onFb||!onFb.fp)return;var i=+t.dataset.fbp,r=rows[i],st=host.querySelector('[data-fbs="'+i+'"]'),nt=host.querySelector('[data-fbn="'+i+'"]');if(!r)return;r.fbp=t.checked?1:0;
       try{await onFb.fp(r,data.key);if(nt)nt.hidden=!!r.fbp;if(st)st.textContent=r.fbp?Lx("✓ Zveřejněno hráčce","✓ Published to the player"):Lx("✓ Skryto před hráčkou","✓ Hidden from the player")}catch(er){t.checked=!t.checked;r.fbp=t.checked?1:0;if(st)st.textContent=Lx("Uložení se nezdařilo.","Saving failed.")}};
-    host.oninput=function(e){var t=e.target.closest("[data-fb]");if(!t||!onFb)return;var st=host.querySelector('[data-fbs="'+t.dataset.fb+'"]');if(st)st.textContent=Lx("neuloženo – stiskni ULOŽIT","not saved – press SAVE");fbSt(+t.dataset.fb)}}
+    host.oninput=function(e){var tm=e.target.closest("[data-mcm]");if(tm&&onFb){var sm=host.querySelector('[data-mcs="'+tm.dataset.mcm+'"]');if(sm)sm.textContent=Lx("neuloženo – stiskni ULOŽIT","not saved – press SAVE");return}var t=e.target.closest("[data-fb]");if(!t||!onFb)return;var st=host.querySelector('[data-fbs="'+t.dataset.fb+'"]');if(st)st.textContent=Lx("neuloženo – stiskni ULOŽIT","not saved – press SAVE");fbSt(+t.dataset.fb)}}
   function shSeenR(r){return!!r.seen_at||shSeen(r.id)}
   function shHdr(){var n=shared.filter(function(x){return!shSeenR(x)}).length,hh=host.querySelector("[data-shh]");if(hh)hh.innerHTML=Lx("KLIPY OD TRENÉRA","CLIPS FROM THE COACH")+" ("+shared.length+")"+(n?' <span class="nb">'+n+" "+Lx("NOVÉ","NEW")+'</span>':"")}
   function shSt(r){return shSeenR(r)?'<span class="shok">✓ '+Lx("Shlédnuto","Watched")+'</span>':'<span class="nb">'+Lx("NOVÉ","NEW")+'</span>'}
@@ -1681,7 +1687,7 @@ function buildData(key){var rows=[],name="";matches.forEach(function(m){var r=ro
 function renderPlayers(){var ps=seasonPlayers(),sel=$("pl").value;
   $("pl").innerHTML=ps.length?ps.map(function(p){return '<option value="'+esc(p.key)+'">'+esc(p.last+" "+p.first)+'</option>'}).join(""):'<option value="">Zatím žádné hráčky</option>';
   if(sel&&ps.some(function(p){return p.key===sel}))$("pl").value=sel;
-  if(!pv)pv=PlayerView($("pbody"),canW(),{fb:function(r,key){var k="fb:"+r.id+":"+key;if(!r.fb){delete notes[k];return dbDel("notes",k)}notes[k]=r.fb;return dbPut("notes",{k:k,v:r.fb})},fp:function(r,key){var k="fp:"+r.id+":"+key;if(r.fbp){notes[k]="1";return dbPut("notes",{k:k,v:"1"})}delete notes[k];return dbDel("notes",k)},ac:function(mid,i,v){saveAc(mid,i,v)},dr:function(mid,i,arr){saveDr(mid,i,arr)},off:function(r,k,v){var m=matches.filter(function(x){return x.id===r.id})[0];if(m){if(k===0){m.off=v;r.off=v}else{m.off2=v;r.off2=v}dbPut("matches",m)}}});
+  if(!pv)pv=PlayerView($("pbody"),canW(),{mc:function(r,v){var k="mc:"+r.id;if(!v){delete notes[k];return dbDel("notes",k)}notes[k]=v;return dbPut("notes",{k:k,v:v})},fb:function(r,key){var k="fb:"+r.id+":"+key;if(!r.fb){delete notes[k];return dbDel("notes",k)}notes[k]=r.fb;return dbPut("notes",{k:k,v:r.fb})},fp:function(r,key){var k="fp:"+r.id+":"+key;if(r.fbp){notes[k]="1";return dbPut("notes",{k:k,v:"1"})}delete notes[k];return dbDel("notes",k)},ac:function(mid,i,v){saveAc(mid,i,v)},dr:function(mid,i,arr){saveDr(mid,i,arr)},off:function(r,k,v){var m=matches.filter(function(x){return x.id===r.id})[0];if(m){if(k===0){m.off=v;r.off=v}else{m.off2=v;r.off2=v}dbPut("matches",m)}}});
   drawPlayer();
 }
 function drawPlayer(){var key=$("pl").value;if(!key){$("pbody").innerHTML='<div class="card mut">Přidej alespoň jedno utkání, aby se zobrazily stránky hráček.</div>';$("plinfo").textContent="";return}
