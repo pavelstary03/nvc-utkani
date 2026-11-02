@@ -146,7 +146,7 @@ body.nuui .c2l{color:#1f4f9a;font-weight:800}
 .pw.ov.hid .dvfs{opacity:0;pointer-events:none}
 .rfs.rfsd.nu2>.row{display:none!important}
 /* v132: připravené YouTube hned po otevření */
-.pbadge:empty{display:none}
+.pbadge:empty{display:none}.pcmt{display:none}.pcmt:empty{display:none!important}.pcmt::before{content:"💬 "}.rfs .pcmt,.pw.ov .pcmt{display:block;position:absolute;left:8px;right:8px;top:42px;z-index:3;max-height:34%;overflow:hidden;background:rgba(15,27,45,.8);color:#fff;border-left:5px solid #f5c518;border-radius:9px;padding:8px 12px;font-size:clamp(15px,2.2vw,22px);font-weight:700;line-height:1.3;pointer-events:none;white-space:pre-wrap}
 body.nuui .pw .pv .ytw:not(:has(iframe)){background:#eef1f6!important}
 /* v134 */
 .pw .pv .ytw2{width:50%!important;right:auto!important;left:50%!important;visibility:hidden;pointer-events:none}.pw .pv .ytw2.on{visibility:visible;pointer-events:auto}
@@ -435,7 +435,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 203</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 205</footer>
 </main>
 <script>
 (function(){
@@ -1181,7 +1181,8 @@ function Rep(el,o){var NU=NEWUI();
   function seekP(t){try{if(mode()==="yt"){ytp.seekTo(t,true);ytp.playVideo();p2(function(x){x.seekTo(Math.max(0,d2t(t)),true);x.playVideo()})}else{var v=g("v");v.currentTime=t;var p=v.play();if(p&&p.catch)p.catch(function(){})}}catch(e){}}
   function tick(){if(stopAt==null){clearInterval(tm);tm=null;return}drift();if(dpaused)return;if(Date.now()-t0<900)return;
     if(getT()>=stopAt){if(!reel&&g("L").checked&&lastR){seekP(lastR[0]);t0=Date.now();return}pause();stopAt=null;clearInterval(tm);tm=null;if(reel&&pos<acts.length-1)playAt(pos+1);else if(reel&&NU&&acts.length)playAt(0);else reel=false}}
-  function play(c){try{if(ytp&&ytp.mute)ytp.mute();g("v").muted=true}catch(e){}if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
+  function play(c){try{if(ytp&&ytp.mute)ytp.mute();g("v").muted=true}catch(e){}
+    try{if(ytp2&&ytReady2&&!dualOn())ytp2.pauseVideo()}catch(e){}if(curRep&&curRep!==me)curRep.stop();curRep=me;var r=range(c),md=mode();lastR=r;
     if(md==="yt"){ensureYt();if(!ytReady){pend=c;return}var vid=S[ang].id;
       if(curVid!==vid){curVid=vid;ytp.loadVideoById({videoId:vid,startSeconds:r[0]})}else{ytp.seekTo(r[0],true);ytp.playVideo()}playSecond(r[0])}
     else{var v=g("v");v.currentTime=r[0];var p=v.play();if(p&&p.catch)p.catch(function(){})}
@@ -1213,7 +1214,8 @@ function Rep(el,o){var NU=NEWUI();
     [].forEach.call(g("l").querySelectorAll(".act"),function(x){x.classList.toggle("on",+x.dataset.i===i)});
     var e=g("l").querySelector('.act[data-i="'+i+'"]');if(NU){var L=g("l");if(e&&L){L.scrollTop+=e.getBoundingClientRect().top-L.getBoundingClientRect().top}}else if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest"});
     var cu=g("u");if(cu&&e)cu.textContent=(i+1)+"/"+acts.length+" · "+(e.innerText||"").replace(/\s+/g," ").trim().slice(0,160);var pbd=g("pb");if(pbd)pbd.textContent=cu.textContent;
-    if(c.v!=null&&g("AF").checked&&!fsOn&&!reel)enterFs();
+    if(o.manual&&CFS())g("L").checked=true;cmTop();
+    if(c.v!=null&&(g("AF").checked||(o.manual&&CFS()))&&!fsOn&&!reel)enterFs();
     if(c.src&&c.src!==srcRef&&!local){applySource(c.src);pend=null}
     if(c.v==null)return;if(mode()==="none"){msg("Vlož odkaz na YouTube nebo vyber video ze souboru.");return}msg("");play(c)}
   function applySource(s){srcRef=s;S=(s&&s.v)||[];if(view!=="b"&&!S[view])view="b";ang=(NU&&view!=="b")?view:0;g("o").value=S.length?S[ang].off:0;g("y").hidden=!(ytp&&S.length);drawAng();phUpd()}
@@ -1243,7 +1245,7 @@ function Rep(el,o){var NU=NEWUI();
     var pw=document.createElement("div");pw.className="pw";pw.id=id+"pw";var pv=document.createElement("div");pv.className="pv";
     ytw.parentNode.insertBefore(pw,ytw);pv.appendChild(ytw);pvEl=pv;pv.dataset.ph=Lx("Toto utkání zatím nemá vložený odkaz na YouTube. Vlož ho v kartě utkání (pole ZEZADU / Z BOKU).","This match has no YouTube link yet. Add it in the match card (BEHIND / SIDE fields).");ytw2=document.createElement("div");ytw2.className="ytw ytw2";ytw2.id=id+"y2";ytw2.innerHTML='<div id="'+id+'yp2"></div>';pv.appendChild(ytw2);pv.appendChild(vd);
     [0,1].forEach(function(k){var fb=document.createElement("button");fb.type="button";fb.className="dvfs";fb.dataset.dv=k;fb.hidden=true;fb.title=Lx("Jen tato kamera na celou obrazovku","This camera only, full screen");fb.innerHTML='<span>'+Lx("KAM. ","CAM. ")+(k+1)+'</span><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg>';fb.onclick=function(ev){ev.stopPropagation();setView(k);if(!fsOn)enterFs()};pv.appendChild(fb)});
-    var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);pw.appendChild(pv);
+    var tc=document.createElement("div");tc.className="tapc";pv.appendChild(tc);var pb=document.createElement("div");pb.className="pbadge";pb.id=id+"pb";pv.appendChild(pb);var pcm=document.createElement("div");pcm.className="pcmt";pcm.id=id+"pcm";pcm.setAttribute("translate","no");pv.appendChild(pcm);pw.appendChild(pv);
     var c2=document.createElement("div");c2.className="ctl2 noprint";c2.setAttribute("translate","no");
     var FSI=function(on){return '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/>'+(on?'<path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#e5231b" stroke-width="3"/>':'')+'</svg>'};window.__FSI=FSI;
     var B=function(cls,x,t,tt){return '<button type="button" class="c2b '+cls+'" data-c2="'+x+'"'+(tt?' title="'+tt+'"':'')+'>'+t+'</button>'};
@@ -1300,7 +1302,7 @@ function Rep(el,o){var NU=NEWUI();
     pw.addEventListener("pointermove",function(e){if(e.pointerType==="mouse"&&Date.now()-lastAct>400)touch()});
     var ti=setInterval(function(){if(!el.isConnected){clearInterval(ti);return}
       var ov=overlay();pw.classList.toggle("ov",ov);if(!ov)pw.classList.remove("hid");else if(playing()&&Date.now()-lastAct>3000&&pop.hidden&&!(cmp&&!cmp.hidden))pw.classList.add("hid");
-      if(cmp&&!cmp.hidden&&cmPos!==pos){cmEd=false;cmView()}lbl();var tl=q("tl")[0];if(tl&&lastR&&document.activeElement!==tl){var d=lastR[1]-lastR[0];if(d>0)tl.value=Math.max(0,Math.min(1000,Math.round((getT()-lastR[0])/d*1000)))}},300);
+      if(cmp&&!cmp.hidden&&cmPos!==pos){cmEd=false;cmView()}cmTop();lbl();var tl=q("tl")[0];if(tl&&lastR&&document.activeElement!==tl){var d=lastR[1]-lastR[0];if(d>0)tl.value=Math.max(0,Math.min(1000,Math.round((getT()-lastR[0])/d*1000)))}},300);
     nuHide=1;lbl()})()}
   var fsOn=false,fsApi=false;
   var AIP={c:'<path d="M4 5h16v11H9l-5 4z"/>',p:'<path d="M4 20l1-5L16 4l4 4L9 19zM14 6l4 4"/>',w:'<path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>',s:'<path d="M7 17L17 7M9 7h8v8"/>'};
@@ -1313,8 +1315,9 @@ function Rep(el,o){var NU=NEWUI();
   g("fs").onclick=function(){fsOn?exitFs():enterFs()};
   document.addEventListener("fullscreenchange",function(){if(!el.isConnected)return;if(fsOn&&fsApi&&!document.fullscreenElement)exitFs()});
   document.addEventListener("keydown",function(e){if(el.isConnected&&e.key==="Escape"&&fsOn)exitFs()});
-  g("n").onclick=function(){reel=false;playAt(pos+1)};g("p").onclick=function(){reel=false;playAt(Math.max(0,pos-1))};
-  g("all").onclick=function(){reel=true;playAt(0)};
+  g("n").onclick=function(){reel=false;playAt(o.manual&&CFS()&&pos>=acts.length-1?0:pos+1)};g("p").onclick=function(){reel=false;playAt(o.manual&&CFS()&&pos<=0?acts.length-1:Math.max(0,pos-1))};
+  g("all").onclick=function(){if(o.manual&&CFS()){reel=false;playAt(pos>=0?pos:0);return}reel=true;playAt(0)};
+  function cmTop(){var x=g("pcm");if(!x)return;var c=pos>=0?acts[pos]:null,k=(c&&CFS())?(o.cm?o.cm.get(c):(c.k||"")):"";k=k||"";if(x.textContent!==k)x.textContent=k}
   g("o").onchange=function(){var v=+this.value||0;if(mode()==="yt"&&S[ang]){S[ang].off=v;if(o.onOff)o.onOff(S[ang].k,v)}};
   if(o.local){g("fb").onclick=function(){g("f").click()};g("f").onchange=function(e){var f=e.target.files[0];if(!f)return;if(local)URL.revokeObjectURL(local);local=URL.createObjectURL(f);g("v").src=local;g("v").hidden=false;g("y").hidden=true;pause();drawAng();phUpd();msg("Video ze souboru: "+f.name+" (zůstává v tomto zařízení)")}}
   /* ---------- v32: kreslení do videa ---------- */
@@ -1419,7 +1422,7 @@ function Rep(el,o){var NU=NEWUI();
   me.setSource=function(s){if(local){URL.revokeObjectURL(local);local=null;g("v").removeAttribute("src");g("v").hidden=true;try{g("v").load()}catch(e){}}
     applySource(s);msg(S.length?"":"Zatím není vložen odkaz na YouTube.");stopAt=null;pause();if(NU&&S.length){var tries=0;(function pre(){if(local||!S.length||!el.isConnected)return;if(!el.offsetParent){if(tries++<25)setTimeout(pre,400);return}ensureYt();if(dualOn()){dualLayout();ensureYt2(function(){setTimeout(refreshCue,300)})}})()}};
   function codeHtml(c){var ov=o.cc?o.cc.get(c):"";if(ov)return' · <s>'+esc(c.c)+'</s> <b>'+(ov.charAt(0)==="@"?Lx("zóna ","zone ")+ov.slice(1):esc(ov))+'</b> ✓';return c.c?' · '+esc(c.c):''}
-  me.setActs=function(list,lab){me._lab=lab;acts=list;pos=-1;reel=false;stopAt=null;
+  me.setActs=function(list,lab){me._lab=lab;acts=list;pos=-1;cmTop();reel=false;stopAt=null;
     g("c").textContent=list.length+" akcí";
     marks={};updSh();g("l").innerHTML=list.map(function(c,i){var l=(EVL[c.s]||{})[c.e]||"",k=o.cm?o.cm.get(c):(c.k||"");return '<div class="act" data-i="'+i+'">'+(o.share&&c.v!=null?'<input type="checkbox" class="mk" title="'+Lx("Označit klip ke sdílení","Mark clip for sharing")+'">':'')+'<span class="ev '+evCls(c)+'">'+esc(c.e)+'</span><span class="abody" style="flex:1">'+lab(c)+(l?' · '+l:'')+'<span class="acode">'+codeHtml(c)+'</span><br><span class="mut">Set '+c.set+' · stav '+esc(c.sc)+(c.v!=null?' · video '+fmt(c.v):'')+'</span>'+(k?'<div class="cmt" translate="no">💬 '+esc(k)+(o.cm?'<button type="button" class="cmx" title="Smazat poznámku" aria-label="Smazat poznámku">✕</button>':'')+'</div>':'')+(drOf(c).length?'<span class="drn">✏ '+drOf(c).length+'</span>':'')+'</span>'+(o.cm&&c.cmOk!==false?'<button class="btn cmb">'+AI("c")+'</button>':'')+(o.dr&&c.cmOk!==false?'<button class="btn drb" type="button" title="Okomentovat kresbou">'+AI("p")+'</button>':'')+(o.cc&&c.s==="A"&&c.cmOk!==false?'<button class="btn ccb" type="button" title="'+Lx("Opravit kód skautování (jen v aplikaci)","Fix the scouting code (in the app only)")+'">'+AI("w")+'</button>':'')+(o.share&&c.v!=null&&c.cmOk!==false?'<button class="btn shb" type="button" title="'+Lx("Sdílet klip hráčce","Share clip with a player")+'">'+AI("s")+'</button>':'')+(o.dlg&&c.v!=null&&c.cmOk!==false?'<button class="btn dlb" type="button" title="'+Lx("Zeptat se hráčky (dialog)","Ask the player (dialog)")+'">'+DLI()+'</button>':'')+'</div>'}).join("")};
   me.playOne=function(c,lab){me.setActs([c],lab);playAt(0)};
@@ -1551,7 +1554,7 @@ function PlayerView(host,editable,onFb){
     if(shared.length)h='<div class="card"><h2 data-shh></h2><div data-shrep></div></div>'+h;
     if(!editable&&DLF()&&dlgRows.length)h='<div class="card" data-dlgc></div>'+h;
     host.innerHTML=h;[].forEach.call(host.querySelectorAll('.ksc'),function(e){e.scrollLeft=e.scrollWidth});shDraw();shHdr();dlgPaint();rep=Rep(host.querySelector("[data-rep]"),{local:editable,cm:editable&&onFb?{get:function(c){return c.k||""},set:function(c,v){c.k=v;if(cur)onFb.ac(cur.id,c.i,v)}}:null,dr:editable&&onFb&&onFb.dr?{set:function(c,arr){c.dr=arr;if(cur)onFb.dr(cur.id,c.i,arr)}}:null,share:editable&&onFb?shareClips:null,dlg:editable&&onFb&&DLF()?dlgAsk:null,label:function(){return cur?cd(cur.date)+" · "+cur.opp:""},owner:function(){return data.name},onOff:function(k,v){if(cur&&onFb&&onFb.off)onFb.off(cur,k,v)}});
-    var fl0=host.querySelector("[data-rp] .filters"),fs0=host.querySelector("[data-rep] .fslot");if(fl0&&fs0)fs0.appendChild(fl0);var ce=host.querySelector("[data-clrep]");if(ce){repC=Rep(ce,{onOff:function(){}});repC.setActs(clips,function(c){return '<b>'+esc(c.rl)+'</b> · '+esc(SK[c.s])})}
+    var fl0=host.querySelector("[data-rp] .filters"),fs0=host.querySelector("[data-rep] .fslot");if(fl0&&fs0)fs0.appendChild(fl0);var ce=host.querySelector("[data-clrep]");if(ce){repC=Rep(ce,{onOff:function(){},manual:CFS()});repC.setActs(clips,function(c){return '<b>'+esc(c.rl)+'</b> · '+esc(SK[c.s])})}
     var rp=host.querySelector("[data-rp]");
     host.querySelectorAll("[data-fs],[data-fe],[data-fz]").forEach(function(s){s.onchange=refilter});
     function refilter(){if(!cur)return;var sk=host.querySelector("[data-fs]").value,ev=host.querySelector("[data-fe]").value,st=+host.querySelector("[data-fz]").value||0;
@@ -1585,6 +1588,7 @@ function PlayerView(host,editable,onFb){
   me.redraw=function(){if(data)draw()};
   return me}
 /* ---------- v201: DIALOGY trenér ↔ hráčka u akce (test) ---------- */
+function CFS(){try{return localStorage.getItem("nvc-cmfs")!=="0"}catch(e){return true}}
 function DLF(){try{return localStorage.getItem("nvc-dialogy")!=="0"}catch(e){return true}}
 var dlgRows=[];
 function DLI(){return '<svg class="ai" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4z"/><path d="M9.5 8.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .8-1 1.5M12 14.2v.1"/></svg>'}
@@ -2252,6 +2256,8 @@ function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tstti
   var si=sitOn();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("HERNÍ ČINNOSTI A SITUACE (SOUPEŘI)","GAME ACTIONS AND SITUATIONS (OPPONENTS)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Karta HERNÍ ČINNOSTI A SITUACE v SOUPEŘI V EX-Z: podání, útok, obrana, příjem, MB blokování a distribuce nahrávek s přehráváním videí. Je zapnuto pro všechny uživatele, tady ho můžeš jen na tomto zařízení vypnout.","Adds a card to the EX-Z opponents with the opponents' serves by type (float M / top spin Q) and video playback. It is on for all users; here you can turn it off on this device only.")+'</p><button class="btn '+(si?"":"pri")+'" id="tstsit">'+(si?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   var cf=CMF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("KOMENTÁŘE TRENÉRA – NOVÉ A SHLÉDNUTÉ","COACH COMMENTS – NEW AND VIEWED")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Hráčka vidí nové komentáře po akcích; po přehrání se přesunou do složky Shlédnuté komentáře, odkud je může smazat ze svého seznamu. Stav se ukládá na server (vyžaduje nvc-setup-v11-komentare-stav.sql). Jen na tomto zařízení.","The player sees new comments per action; once played they move to the Viewed comments folder where she can remove them from her list. State is stored on the server (needs nvc-setup-v11-komentare-stav.sql). This device only.")+'</p><button class="btn '+(cf?"":"pri")+'" id="tstcf">'+(cf?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   $("tstcf").onclick=function(){try{localStorage.setItem("nvc-cmfolder",cf?"0":"1")}catch(e){}renderTst()};
+  var cfs=CFS();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("OKOMENTOVANÉ KLIPY: CELÁ OBRAZOVKA, SMYČKA, KOMENTÁŘ NAHOŘE","COMMENTED CLIPS: FULL SCREEN, LOOP, COMMENT ON TOP")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("V seznamu okomentovaných akcí na kartě hráčky se klip přehrává na celou obrazovku, jede stále dokola a na další (nebo předchozí) se přepíná ručně tlačítky ⏮ ⏭ (po poslední akci se skočí na první). V horní části celé obrazovky je vidět komentář trenéra k právě přehrávané akci (platí i u ostatních přehrávačů). Je zapnuto pro všechny, tady to jde jen na tomto zařízení vypnout.","In the list of commented actions on the player card the clip plays full screen, loops, and you move to the next (or previous) one manually with ⏮ ⏭ (after the last action it jumps to the first). The coach's comment for the current action is shown at the top of the full screen (also in the other players). On for everyone; here you can turn it off on this device only.")+'</p><button class="btn '+(cfs?"":"pri")+'" id="tstcfs">'+(cfs?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  $("tstcfs").onclick=function(){try{localStorage.setItem("nvc-cmfs",cfs?"0":"1")}catch(e){}location.reload()};
   var dlf=DLF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("DIALOGY S HRÁČKAMI U VIDEÍ","DIALOGS WITH PLAYERS ON VIDEOS")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Nová ikona ❓ u videí: trenér pošle hráčce akci s otázkou, hráčka odpoví na své kartě a odpověď (chat) se objeví trenérovi na nové kartě DIALOGY. Vidí ho jen trenér, který se ptal, a admin; hráčka dialog jen skrývá do shlédnutých. Vyžaduje nvc-setup-v13-dialogy.sql. Je zapnuto pro všechny, tady ho můžeš jen na tomto zařízení vypnout (stránka se obnoví).","New ❓ icon on videos: the coach sends the player an action with a question, she answers on her card and the reply (chat) appears on the new DIALOGY card. Only the asking coach and the admin see it; the player only hides it to viewed. Needs nvc-setup-v13-dialogy.sql. This device only; reload after changing.")+'</p><button class="btn '+(dlf?"":"pri")+'" id="tstdl">'+(dlf?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   $("tstdl").onclick=function(){try{localStorage.setItem("nvc-dialogy",dlf?"0":"1")}catch(e){}location.reload()};
   var dcf=DCF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("ŠIPKY SMĚRŮ JAKO ODKAZY NA VIDEO","DIRECTION ARROWS AS VIDEO LINKS")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na šipku v nákresu směru útoků nebo podání spustí video akcí, které šipka znázorňuje (stejná barva = stejný výsledek, stejná dvojice zón). Je zapnuto pro všechny, tady ho můžeš jen na tomto zařízení vypnout; projeví se po překreslení nákresu.","Click an arrow in the attack or serve direction map to play the actions it represents (same colour = same result and zone pair). This device only; applies after the map is redrawn.")+'</p><button class="btn '+(dcf?"":"pri")+'" id="tstdc">'+(dcf?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
