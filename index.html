@@ -435,7 +435,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 207</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 208</footer>
 </main>
 <script>
 (function(){
@@ -1898,8 +1898,8 @@ function WLC(){try{return localStorage.getItem("nvc-wlcols")==="1"}catch(e){retu
 function wlSum(r_list,k){var n=0,s=0,st=0,unk=0,sa=0;r_list.forEach(function(r){if(!wlListed(r,k))return;n+=r.nsets;var any=false;for(var i=0;i<r.nsets;i++){var v=wlVal(r,k,i);if(v==null){unk++;continue}s+=v;if(v>0){any=true;sa++}}if(any)st++});return{n:n,s:s,st:st,unk:unk,sa:sa}}
 function wlPc(a,b){return b?Math.round(100*a/b):0}
 function WLH(){return '<th>'+Lx("POČET UTKÁNÍ","MATCHES")+'</th><th>'+Lx("NASTOUPILA - UTKÁNÍ","APPEARED - MATCHES")+'</th><th>'+Lx("NASTOUPILA - SETY","APPEARED - SETS")+'</th><th>'+Lx("ODEHRÁLA - VÝMĚNY","PLAYED - RALLIES")+'</th>'}
-function wlPb(a,b,tt){var p=wlPc(a,b);return '<td title="'+esc(tt||"")+'"><b>'+p+' %</b><span class="wlbar" style="width:'+Math.round(50*p/100)+'px"></span></td>'}
-function wlCellN(t,nm){return '<td>'+nm+'</td>'+wlPb(t.st,nm,t.st+" / "+nm+" "+Lx("utkání","matches"))+wlPb(t.sa,t.n,t.sa+" / "+t.n+" "+Lx("setů","sets"))+wlPb(t.s,t.n,t.s.toFixed(2)+" / "+t.n+" "+Lx("setů","sets"))}
+function wlPb(a,b,tt,ax){var p=wlPc(a,b);return '<td title="'+esc(tt||"")+'"><b>'+p+' %</b><span class="wlbar" style="width:'+Math.round(50*p/100)+'px"></span> <span class="mut">('+(ax||a)+' '+Lx("z","of")+' '+b+')</span></td>'}
+function wlCellN(t,nm){return '<td>'+nm+'</td>'+wlPb(t.st,nm,t.st+" / "+nm+" "+Lx("utkání","matches"))+wlPb(t.sa,t.n,t.sa+" / "+t.n+" "+Lx("setů","sets"))+wlPb(t.s,t.n,t.s.toFixed(2)+" / "+t.n+" "+Lx("setů","sets"),t.s.toFixed(2))}
 function wlCol(v){if(v==null)return"";var a=Math.min(1,v)*.55;return'style="background:rgba(31,78,140,'+a+')'+(v>.55?';color:#fff':'')+'"'}
 function wlCan(r){return !!(access&&(access.admin||(r.kind==="nvc"&&r.grp===ctx.grp&&canW())))}
 function wlCell(r,k,i,ed){var v=wlVal(r,k,i);if(!wlListed(r,k))return'<td class="wlh"></td>';
