@@ -435,7 +435,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 209</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 211</footer>
 </main>
 <script>
 (function(){
@@ -1437,7 +1437,7 @@ var KP=[
  {k:"exc",t:["PŘÍJEM PERFEKTNÍ","PERFECT RECEPTION"],pct:1,p:function(T){return pctn(T.R.exc,T.R.t)}},
  {k:"ap",t:["ÚSPĚŠNOST ÚTOKU","ATTACK SUCCESS"],pct:1,p:function(T){return pctn(T.A.p,T.A.t)}},
  {k:"eff",t:["EFEKTIVITA ÚTOKU","ATTACK EFFICIENCY"],pct:1,sign:1,p:function(T){return effA(T.A)}},
- {k:"es",t:["ESA PODÁNÍ","SERVICE ACES"],u:"es",dec:1,v:function(r){return r.s.S.p}},
+ {k:"es",t:["ESA PODÁNÍ","SERVICE ACES"],u:"esa",dec:1,v:function(r){return r.s.S.p}},
  {k:"effS",t:["EFEKTIVITA PODÁNÍ","SERVE EFFICIENCY"],pct:1,sign:1,p:function(T){return T.S.t?100*(T.S.p-T.S.e)/T.S.t:null}},
  {k:"blk",t:["BODOVÉ BLOKY","BLOCK POINTS"],u:"bloky",dec:1,v:function(r){return r.s.B.p}}];
 function kpAvg(d,list){if(!list.length)return null;
@@ -2640,7 +2640,7 @@ function tabLbl(){var g=((mode==="staff"||PT())&&ctx&&ctx.grp)||"",ex=OPPG.index
   var tn=$("tabs");if(tn){var gi=groups.map(function(q){return q.id}).indexOf(g);tn.dataset.gc=gi>=0?gi%2:0}
   var set=function(id,t){if(T2())t=t.replace(/(EX|1|Z)-(NVC|Z)/g,"$1\u2011$2");var b=$(id);if(b&&b._lb!==t){b._lb=t;b.innerHTML=(TABIC[id]||"")+"<span>"+esc(t).replace("\n","<br>")+"</span>"}};
   var tw=$("tabwl");if(tw&&!tw.querySelector("svg"))tw.innerHTML=TABIC.tabwl+"<span>"+tw.innerHTML+"</span>";var ta=$("tabopa");if(ta)ta.dataset.go=exu?"oppadm":"up1";
-  set("tabopa",Lx("NAHRÁVÁNÍ\nUTKÁNÍ ","UPLOAD OF\nMATCHES ")+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA\nHRÁČKY "+g,"PLAYER CARD\n"+g));set("tabopp","SOUPEŘI V EX-Z");set("tabdlg","DIALOGY");
+  set("tabopa",Lx("NAHRÁVÁNÍ\nUTKÁNÍ ","UPLOAD OF\nMATCHES ")+(ex?"EX-Z":g));set("tabss",Lx("STATISTIKA NVC\nCELÁ SEZÓNA","STATISTICS NVC\nWHOLE SEASON"));set("tabm","UTKÁNÍ "+g);set("tabpl",Lx("OSOBNÍ KARTA\nHRÁČKY "+g,"PLAYER CARD\n"+g));set("tabopp","SOUPEŘI V EX-Z");set("tabdlg","DIALOGY");set("tabwl",Lx("VYTÍŽENÍ HRÁČEK NVC","PLAYER WORKLOAD NVC"));
   set("tabadmin","SPRÁVA "+g+(APPN?" ("+APPN+")":""))}
 async function syncOppOff(m,k,v){if(OPPU.indexOf(m.grp)<0||!canW())return;try{await oppLoadList();var key=upKey(m.id);for(var oid in OPP.sum){var rs=OPP.sum[oid];for(var i=0;i<rs.length;i++)if(upKey(rs[i].id)===key){var p={};p[k===0?"off":"off2"]=v;await sb("PATCH","/rest/v1/opp_matches?id=eq."+enc(rs[i].id),p,"return=minimal")}}}catch(e){}}
 /* ---------- v20: náhled „Zobrazení“ pro administrátora ---------- */
