@@ -436,7 +436,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 213</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 214</footer>
 </main>
 <script>
 (function(){
@@ -1154,7 +1154,7 @@ function shSeen(id){try{return localStorage.getItem("nvc-sh:"+id)==="1"}catch(e)
 function shMark(id){try{localStorage.setItem("nvc-sh:"+id,"1")}catch(e){}}
 setInterval(function(){try{if(document.body.classList.contains("rfsb")&&!document.querySelector(".rfs"))document.body.classList.remove("rfsb")}catch(e){}},1000);
 var KBR=null;
-function KBF(){try{return localStorage.getItem("nvc-keys")==="1"}catch(e){return false}}
+function KBF(){try{return localStorage.getItem("nvc-keys")!=="0"}catch(e){return false}}
 document.addEventListener("keydown",function(e){if(!KBF()||e.ctrlKey||e.altKey||e.metaKey)return;var t=e.target,tn=t&&t.tagName;if(tn==="INPUT"||tn==="TEXTAREA"||tn==="SELECT"||(t&&t.isContentEditable))return;
   if(!KBR||!KBR.rootEl||!KBR.rootEl.isConnected||!KBR.fsOn||!KBR.fsOn())return;
   if(KBR.kb&&KBR.kb(e)){e.preventDefault();e.stopPropagation()}},true);
