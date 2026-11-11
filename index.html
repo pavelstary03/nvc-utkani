@@ -437,7 +437,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 215</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 216</footer>
 </main>
 <script>
 (function(){
@@ -907,7 +907,7 @@ async function reconcile(force){if(!canW())return 0;var n=0;
   setInterval(all,1500);later()})();
 /* ---------- v215: formátovaný text v hodnocení (testovací) ---------- */
 var RTM="<!--h-->";
-function RTF(){try{return localStorage.getItem("nvc-rte")==="1"}catch(e){return false}}
+function RTF(){try{return localStorage.getItem("nvc-rte")!=="0"}catch(e){return false}}
 function rtEsc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/ /g,"&nbsp;")}
 function rtSer(root,nl){
   var SK=/^(SCRIPT|STYLE|HEAD|META|TITLE|XML|LINK|NOSCRIPT)$/,BL=/^(DIV|P|H[1-6]|BLOCKQUOTE|TABLE|TR|PRE)$/;
@@ -1341,12 +1341,14 @@ function Rep(el,o){var NU=NEWUI();
     function kbPP(){if(playing()){dpaused=true;pause();kbToast("⏸")}else{if(stopAt==null&&pos>=0)playAt(pos);else if(pos<0&&acts.length){reel=false;playAt(0)}else resume();kbToast("▶")}}
     me.fsOn=function(){return fsOn};
     me.kb=function(e){if(!fsOn)return false;var k=e.key,r=false;
-      if(e.shiftKey&&k!=="Enter"&&k.length===1)return false;
+      if(e.shiftKey&&k!=="Enter"&&k!=="+"&&k.length===1)return false;
       if(k===" "||e.code==="Space"){kbPP();r=true}
       else if(k==="Enter"){g("n").click();kbToast(Lx("DALŠÍ KLIP ⏭","NEXT CLIP ⏭"));r=true}
       else if(k==="Backspace"){g("p").click();kbToast(Lx("⏮ PŘEDCHOZÍ KLIP","⏮ PREVIOUS CLIP"));r=true}
       else if(k==="ArrowUp"){seekBy(1);kbToast("+1 s");r=true}
       else if(k==="ArrowDown"){seekBy(-1);kbToast("−1 s");r=true}
+      else if(k==="+"||e.code==="NumpadAdd"){seekBy(1);kbToast("+1 s");r=true}
+      else if(k==="-"||e.code==="NumpadSubtract"){seekBy(-1);kbToast("−1 s");r=true}
       else if(k==="ArrowLeft"||k==="ArrowRight"){if(playing()){dpaused=true;pause()}seekBy(k==="ArrowLeft"?-KFR:KFR);kbToast(k==="ArrowLeft"?Lx("◀ 1 SNÍMEK","◀ 1 FRAME"):Lx("1 SNÍMEK ▶","1 FRAME ▶"));r=true}
       if(r){var a=document.activeElement;if(a&&a.tagName==="BUTTON")a.blur();touch()}return r};
     function overlay(){return fsOn||(window.matchMedia&&matchMedia("(max-height:499px) and (orientation:landscape)").matches)}
