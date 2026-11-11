@@ -119,6 +119,7 @@ tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
 select,input[type=number],input[type=text],textarea{font:inherit;padding:8px;border:2px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
 input[type=text]{flex:1;min-width:220px}
 textarea{width:100%;min-height:90px}textarea[data-fb],textarea[data-mcm],#mcomment{overflow-y:hidden;resize:vertical}
+.rte{border:1px solid var(--line);border-radius:8px;background:#fff}.rte-tb{display:flex;gap:4px;padding:4px;border-bottom:1px solid var(--line);flex-wrap:wrap}.rte-tb button{min-width:36px;height:32px;border:1px solid var(--line);border-radius:6px;background:#f7f9fc;font-size:14px;cursor:pointer;padding:0 8px}.rte-ed{min-height:90px;padding:8px 10px;outline:none;overflow-wrap:anywhere;white-space:pre-wrap}.rte-ed:empty::before{content:attr(data-ph);color:#8a94a6}.rte.ro .rte-ed{background:#f7f9fc}.rte-ed ul,.rte-ed ol,.rd ul,.rd ol{margin:4px 0;padding-left:22px}
 .rd{white-space:pre-wrap;background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 .filters label,.ctl label{display:flex;flex-direction:column;font-size:11px;color:var(--mut);font-weight:700;gap:3px;text-transform:uppercase}
@@ -436,7 +437,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 214</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 215</footer>
 </main>
 <script>
 (function(){
@@ -904,6 +905,59 @@ async function reconcile(force){if(!canW())return 0;var n=0;
   window.addEventListener("resize",later);
   try{new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden","readonly"]})}catch(e){}
   setInterval(all,1500);later()})();
+/* ---------- v215: formátovaný text v hodnocení (testovací) ---------- */
+var RTM="<!--h-->";
+function RTF(){try{return localStorage.getItem("nvc-rte")==="1"}catch(e){return false}}
+function rtEsc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/ /g,"&nbsp;")}
+function rtSer(root,nl){
+  var SK=/^(SCRIPT|STYLE|HEAD|META|TITLE|XML|LINK|NOSCRIPT)$/,BL=/^(DIV|P|H[1-6]|BLOCKQUOTE|TABLE|TR|PRE)$/;
+  function walk(n){var s="",nb=false;
+    function brk(){if(s&&!/<br>$/.test(s))s+="<br>"}
+    for(var c=n.firstChild;c;c=c.nextSibling){
+      if(c.nodeType===3){var tx=nl?c.nodeValue.replace(/\t/g," "):c.nodeValue.replace(/[\r\n\t]+/g," ");if(!tx)continue;if(nb){brk();nb=false}s+=nl?tx.split(/\r?\n/).map(rtEsc).join("<br>"):rtEsc(tx);continue}
+      if(c.nodeType!==1)continue;var t=c.nodeName;if(SK.test(t))continue;
+      if(t==="BR"){s+="<br>";nb=false;continue}
+      if(t==="UL"||t==="OL"){var li="";for(var k=c.firstChild;k;k=k.nextSibling)if(k.nodeName==="LI")li+="<li>"+walk(k).replace(/(<br>)+$/,"")+"</li>";if(nb)nb=false;brk();s+="<"+t.toLowerCase()+">"+li+"</"+t.toLowerCase()+">";nb=true;continue}
+      var inner=walk(c);if(!inner)continue;
+      var st=c.style||{},fw=st.fontWeight,b=t==="B"||t==="STRONG"||fw==="bold"||+fw>=600,i=t==="I"||t==="EM"||st.fontStyle==="italic",u=t==="U"||/underline/.test(st.textDecoration||"");
+      if(b)inner="<b>"+inner+"</b>";if(i)inner="<i>"+inner+"</i>";if(u)inner="<u>"+inner+"</u>";
+      if(BL.test(t)){brk();s+=inner;nb=true}else{if(nb){brk();nb=false}s+=inner}
+    }return s}
+  return walk(root).replace(/(<br>)+$/,"")}
+function rtClean(h){try{var d=new DOMParser().parseFromString("<body>"+h+"</body>","text/html");return rtSer(d.body)}catch(e){return rtEsc(h)}}
+function rtDec(h){return h.replace(/<br>/g,"\n").replace(/<\/li>/g,"\n").replace(/<li>/g,"• ").replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&").replace(/\n+$/,"")}
+function rtStore(root){var h=rtSer(root,true);if(!h.replace(/<br>/g,"").trim())return "";return /<(b|i|u|ul|ol)[ >]/.test(h)?RTM+h:rtDec(h)}
+function rtHtml(v){v=v||"";return v.indexOf(RTM)===0?rtClean(v.slice(RTM.length)):rtEsc(v).replace(/\r?\n/g,"<br>")}
+function rtShow(v){return rtHtml(v)}
+function rtPlain(v){v=v||"";return v.indexOf(RTM)===0?rtDec(rtClean(v.slice(RTM.length))):v}
+function rtTa(v){v=v||"";return esc(v.indexOf(RTM)===0&&!RTF()?rtPlain(v):v)}
+function rtTaV(v){v=v||"";return v.indexOf(RTM)===0&&!RTF()?rtPlain(v):v}
+(function(){
+  var ng=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,"value");
+  function inList(ed){var s=getSelection();if(!s.rangeCount)return false;var n=s.anchorNode;while(n&&n!==ed){if(n.nodeName==="LI")return true;n=n.parentNode}return false}
+  function enh(ta){if(ta._rte)return;ta._rte=1;
+    var w=document.createElement("div");w.className="rte";
+    var BT=[["bold","<b>B</b>",Lx("Tučné (Ctrl+B)","Bold (Ctrl+B)")],["italic","<i>I</i>",Lx("Kurzíva (Ctrl+I)","Italic (Ctrl+I)")],["underline","<u>U</u>",Lx("Podtržení (Ctrl+U)","Underline (Ctrl+U)")],["insertUnorderedList","•",Lx("Odrážky","Bullet list")],["insertOrderedList","1.",Lx("Číslovaný seznam","Numbered list")],["nbsp","⎵",Lx("Tvrdá mezera (Ctrl+Shift+Mezerník)","Non-breaking space (Ctrl+Shift+Space)")],["removeFormat","Tx",Lx("Vymazat formátování","Clear formatting")]];
+    w.innerHTML='<div class="rte-tb noprint">'+BT.map(function(b){return '<button type="button" data-rc="'+b[0]+'" title="'+b[2]+'">'+b[1]+'</button>'}).join("")+'</div><div class="rte-ed" contenteditable="true" role="textbox" aria-multiline="true" data-ph="'+esc(ta.placeholder||"")+'"></div>';
+    ta.style.display="none";ta.insertAdjacentElement("afterend",w);
+    var ed=w.querySelector(".rte-ed"),tb=w.querySelector(".rte-tb");
+    function load(){ed.innerHTML=rtHtml(ng.get.call(ta))}
+    function ro(){var r=ta.readOnly||ta.disabled;ed.contentEditable=r?"false":"true";tb.hidden=r;w.classList.toggle("ro",r);w.hidden=!!ta.hidden}
+    function sync(){if(!ed.textContent.trim()&&ed.innerHTML&&!/<(ul|ol|li)/.test(ed.innerHTML))ed.innerHTML="";ng.set.call(ta,rtStore(ed));ta.dispatchEvent(new Event("input",{bubbles:true}))}
+    Object.defineProperty(ta,"value",{get:function(){return ng.get.call(ta)},set:function(v){ng.set.call(ta,v);load()},configurable:true});
+    load();ro();try{new MutationObserver(ro).observe(ta,{attributes:true,attributeFilter:["readonly","disabled","hidden"]})}catch(e){}
+    ed.addEventListener("input",sync);
+    tb.addEventListener("mousedown",function(e){if(e.target.closest("button"))e.preventDefault()});
+    tb.addEventListener("click",function(e){var b=e.target.closest("[data-rc]");if(!b)return;ed.focus();var c=b.dataset.rc;if(c==="nbsp")document.execCommand("insertText",false," ");else document.execCommand(c,false,null);sync()});
+    ed.addEventListener("paste",function(e){e.preventDefault();var cd=e.clipboardData,h=cd&&cd.getData("text/html"),t=cd&&cd.getData("text/plain")||"";document.execCommand("insertHTML",false,h?rtClean(h):rtEsc(t).replace(/\r?\n/g,"<br>"));sync()});
+    ed.addEventListener("keydown",function(e){var k=e.key,m=e.ctrlKey||e.metaKey;
+      if(m&&e.shiftKey&&(k===" "||e.code==="Space")){e.preventDefault();document.execCommand("insertText",false," ");return}
+      if(m&&!e.shiftKey&&!e.altKey&&/^[biu]$/i.test(k)){e.preventDefault();document.execCommand({b:"bold",i:"italic",u:"underline"}[k.toLowerCase()],false,null);sync();return}
+      if(k==="Enter"&&!e.shiftKey&&!inList(ed)){e.preventDefault();document.execCommand("insertLineBreak")}});
+    ed.addEventListener("beforeinput",function(e){if(e.inputType==="insertText"&&e.data===" "){var s=getSelection();if(s.rangeCount&&s.isCollapsed&&s.anchorNode&&s.anchorNode.nodeType===3){var b=s.anchorNode.nodeValue.slice(0,s.anchorOffset);if(/(^|[\s ])[vVsSkKzZaAiIoOuU]$/.test(b)){e.preventDefault();document.execCommand("insertText",false," ")}}}})}
+  function scan(){if(!RTF())return;[].forEach.call(document.querySelectorAll("textarea[data-fb],textarea[data-mcm],#mcomment"),enh)}
+  var q=0;try{new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;scan()})}).observe(document.body,{childList:true,subtree:true})}catch(e){}
+  scan()})();
 /* ---------- v9: stručná / podrobná statistika ---------- */
 var STATM="s";try{STATM=(function(v){return v==="d"||v==="e"?v:"s"})(localStorage.getItem("nvc-statm"))}catch(e){}
 function statBar(){return '<div class="row noprint statbar"><button class="chip" data-sm="s" aria-pressed="'+(STATM==="s")+'">'+Lx("Stručná statistika","Short statistics")+'</button><button class="chip" data-sm="d" aria-pressed="'+(STATM==="d")+'">'+Lx("Podrobná statistika","Detailed statistics")+'</button><button class="chip" data-sm="e" aria-pressed="'+(STATM==="e")+'">'+Lx("Statistika efektivity","Efficiency statistics")+'</button>'+(VCON()?'<span class="mut vchint">'+Lx("Kliknutím na příslušná políčka spustíš video vybraných akcí.","Click the relevant cells to play the video of the selected actions.")+'</span>':'')+'</div>'}
@@ -1566,8 +1620,8 @@ function PlayerView(host,editable,onFb){
      h+='<div class="card"><h2>UTKÁNÍ A HODNOCENÍ TRENÉRA</h2>'+rows.slice().reverse().map(function(r){var s=r.s,i=rows.indexOf(r);
       return '<div class="mrow"><h3>'+esc(cd(r.date))+' · '+esc(r.title)+(r.grp?' <span class="gtag" translate="no">'+esc(r.grp)+'</span>':'')+'</h3><div class="mut">'+esc(r.comp)+' · '+esc(r.sets.join(", "))+'</div>'+
        '<div style="margin:8px 0">'+a1Match(r)+dirDetails(r.acts,(r.sets||[]).length,"M"+r.id)+sdMatch(r)+'</div>'+
-       '<div class="lb">Společné hodnocení utkání'+(editable&&onFb&&onFb.mc?' <span class="mut" data-mch="'+i+'" style="font-weight:400;text-transform:none">'+mcHint(r)+'</span>':'')+'</div>'+(editable&&onFb&&onFb.mc?'<textarea data-mcm="'+i+'" placeholder="'+Lx("Společné hodnocení pro všechny hráčky…","Shared evaluation for all players…")+'"'+(r.mcSaved&&!r.mcEdit?' readonly':'')+'>'+esc(r.common||"")+'</textarea>'+mcBtns(i,r):'<div class="rd">'+(r.common?esc(r.common):'<span class="mut">—</span>')+'</div>')+
-       '<div class="lb">Individuální hodnocení'+(editable?' (vidí jen tato hráčka)':'')+'</div>'+(editable?'<textarea data-fb="'+i+'" placeholder="Individuální zpětná vazba k tomuto utkání…"'+(r.fbSaved&&!r.fbEdit?' readonly':'')+'>'+esc(r.fb)+'</textarea>'+fbBtns(i,r):'<div class="rd" translate="no">'+(r.fb?esc(r.fb):'<span class="mut">—</span>')+'</div>')+
+       '<div class="lb">Společné hodnocení utkání'+(editable&&onFb&&onFb.mc?' <span class="mut" data-mch="'+i+'" style="font-weight:400;text-transform:none">'+mcHint(r)+'</span>':'')+'</div>'+(editable&&onFb&&onFb.mc?'<textarea data-mcm="'+i+'" placeholder="'+Lx("Společné hodnocení pro všechny hráčky…","Shared evaluation for all players…")+'"'+(r.mcSaved&&!r.mcEdit?' readonly':'')+'>'+rtTa(r.common||"")+'</textarea>'+mcBtns(i,r):'<div class="rd">'+(r.common?rtShow(r.common):'<span class="mut">—</span>')+'</div>')+
+       '<div class="lb">Individuální hodnocení'+(editable?' (vidí jen tato hráčka)':'')+'</div>'+(editable?'<textarea data-fb="'+i+'" placeholder="Individuální zpětná vazba k tomuto utkání…"'+(r.fbSaved&&!r.fbEdit?' readonly':'')+'>'+rtTa(r.fb)+'</textarea>'+fbBtns(i,r):'<div class="rd" translate="no">'+(r.fb?rtShow(r.fb):'<span class="mut">—</span>')+'</div>')+
        '<div class="row noprint" style="margin-top:8px">'+(!editable&&r.nc?'<button class="btn cm'+(r.seen?' seen':'')+'" data-cm="'+i+'">💬 '+Lx("Prohlédni si okomentované video","View the commented video")+' ('+r.nc+')'+(r.seen?'':' <span class="nb">'+Lx("NOVÉ","NEW")+'</span>')+'</button>':'')+'<button class="btn pri" data-act="'+i+'">'+(editable?'MOJE VIDEO':'PŘEHRÁT MOJE AKCE')+'</button></div></div>'}).join("")+'</div>';
     h+='<div class="card" data-rp hidden><h2 data-rt>AKCE</h2><div class="filters"><label>Herní činnost<select data-fs>'+SKOPT+'</select></label><label>Hodnocení<select data-fe>'+EVOPT+'</select></label><label>Set<select data-fz></select></label></div><div data-rep></div></div>';
     if(shared.length)h='<div class="card"><h2 data-shh></h2><div data-shrep></div></div>'+h;
@@ -1735,7 +1789,7 @@ function renderMatch(){var m=cur;
   $("our").innerHTML=m.teams.map(function(t){return '<button class="chip" data-our="'+t.side+'" aria-pressed="'+(m.our===t.side)+'">'+esc(t.name)+'</button>'}).join("");
   var sH=stat(m.contacts.filter(function(c){return c.t==="H"})),sA=stat(m.contacts.filter(function(c){return c.t==="A"}));
   $("tstats").innerHTML="";renderReports(m);
-  $("mcomment").value=notes["mc:"+m.id]||"";$("mcsaved").textContent="";mcEdit=false;mcState();
+  $("mcomment").value=rtTaV(notes["mc:"+m.id]||"");$("mcsaved").textContent="";mcEdit=false;mcState();
   $("pub").checked=!!m.published;$("pub").disabled=!canP();$("mcomment").disabled=!canW();$("fcm").value="";
   $("fteam").innerHTML=m.teams.map(function(t){return '<option value="'+t.side+'">'+esc(t.name)+'</option>'}).join("");$("fteam").value=m.our;
   $("fskill").innerHTML=SKOPT;$("feval").innerHTML=EVOPT;
@@ -2281,6 +2335,8 @@ function renderTst(){$("tstback").textContent="← "+Lx("ZPĚT","BACK");$("tstti
   var vo=VCON();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("VIDEA Z TABULKY STATISTIKY","VIDEOS FROM STATISTICS TABLE")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Klik na růžově podbarvené číslo v tabulkách (utkání, hráčka, sezóna, soupeři) přehraje příslušné akce. Je zapnuto pro všechny uživatele. Tady ho můžeš jen na tomto zařízení vypnout. Projeví se po překreslení tabulky.","Click a pink-shaded number in the tables (match, player, season, opponents) to play the matching actions. It is on for all users. Here you can turn it off on this device only. Applies after the table is redrawn.")+'</p><button class="btn '+(vo?"":"pri")+'" id="tstvc">'+(vo?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   var si=sitOn();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("HERNÍ ČINNOSTI A SITUACE (SOUPEŘI)","GAME ACTIONS AND SITUATIONS (OPPONENTS)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Karta HERNÍ ČINNOSTI A SITUACE v SOUPEŘI V EX-Z: podání, útok, obrana, příjem, MB blokování a distribuce nahrávek s přehráváním videí. Je zapnuto pro všechny uživatele, tady ho můžeš jen na tomto zařízení vypnout.","Adds a card to the EX-Z opponents with the opponents' serves by type (float M / top spin Q) and video playback. It is on for all users; here you can turn it off on this device only.")+'</p><button class="btn '+(si?"":"pri")+'" id="tstsit">'+(si?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   var kb=KBF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("OVLÁDÁNÍ VIDEA KLÁVESNICÍ (CELÁ OBRAZOVKA)","VIDEO KEYBOARD CONTROL (FULL SCREEN)")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Další způsob ovládání přehrávače klávesnicí, jen v režimu celé obrazovky: Mezerník = start/stop · Enter = další klip · Backspace = předchozí klip · Esc = opustit celou obrazovku · Šipka nahoru = 1 s vpřed · Šipka dolů = 1 s zpět · Šipka vlevo = 1 snímek zpět · Šipka vpravo = 1 snímek vpřed. Krok o snímek je 1/30 s. Klávesy ovládají přehrávač, který je právě na celé obrazovce. Pozor: když klepneš přímo do YouTube okna, klávesy zachytí YouTube – klepni pak mimo video. Jen na tomto zařízení; stávající ovládání zůstává.","Another way to control the player from the keyboard, in full-screen mode only: Space = start/stop · Enter = next clip · Backspace = previous clip · Esc = leave full screen · Up arrow = 1 s forward · Down arrow = 1 s back · Left arrow = 1 frame back · Right arrow = 1 frame forward. A frame step is 1/30 s. The keys control the player that is in full screen. Note: if you click directly into the YouTube window, YouTube captures the keys – then click outside the video. This device only; the current controls stay.")+'</p><button class="btn '+(kb?"":"pri")+'" id="tstkb">'+(kb?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  var rt=RTF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("FORMÁTOVANÝ TEXT V HODNOCENÍ","FORMATTED TEXT IN EVALUATIONS")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("V polích Společné hodnocení utkání, Společné hodnocení hráčky a Individuální hodnocení půjde text formátovat jako ve Wordu: tučné, kurzíva, podtržení (Ctrl+B / I / U), odrážky, číslovaný seznam, tvrdá mezera (Ctrl+Shift+Mezerník; automaticky i za jednopísmennými předložkami v, s, k, z, a, i, o, u) a vymazání formátu. Vložený text z Wordu se vyčistí. Zapíná se jen na tomto zařízení; hráčky a ostatní trenéři uvidí formát v textu hned, i bez zapnutí. Pozor: pokud trenér bez zapnuté funkce uloží formátované hodnocení, formát se ztratí.","In the Shared match evaluation, Shared player evaluation and Individual evaluation fields the text can be formatted like in Word: bold, italic, underline (Ctrl+B / I / U), bullets, numbered list, non-breaking space (Ctrl+Shift+Space; also automatically after one-letter prepositions v, s, k, z, a, i, o, u) and clear formatting. Text pasted from Word is cleaned. Switched on only on this device; players and other coaches see the formatting at once, even without it. Note: if a coach without the function saves a formatted evaluation, the formatting is lost.")+'</p><button class="btn '+(rt?"":"pri")+'" id="tstrt">'+(rt?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
+  $("tstrt").onclick=function(){try{localStorage.setItem("nvc-rte",rt?"0":"1")}catch(e){}location.reload()};
   $("tstkb").onclick=function(){try{localStorage.setItem("nvc-keys",kb?"0":"1")}catch(e){}renderTst()};
   var cf=CMF();$("tstbox").insertAdjacentHTML("beforeend",'<div class="card"><h2>'+Lx("KOMENTÁŘE TRENÉRA – NOVÉ A SHLÉDNUTÉ","COACH COMMENTS – NEW AND VIEWED")+'</h2><p class="mut" style="margin:0 0 10px">'+Lx("Hráčka vidí nové komentáře po akcích; po přehrání se přesunou do složky Shlédnuté komentáře, odkud je může smazat ze svého seznamu. Stav se ukládá na server (vyžaduje nvc-setup-v11-komentare-stav.sql). Jen na tomto zařízení.","The player sees new comments per action; once played they move to the Viewed comments folder where she can remove them from her list. State is stored on the server (needs nvc-setup-v11-komentare-stav.sql). This device only.")+'</p><button class="btn '+(cf?"":"pri")+'" id="tstcf">'+(cf?Lx("VYPNOUT","TURN OFF"):Lx("ZAPNOUT","TURN ON"))+'</button></div>');
   $("tstcf").onclick=function(){try{localStorage.setItem("nvc-cmfolder",cf?"0":"1")}catch(e){}renderTst()};
