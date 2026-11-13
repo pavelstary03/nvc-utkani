@@ -437,7 +437,7 @@ td[data-vc]{cursor:pointer}.a1 td[data-vc]:hover,.a1.eff tr.etop td[data-vc]:hov
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 219</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 220</footer>
 </main>
 <script>
 (function(){
@@ -1577,7 +1577,7 @@ function lineChart(title,labels,series,max){var W=600,H=200,pl=38,pr=10,pt=14,pb
 function cmSig(r){var n=0,h=0;r.acts.forEach(function(c){if(c.dr&&c.dr.length){h=(h*31+JSON.stringify(c.dr).length)|0}if(c.k||(c.dr&&c.dr.length)){n++;for(var i=0;i<(c.k||'').length;i++)h=(h*31+c.k.charCodeAt(i))|0}});return n?n+":"+h:""}
 function cmSeen(key,r){try{return localStorage.getItem("nvc-cm:"+key+":"+r.id)===r.sig}catch(e){return false}}
 function cmMark(key,r){try{localStorage.setItem("nvc-cm:"+key+":"+r.id,r.sig)}catch(e){}}
-function CVF(){try{return localStorage.getItem("nvc-cmview")==="1"}catch(e){return false}}var CMV={};
+function CVF(){try{return localStorage.getItem("nvc-cmview")!=="0"}catch(e){return false}}var CMV={};
 function myMail(){try{return(jwtInfo(ses.access_token).email||"").toLowerCase()}catch(e){return""}}
 async function cmvLoad(season,key){CMV={};try{(await getAll("/rest/v1/cm_view?select=*&season=eq."+enc(season)+(key?"&player_key=eq."+enc(key):"")+"&viewer=eq."+enc(myMail()))).forEach(function(x){CMV[x.match_id+"|"+x.player_key]=x.sig})}catch(e){}}
 function cmvSeen(pk,r){return CMV[r.id+"|"+pk]===r.sig}
