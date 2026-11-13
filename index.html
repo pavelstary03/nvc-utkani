@@ -437,7 +437,7 @@ td[data-vc],.dsc[data-vc],.dsl[data-vc],.czzh[data-vc],.czcd[data-vc],.czx[data-
 <div id="wlPm"></div><div id="mebody"></div><div class="card noprint"><h2>SOUHLAS</h2><p class="mut" style="margin:0 0 10px">Souhlas s ukládáním tvých dat můžeš kdykoli odvolat. Data o tobě pak budou ze serveru odstraněna.</p><button class="btn danger" id="mewd">ODVOLAT SOUHLAS</button></div>
 </section>
 
-<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 221</footer>
+<footer>© 2026 Pavel Starý. All rights reserved. Copying and distribution without permission is prohibited. · VOLLEY APPS · VERZE 222</footer>
 </main>
 <script>
 (function(){
@@ -1719,7 +1719,7 @@ function dlgWire(host,rows,side,redraw){if(host._dw)return;host._dw=1;
   host.addEventListener("focusin",function(e){var w=e.target.closest&&e.target.closest("[data-dl]");if(!w)return;var r=rows().filter(function(x){return x.id===w.dataset.dl})[0];if(r&&dlgUnread(r,side)){var n=dlgMs(r).length;dlgPatch(r,side==="c"?{c_seen:n}:{p_seen:n}).then(function(){w.style.background="#fff"}).catch(function(){})}})}
 async function dlgLoad(side){try{dlgRows=await getAll("/rest/v1/dialogs?select=*&order=updated_at.desc"+(side==="p"&&PVP()?"&player_key=eq."+enc(PREV.key):side==="p"?"&season=eq."+enc(pSeason):""))}catch(e){dlgRows=[]}}
 async function renderDlg(){var h=$("v-dlg");if(!h)return;if(!h._init){h.innerHTML='<div class="card" id="dlgc"></div>';h._init=1}var c=$("dlgc");await dlgLoad("c");
-  function draw(){var act=document.activeElement,keep=act&&act.classList&&act.classList.contains("dlgta")&&act.value;if(keep)return;c.innerHTML=dlgList(dlgRows,"c");dlgBadge()}
+  function draw(){var act=document.activeElement,keep=act&&act.classList&&act.classList.contains("dlgta")&&act.value;if(keep)return;if(c.querySelector("[data-dv]>*:not([data-dgact])")){dlgBadge();return}c.innerHTML=dlgList(dlgRows,"c");dlgBadge()}
   draw();dlgWire(c,function(){return dlgRows},"c",function(){c.innerHTML=dlgList(dlgRows,"c");dlgBadge()});
   if(!h._poll)h._poll=setInterval(function(){if(h.hidden||document.hidden)return;dlgLoad("c").then(draw)},45000)}
 function dlgBadge(){var t=$("tabdlg");if(!t)return;var n=dlgRows.filter(function(r){return!r.closed&&dlgUnread(r,"c")}).length;var sp=t.querySelector("span");if(sp)sp.textContent="DIALOGY"+(n?" ("+n+")":"")}
